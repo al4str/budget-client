@@ -1,0 +1,28 @@
+@use "src/styles/variables" as vars;
+
+.fallback {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.wrapper {
+  padding: vars.$offset-md;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-weight: 500;
+  font-size: 2rem;
+}
+
+.message {
+  margin: vars.$offset-sm 0 0;
+}
+
+.reloadLink {
+  display: inline-block;
+  margin-top: vars.$offset-md;
+}

@@ -1,0 +1,86 @@
+@use "src/styles/variables" as vars;
+
+.numpad {}
+
+.dotsList {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dotsItem {
+  padding: 0;
+}
+.dotsItem + .dotsItem {
+  margin-left: vars.$offset-sm;
+}
+
+.dot {
+  display: block;
+  width: 16px;
+  height: 16px;
+  background-color: whitesmoke;
+  border-radius: 50%;
+  transition: background-color 0.15s;
+}
+
+.filled {
+  background-color: mediumseagreen;
+  animation: dot-fill 0.15s ease;
+}
+
+.failed {
+  background-color: crimson;
+  animation: dot-fill 0.3s ease;
+}
+
+.numsWrp {
+  margin-top: vars.$offset-md;
+}
+
+.numsList {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.numsItem {
+  flex-basis: calc(100% / 3);
+  padding: 0;
+}
+
+.numsBtn {
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: auto;
+  font-size: 1.25rem;
+  border-radius: 50%;
+  transition: background-color 0.15s;
+}
+.numsBtn:active {
+  background-color: gray;
+}
+
+.numsIcon {
+  width: 2ch;
+  height: auto;
+}
+
+.numsLabel {}
+.numsIcon + .numsLabel {
+  display: none;
+}
+
+@keyframes dot-fill {
+  0%, 50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

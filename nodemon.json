@@ -1,0 +1,14 @@
+{
+  "signal": "SIGHUP",
+  "ext": "js,json",
+  "watch": [
+    ".env",
+    ".eslintrc",
+    ".eslintignore",
+    ".stylelintrc",
+    ".stylelintignore",
+    ".browserslistrc",
+    "webpack"
+  ],
+  "exec": "node webpack/scripts/dev.js"
+}

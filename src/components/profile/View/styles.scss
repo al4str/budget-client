@@ -1,0 +1,16 @@
+@use "src/styles/variables" as vars;
+
+.content {
+  flex-grow: 1;
+  padding: vars.$offset-sm;
+}
+
+.title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.form {
+  margin-top: vars.$offset-md;
+}

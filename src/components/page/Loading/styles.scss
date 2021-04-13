@@ -1,0 +1,22 @@
+@use "src/styles/variables" as vars;
+
+.loading {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  background-color: vars.$back-color-default;
+  border-radius: inherit;
+}
+
+@keyframes appear {
+  from {
+    transform: translateY(vars.$offset-sm);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

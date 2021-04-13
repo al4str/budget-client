@@ -1,0 +1,35 @@
+@use "src/styles/variables" as vars;
+
+.content {
+  flex-grow: 1;
+}
+
+.table {
+  font-size: 0.75rem;
+}
+.table + .table {
+  margin-top: vars.$offset-md;
+}
+
+.tableEmpty {
+  opacity: 0.6;
+}
+
+.cell {
+  padding: vars.$offset-xxs vars.$offset-xs;
+}
+
+.cellRight {
+  text-align: right;
+}
+
+.cellAvatar {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.sum {
+  min-width: fit-content;
+  white-space: nowrap;
+}

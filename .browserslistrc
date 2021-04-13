@@ -1,0 +1,6 @@
+[modern]
+iOS >= 11
+
+[legacy]
+iOS >= 9
+not dead

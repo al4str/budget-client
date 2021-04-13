@@ -1,0 +1,43 @@
+@use "src/styles/variables" as vars;
+
+.select {
+  position: relative;
+}
+
+.failed {}
+
+.disabled {}
+
+.field {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.button {
+  display: block;
+  width: 100%;
+  padding-right: 0;
+}
+.disabled .button {
+  cursor: default;
+}
+.field:focus + .button {
+  border-color: whitesmoke;
+}
+
+.wrp {
+  min-height: inherit;
+}
+
+.label {
+  flex-grow: 1;
+}
+
+.icon {
+  height: vars.$height-button;
+  color: silver;
+}

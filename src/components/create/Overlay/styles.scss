@@ -1,0 +1,107 @@
+@use "src/styles/variables" as vars;
+
+.body {
+  padding-bottom: vars.$offset-md;
+}
+
+.stepsDots {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin: vars.$offset-md 0 0;
+  padding: 0;
+  color: silver;
+  list-style: none;
+}
+
+.stepsDot {
+  padding: 0;
+}
+
+.stepsLine {
+  display: block;
+  flex-grow: 1;
+  width: 1px;
+  border-bottom: 2px solid currentColor;
+}
+
+.dot {
+  display: block;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.dotFilled {
+  background-color: currentColor;
+}
+
+.dotCurrent {}
+
+.dotCurrent::after {
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: 2px;
+  border-radius: 50%;
+  background-color: currentColor;
+  content: "";
+}
+
+.title {
+  margin: vars.$offset-md 0 0;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-top: vars.$offset-md;
+}
+
+.stepSum {}
+
+.stepCategory {}
+
+.stepCommodities {}
+
+.stepDate {}
+
+.stepUsers {}
+
+.stepConfirm {}
+
+.actions {
+  display: flex;
+  margin-top: vars.$offset-md;
+}
+
+.action {
+  display: block;
+  min-width: 200px;
+  min-height: vars.$height-button;
+  padding: vars.$offset-xs vars.$offset-md;
+  margin: 0 auto;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: seagreen;
+  border-radius: vars.$offset-xs;
+}
+.action:disabled {
+  opacity: 0.6;
+}
+.action:active {
+  background-color: darkolivegreen;
+}
+
+.reason {
+  margin: vars.$offset-md 0 0 0;
+  padding: vars.$offset-xs vars.$offset-sm;
+  font-size: 0.875rem;
+  background-color: crimson;
+  border-radius: vars.$offset-xxs;
+}

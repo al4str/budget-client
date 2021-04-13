@@ -1,0 +1,141 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "extends": [
+    "eslint-config-airbnb-base",
+    "plugin:react/recommended",
+    "plugin:compat/recommended"
+  ],
+  "plugins": [
+    "import",
+    "react",
+    "react-hooks"
+  ],
+  "settings": {
+    "import/parser": "babel-eslint",
+    "import/resolver": {
+      "webpack": {
+        "config": "webpack.config.js"
+      }
+    },
+    "ecmaFeatures": {
+      "classes": true
+    },
+    "react": {
+      "pragma": "React",
+      "version": "17"
+    },
+    "polyfills": [
+      "Object.entries",
+      "Object.keys",
+      "Object.values",
+      "IntersectionObserver"
+    ]
+  },
+  "globals": {
+    "process": true,
+    "window": true
+  },
+  "rules": {
+    "arrow-body-style": "off",
+    "arrow-parens": [
+      "error",
+      "always"
+    ],
+    "brace-style": [
+      "error",
+      "stroustrup"
+    ],
+    "camelcase": [
+      "off",
+      {
+        "properties": "always"
+      }
+    ],
+    "consistent-return": ["warn"],
+    "func-names": [
+      "error",
+      "never"
+    ],
+    "function-paren-newline": [
+      "error",
+      "consistent"
+    ],
+    "import/no-extraneous-dependencies": "off",
+    "import/no-named-as-default": "off",
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": [
+          "^@"
+        ]
+      }
+    ],
+    "import/prefer-default-export": "off",
+    "lines-between-class-members": "off",
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "max-len": "off",
+    "max-classes-per-file": "off",
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ],
+    "no-extend-native": "error",
+    "no-global-assign": "error",
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
+    "no-underscore-dangle": "off",
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": false
+      }
+    ],
+    "object-curly-newline": "off",
+    "quote-props": [
+      "error",
+      "consistent-as-needed"
+    ],
+    "operator-linebreak": [
+      "error",
+      "before"
+    ],
+    "prefer-destructuring": "off",
+    "radix": "off",
+    "react/display-name": "warn",
+    "react/jsx-uses-react": "off",
+    "react/prop-types": ["warn"],
+    "react/react-in-jsx-scope": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "spaced-comment": "off"
+  }
+}

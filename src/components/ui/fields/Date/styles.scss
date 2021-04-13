@@ -1,0 +1,100 @@
+@use "src/styles/variables" as vars;
+
+.date {
+  max-width: 300px;
+  font-size: 0.75rem;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+}
+
+.navBtn {
+  display: block;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: vars.$offset-xxs 0;
+}
+.navBtn:hover {}
+
+.navBtnPrev {}
+
+.navBtnNext {}
+
+.navIcon {}
+
+.navIconPrev {}
+
+.navIconNext {
+  transform: rotate(180deg);
+}
+
+.currentMonth {
+  flex-grow: 1;
+  font-size: 1rem;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.weekdayList {
+  display: flex;
+  flex-shrink: 0;
+  width: 100%;
+  margin: vars.$offset-sm 0 0;
+  padding: 0;
+  list-style: none;
+}
+.weekdayItem {
+  width: calc(100% / 7);
+  padding: 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+.daysList {
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.daysItem {
+  box-sizing: border-box;
+  width: calc(100% / 7);
+  padding: 0;
+}
+
+.day {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: vars.$offset-xxs 0;
+  border: 2px solid transparent;
+  border-radius: vars.$offset-xxs;
+}
+
+.dayWrp {}
+
+.dayValue {}
+
+.daySelected {
+  border-color: seagreen;
+}
+
+.daysPrevMonth {
+  color: silver;
+}
+
+.daysNextMonth {
+  color: silver;
+}
+
+.dayDisabled {
+  color: gray;
+}
+

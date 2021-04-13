@@ -1,0 +1,71 @@
+@use "src/styles/variables" as vars;
+
+.content {
+  flex-grow: 1;
+  padding: vars.$offset-sm vars.$offset-sm (vars.$height-button + 2 * vars.$offset-sm);
+}
+
+.nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.navBtn {
+  position: absolute;
+  top: 50%;
+  display: block;
+  flex-shrink: 0;
+  color: silver;
+  font-size: 0.75rem;
+  transform: translateY(-50%);
+}
+
+.navWrp {}
+
+.navLabel {}
+
+.navMonth {
+  display: block;
+}
+
+.navYear {
+  display: block;
+}
+
+.navPrev {
+  left: 0;
+  text-align: left;
+}
+
+.navIconPrev {
+  margin-right: vars.$offset-xs;
+}
+
+.navCurrent {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.navNext {
+  right: 0;
+  text-align: right;
+}
+
+.navIconNext {
+  margin-left: vars.$offset-xs;
+  transform: rotate(180deg);
+}
+
+.month {
+  margin-top: vars.$offset-md;
+}
+
+.menu {
+  position: fixed;
+  left: 50%;
+  bottom: vars.$offset-sm;
+  transform: translateX(-50%);
+  backface-visibility: hidden;
+}

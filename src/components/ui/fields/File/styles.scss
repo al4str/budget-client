@@ -1,0 +1,98 @@
+@use "src/styles/variables" as vars;
+
+.uploader {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: vars.$height-field;
+  padding: vars.$offset-xs vars.$offset-sm;
+  font-size: 1rem;
+  border: 1px solid grey;
+  border-radius: vars.$offset-xs;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.uploader:active {
+  border-color: whitesmoke;
+}
+.uploader:focus-within {
+  border-color: whitesmoke;
+  outline: none;
+}
+
+.failed {
+  border-color: red;
+}
+
+.select {
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: grey;
+  width: 100%;
+  height: 100%;
+}
+
+.field {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.iconWrp {}
+
+.icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.iconLarge {
+  width: 48px;
+  height: 48px;
+}
+
+.file {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+}
+
+.fileMeta {
+  flex-grow: 1;
+  min-width: 0;
+  margin-right: vars.$offset-sm;
+  font-size: 0.75rem;
+}
+
+.fileName {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.fileSize {
+  display: block;
+}
+
+.deleteBtn {
+  display: block;
+  flex-shrink: 0;
+  color: salmon;
+}
+
+.dropZone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}

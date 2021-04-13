@@ -1,0 +1,70 @@
+@use "sass:color";
+@use "src/styles/variables" as vars;
+
+.menu {}
+
+.list {
+  display: inline-flex;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  padding: 0;
+}
+
+.link {
+  display: block;
+  width: vars.$height-button * 2;
+  height: vars.$height-button;
+  color: whitesmoke;
+  transition: background-color 0.15s;
+}
+
+.icon {
+  width: 32px;
+  height: auto;
+}
+
+.income {
+  background-color: color.adjust(mediumseagreen, $alpha: -0.05);
+  border-radius:
+    vars.$height-button
+    0
+    0
+    vars.$height-button;
+}
+.income:not(:disabled):active {
+  background-color: mediumseagreen;
+}
+
+.expense {
+  background-color: color.adjust(indianred, $alpha: -0.05);
+  border-radius:
+    0
+    vars.$height-button
+    vars.$height-button
+    0;
+}
+.expense:not(:disabled):active {
+  background-color: indianred;
+}
+
+@supports (backdrop-filter: blur(5px)) {
+  .income {
+    background-color: color.adjust(mediumseagreen, $alpha: -0.15);
+    backdrop-filter: blur(5px);
+  }
+  .income:not(:disabled):active {
+    background-color: mediumseagreen;
+  }
+  .expense {
+    background-color: color.adjust(indianred, $alpha: -0.15);
+    backdrop-filter: blur(5px);
+  }
+  .expense:not(:disabled):active {
+    background-color: indianred;
+  }
+}

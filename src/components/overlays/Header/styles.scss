@@ -1,0 +1,30 @@
+@use "src/styles/variables" as vars;
+
+.header {
+  flex-shrink: 0;
+}
+
+.wrp {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  padding: vars.$offset-xs vars.$offset-sm;
+  background-color: dimgray;
+}
+
+.action {
+  flex-shrink: 0;
+}
+
+.actionHidden {
+  opacity: 0;
+}
+
+.title {
+  flex-grow: 1;
+  min-width: 0;
+  margin: 0 vars.$offset-sm;
+  font-weight: 700;
+  text-align: center;
+}

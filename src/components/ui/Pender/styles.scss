@@ -1,0 +1,51 @@
+@use "src/styles/variables" as vars;
+
+.pender {
+  pointer-events: none;
+  touch-action: none;
+}
+
+.finished {
+  display: none;
+  opacity: 0;
+  animation: finished 0.15s both;
+}
+
+.runner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  animation: pending 0.75s linear infinite forwards;
+  will-change: transform;
+}
+
+.finished .runner {
+  animation: none;
+}
+
+@keyframes pending {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes finished {
+  0% {
+    display: block;
+    opacity: 1;
+  }
+  99% {
+    display: block;
+    opacity: 0;
+  }
+  100% {
+    display: none;
+    opacity: 0;
+  }
+}

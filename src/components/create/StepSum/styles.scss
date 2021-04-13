@@ -1,0 +1,13 @@
+@use "src/styles/variables" as vars;
+
+.step {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.field {
+  width: calc(#{2 * vars.$offset-sm} + 14ch);
+  min-height: vars.$height-field + 2 * vars.$offset-sm;
+  font-size: 1.75rem;
+}

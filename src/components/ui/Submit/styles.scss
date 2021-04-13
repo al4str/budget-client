@@ -1,0 +1,61 @@
+@use "src/styles/variables" as vars;
+
+.submit {}
+
+.pending {
+  pointer-events: none;
+}
+
+.wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.label {
+  transition:
+    transform 0.15s,
+    opacity 0.15s;
+}
+.pending .label {
+  transform: scale(0.85);
+  opacity: 0.3;
+}
+
+.spinnerWrp {
+  position: absolute;
+  top: calc(50% - 1.2em / 2);
+  left: calc(50% - 1.2em / 2);
+  width: 1.2em;
+  height: 1.2em;
+  transform: scale(1.5);
+  backface-visibility: hidden;
+  opacity: 0;
+  transition:
+    transform 0.15s,
+    opacity 0.15s;
+  pointer-events: none;
+}
+.pending .spinnerWrp {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.spinner {
+  display: none;
+  width: 100%;
+  height: 100%;
+  animation: spin 1.4s linear infinite;
+  fill: currentColor;
+}
+.pending .spinner {
+  display: block;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}

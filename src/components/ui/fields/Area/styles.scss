@@ -1,0 +1,20 @@
+@use "src/styles/variables" as vars;
+
+.field {
+  width: 100%;
+  min-height: 40px;
+  resize: none;
+}
+.field::-webkit-scrollbar {
+  width: 0;
+}
+.field::-webkit-scrollbar-track {
+  background: transparent;
+}
+.field::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+.field::placeholder {}
+
+.failed {}

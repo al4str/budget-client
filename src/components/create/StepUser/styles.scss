@@ -1,0 +1,40 @@
+@use "src/styles/variables" as vars;
+
+.step {}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: -1 * vars.$offset-sm;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  box-sizing: border-box;
+  width: calc(100% / 3);
+  min-width: 0;
+  padding: vars.$offset-sm;
+}
+
+.itemBtn {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: vars.$offset-sm vars.$offset-xs;
+  font-size: 0.75rem;
+  text-align: center;
+  border: 2px solid currentColor;
+  border-radius: vars.$offset-xs;
+}
+
+.itemSelected {
+  color: DarkSlateGray;
+  background-color: WhiteSmoke;
+  border-color: WhiteSmoke;
+}
+
+.itemWrp {}
+
+.itemLabel {}

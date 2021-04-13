@@ -1,0 +1,49 @@
+@use "src/styles/variables" as vars;
+
+.form {}
+
+.fieldWrp {}
+.fieldWrp + .fieldWrp {
+  margin-top: vars.$offset-md;
+}
+
+.field {
+  width: 100%;
+}
+
+.avatarWrp {
+  display: flex;
+}
+
+.avatar {
+  flex-shrink: 0;
+  margin-right: vars.$offset-sm;
+}
+
+.upload {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.submitWrp {
+  display: flex;
+  margin-top: vars.$offset-lg;
+}
+
+.submit {
+  display: block;
+  min-width: 200px;
+  height: vars.$height-button;
+  padding: 0 vars.$offset-md;
+  margin: 0 auto;
+  font-weight: 500;
+  background-color: seagreen;
+  border-radius: vars.$offset-xs;
+  transition: background-color 0.15s;
+}
+.submit:disabled {
+  opacity: 0.6;
+}
+.submit:active {
+  background-color: darkolivegreen;
+}

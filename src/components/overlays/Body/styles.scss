@@ -1,0 +1,10 @@
+@use "src/styles/variables" as vars;
+
+.body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  box-sizing: border-box;
+  width: 100%;
+  padding: vars.$offset-xs vars.$offset-sm;
+}

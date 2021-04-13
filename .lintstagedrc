@@ -1,0 +1,5 @@
+{
+  "*.js": "npx eslint --ext .js",
+  "*.scss": "npx stylelint --syntax scss",
+  "*.css": "npx stylelint"
+}

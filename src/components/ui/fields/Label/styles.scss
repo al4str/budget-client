@@ -1,0 +1,39 @@
+@use "src/styles/variables" as vars;
+
+.wrapper {}
+
+.labelWrp {
+  margin-bottom: vars.$offset-xs;
+}
+
+.label {
+  display: block;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.field {}
+
+.errorsList {
+  margin: vars.$offset-xs 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.errorItem {
+  display: block;
+  padding: vars.$offset-xxs vars.$offset-xs;
+  font-size: 0.75rem;
+  background-color: crimson;
+  border-radius: vars.$offset-xxs;
+}
+.errorItem + .errorItem {
+  margin-top: vars.$offset-xxs;
+}
+
+.description {
+  margin: vars.$offset-xs 0 0;
+  font-size: 0.875rem;
+  color: silver;
+}

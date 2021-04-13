@@ -1,0 +1,33 @@
+@use "src/styles/variables" as vars;
+
+.step {}
+
+.list {
+  margin: auto;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  padding: 0;
+}
+.item + .item {
+  margin-top: vars.$offset-sm;
+}
+
+.itemWrp {
+  display: flex;
+  align-items: baseline;
+}
+
+.itemLabel {
+  flex-shrink: 0;
+  max-width: 60%;
+  margin-right: vars.$offset-sm;
+  color: silver;
+}
+
+.itemValue {
+  flex-grow: 1;
+  text-align: right;
+}

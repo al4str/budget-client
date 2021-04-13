@@ -1,0 +1,19 @@
+@use "src/styles/variables" as vars;
+
+.view {
+  flex-grow: 1;
+  box-sizing: border-box;
+  padding: vars.$offset-sm;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.user {}
+
+.numpad {
+  margin-top: vars.$offset-lg;
+}

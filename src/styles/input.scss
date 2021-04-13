@@ -1,0 +1,54 @@
+@use "variables" as vars;
+
+.input {
+  display: block;
+  box-sizing: border-box;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
+  /* autoprefixer: ignore next */
+  -webkit-appearance: none;
+}
+.input:disabled {}
+.input:focus {
+  outline: none;
+}
+
+.area {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  resize: none;
+}
+
+.default {
+  min-height: vars.$height-field;
+  padding: 0 vars.$offset-sm;
+  border: 1px solid grey;
+  border-radius: vars.$offset-xs;
+  transition: border-color 0.15s;
+}
+.default:focus {
+  border-color: whitesmoke;
+}
+
+.default::placeholder {
+  color: silver;
+}
+
+.default.area {
+  padding-top: vars.$offset-xs;
+  padding-bottom: vars.$offset-xs;
+}
+
+.default.failed {
+  border-color: red;
+}

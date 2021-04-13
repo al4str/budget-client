@@ -1,0 +1,9 @@
+/.idea
+/dist
+/temp
+/ssl
+/node_modules
+/.env
+/.vscode
+/TODO.md
+.DS_Store

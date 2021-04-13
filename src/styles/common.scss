@@ -1,0 +1,21 @@
+@use "variables" as vars;
+
+.bodyConstrains {
+  overflow: hidden;
+  user-select: none;
+  touch-action: none;
+  -webkit-touch-callout: none;
+}
+
+.bodyConstrains::selection {
+  background: transparent;
+}
+
+.multiline {
+  max-width: 100%;
+  overflow: visible;
+  white-space: normal;
+  text-overflow: clip;
+  word-wrap: break-word;
+  hyphens: auto;
+}

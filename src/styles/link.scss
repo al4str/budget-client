@@ -1,0 +1,9 @@
+@use "variables" as vars;
+
+.link {
+  display: inline;
+  color: inherit;
+  text-decoration: underline;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}

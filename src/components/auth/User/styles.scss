@@ -1,0 +1,30 @@
+@use "src/styles/variables" as vars;
+
+.user {}
+
+.wrp {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.avatar {
+  margin-bottom: vars.$offset-sm;
+}
+
+.name {
+  display: block;
+  font-weight: 500;
+}
+
+.field {
+  padding: vars.$offset-xs vars.$offset-sm;
+  border: 1px solid grey;
+  border-radius: vars.$offset-xs;
+  transition: border-color 0.15s;
+}
+.field:focus {
+  border-color: whitesmoke;
+}

@@ -1,0 +1,66 @@
+@use "src/styles/variables" as vars;
+
+.modal {
+  // max-width: vars.$modal-900;
+}
+
+.header {}
+
+.title {
+  display: block;
+  margin-bottom: vars.$offset-xs;
+}
+
+.ranges {
+  display: flex;
+  width: 100%;
+  font-size: 14px;
+}
+.range {
+  display: flex;
+  width: 50%;
+}
+.rangeLeft {
+  padding-right: vars.$offset-sm;
+}
+.rangeRight {
+  padding-left: vars.$offset-sm;
+}
+.rangeLabel {
+  width: 50%;
+}
+.rangeValue {
+  margin-left: auto;
+}
+.rangeValueDefined {}
+
+.body {}
+
+.pickers {
+  display: flex;
+  height: 300px;
+  margin-bottom: vars.$offset-sm;
+  // background-color: vars.$white_walter;
+  border-radius: 4px;
+}
+
+.datePicker {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: vars.$offset-xs;
+}
+.datePickerLeft {
+  padding-right: vars.$offset-sm;
+}
+.datePickerRight {
+  padding-left: vars.$offset-sm;
+}
+
+.actions {}
+
+.submitBtn {}
+
+.resetBtn {}
+
+.cancelBtn {}

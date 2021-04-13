@@ -1,0 +1,45 @@
+@use "src/styles/variables" as vars;
+
+.expenditures {}
+
+.list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+.item + .item {
+  margin-top: vars.$offset-xs;
+}
+
+.title {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.amount {
+  margin-left: vars.$offset-xs;
+}
+
+.essential {
+  margin-left: vars.$offset-xs;
+}
+
+.action {
+  flex-shrink: 0;
+  margin-left: vars.$offset-xs;
+  font-size: 2rem;
+}
+
+.edit {
+  color: silver;
+}
+
+.delete {
+  color: crimson;
+}
