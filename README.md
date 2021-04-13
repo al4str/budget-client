@@ -1,3 +1,3 @@
-# Finances client app
+# Budget client app
 
 
