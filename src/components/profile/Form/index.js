@@ -8,7 +8,7 @@ import {
   filesIsImageInvalid,
 } from '@/libs/files';
 import { useMounted } from '@/hooks/useMounted';
-import { useT9n } from '@/hooks/useI18n';
+import { useT9ns } from '@/hooks/useI18n';
 import { formsCreate } from '@/helpers/forms';
 import { profileEdit, profileUploadAvatar } from '@/hooks/useProfile';
 import FieldLabel from '@/components/ui/fields/Label';
@@ -41,14 +41,25 @@ function ProfileForm(props) {
     profile,
   } = props;
   const mountedRef = useMounted();
-  const idLabel = useT9n('forms.id.label');
-  const nameLabel = useT9n('forms.name.label');
-  const avatarLabel = useT9n('forms.avatar.label');
-  const errorsEmpty = useT9n('errors.forms.empty');
-  const errorsInvalidType = useT9n('errors.forms.invalid-type');
-  const errorsInvalidSize = useT9n('errors.forms.invalid-size');
-  const errorsInvalidDimensions = useT9n('errors.forms.invalid-dimensions');
-  const saveLabel = useT9n('forms.save');
+  const {
+    idLabel,
+    nameLabel,
+    avatarLabel,
+    errorsEmpty,
+    errorsInvalidType,
+    errorsInvalidSize,
+    errorsInvalidDimensions,
+    saveLabel,
+  } = useT9ns({
+    idLabel: 'profile.id.label',
+    nameLabel: 'profile.name.label',
+    avatarLabel: 'profile.avatar.label',
+    errorsEmpty: 'forms.errors.empty',
+    errorsInvalidType: 'forms.errors.invalid-type',
+    errorsInvalidSize: 'forms.errors.invalid-size',
+    errorsInvalidDimensions: 'forms.errors.invalid-dimensions',
+    saveLabel: 'forms.actions.save',
+  });
   const [pending, setPending] = useState(false);
   const { set, update, getChanged, useForm } = useMemo(() => {
     return formsCreate({
@@ -87,41 +98,22 @@ function ProfileForm(props) {
   const { anyChanged, fields } = useForm();
   const [previewURL, setPreviewURL] = useState('');
 
-  const errorsName = useMemo(() => {
-    return [
-      {
-        key: 'empty',
-        label: errorsEmpty,
+  const messages = useMemo(() => {
+    return {
+      name: {
+        empty: errorsEmpty,
       },
-    ].filter((item) => {
-      return fields.name.validations[item.key];
-    });
+      avatarFile: {
+        invalidType: errorsInvalidType,
+        invalidSize: errorsInvalidSize,
+        invalidDimensions: errorsInvalidDimensions,
+      },
+    };
   }, [
     errorsEmpty,
-    fields.name.validations,
-  ]);
-  const errorsAvatar = useMemo(() => {
-    return [
-      {
-        key: 'invalidType',
-        label: errorsInvalidType,
-      },
-      {
-        key: 'invalidSize',
-        label: errorsInvalidSize,
-      },
-      {
-        key: 'invalidDimensions',
-        label: errorsInvalidDimensions,
-      },
-    ].filter((item) => {
-      return fields.avatarFile.validations[item.key];
-    });
-  }, [
     errorsInvalidType,
     errorsInvalidSize,
     errorsInvalidDimensions,
-    fields.avatarFile.validations,
   ]);
 
   /** @type {function(File): void} */
@@ -191,7 +183,8 @@ function ProfileForm(props) {
         className={s.fieldWrp}
         failed={fields.name.failed}
         label={nameLabel}
-        errors={errorsName}
+        validations={fields.name.validations}
+        messages={messages.name}
       >
         <FieldText
           className={cn(input.default, s.field)}
@@ -205,7 +198,8 @@ function ProfileForm(props) {
         className={s.fieldWrp}
         failed={fields.avatarFile.failed}
         label={avatarLabel}
-        errors={errorsAvatar}
+        validations={fields.avatarFile.validations}
+        messages={messages.avatarFile}
       >
         <div className={s.avatarWrp}>
           <UsersAvatar
