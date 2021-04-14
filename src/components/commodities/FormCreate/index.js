@@ -1,6 +1,6 @@
 import propTypes from 'prop-types';
 import cn from 'classnames';
-import { useT9n } from '@/hooks/useI18n';
+import { useT9ns } from '@/hooks/useI18n';
 import { useCommoditiesCreate } from '@/components/commodities/hooks/create';
 import Submit from '@/components/ui/Submit';
 import FieldLabel from '@/components/ui/fields/Label';
@@ -38,14 +38,25 @@ function CommoditiesFormCreate(props) {
     initialCategoryId: categoryId,
     onCreate,
   });
-  const idLabel = useT9n('forms.id.label');
-  const idPlaceholder = useT9n('forms.id.placeholder');
-  const idDesc = useT9n('forms.id.desc');
-  const titleLabel = useT9n('forms.name.label');
-  const titlePlaceholder = useT9n('forms.name.placeholder');
-  const categoryLabel = useT9n('forms.category.label');
-  const categoryPlaceholder = useT9n('forms.category.placeholder');
-  const createLabel = useT9n('forms.actions.create');
+  const {
+    idLabel,
+    idPlaceholder,
+    idDesc,
+    titleLabel,
+    titlePlaceholder,
+    categoryLabel,
+    categoryPlaceholder,
+    createLabel,
+  } = useT9ns({
+    idLabel: 'forms.id.label',
+    idPlaceholder: 'forms.id.placeholder',
+    idDesc: 'forms.id.desc',
+    titleLabel: 'forms.name.label',
+    titlePlaceholder: 'forms.name.placeholder',
+    categoryLabel: 'forms.category.label',
+    categoryPlaceholder: 'forms.category.placeholder',
+    createLabel: 'forms.actions.create',
+  });
 
   return (
     <form

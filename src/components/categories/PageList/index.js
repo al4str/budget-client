@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 import { ROUTES } from '@/helpers/routes';
 import { useTitle } from '@/hooks/useTitle';
-import { useT9n } from '@/hooks/useI18n';
+import { useT9ns } from '@/hooks/useI18n';
 import { categoriesFetchList, useCategories } from '@/hooks/useCategories';
 import Anchor from '@/components/ui/Anchor';
 
 function CategoriesPageList() {
-  const pageTitle = useT9n('titles.categories');
+  const { pageTitle } = useT9ns({
+    pageTitle: 'titles.categories',
+  });
   const { initial, items } = useCategories();
 
   useTitle({ title: pageTitle });

@@ -109,16 +109,6 @@ const VALUES = {
 };
 
 /**
- * @param {string} key
- * @return {string}
- * */
-export function useT9n(key) {
-  return typeof VALUES[key] === 'string'
-    ? VALUES[key]
-    : key;
-}
-
-/**
  * @template {string} Key
  * @template {string} Value
  * @template {string} Name

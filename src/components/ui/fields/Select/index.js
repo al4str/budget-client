@@ -2,7 +2,7 @@ import { forwardRef, useRef, useCallback } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
 import { idGet } from '@/libs/id';
-import { useT9n } from '@/hooks/useI18n';
+import { useT9ns } from '@/hooks/useI18n';
 import IconArrowDropDown from '@/components/icons/IconArrowDropDown';
 import input from '@/styles/input.scss';
 import btn from '@/styles/button.scss';
@@ -20,7 +20,9 @@ const FieldSelect = forwardRef((props, ref) => {
     ...restProps
   } = props;
   const idRef = useRef(idGet());
-  const nothing = useT9n('forms.select.placeholder');
+  const { nothing } = useT9ns({
+    nothing: 'forms.select.placeholder',
+  });
   const id = idRef.current;
   const selectedItem = values.find((item) => item.value === value);
   const label = selectedItem

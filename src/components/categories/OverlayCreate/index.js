@@ -1,5 +1,5 @@
 import propTypes from 'prop-types';
-import { useT9n } from '@/hooks/useI18n';
+import { useT9ns } from '@/hooks/useI18n';
 import Overlay from '@/components/overlays/Overlay';
 import OverlayHeader from '@/components/overlays/Header';
 import OverlayBody from '@/components/overlays/Body';
@@ -27,7 +27,9 @@ function CategoriesOverlayCreate(props) {
     type,
     onCreate,
   } = props;
-  const title = useT9n('titles.category-create');
+  const { title } = useT9ns({
+    title: 'titles.category-create',
+  });
 
   return (
     <Overlay

@@ -4,7 +4,7 @@ import { idInvalid } from '@/libs/id';
 import { formsCreate } from '@/helpers/forms';
 import { categoriesExist } from '@/helpers/categories';
 import { commoditiesExist } from '@/helpers/commodities';
-import { useT9n } from '@/hooks/useI18n';
+import { useT9ns } from '@/hooks/useI18n';
 import { useMounted } from '@/hooks/useMounted';
 import {
   categoriesFetchList,
@@ -46,10 +46,17 @@ export function useCommoditiesCreate(params) {
   } = params;
   const mountedRef = useMounted();
   const { items } = useCategories();
-  const errorsInvalidId = useT9n('forms.errors.invalid-machine-name');
-  const errorsAlreadyExist = useT9n('forms.errors.already-exist');
-  const errorsEmpty = useT9n('forms.errors.empty');
-  const errorsDoesNotExist = useT9n('forms.errors.does-not-exist');
+  const {
+    errorsInvalidId,
+    errorsAlreadyExist,
+    errorsEmpty,
+    errorsDoesNotExist,
+  } = useT9ns({
+    errorsInvalidId: 'forms.errors.invalid-machine-name',
+    errorsAlreadyExist: 'forms.errors.already-exist',
+    errorsEmpty: 'forms.errors.empty',
+    errorsDoesNotExist: 'forms.errors.does-not-exist',
+  });
   const [pending, setPending] = useState(false);
   const [reason, setReason] = useState('');
   const { anyPending, anyInvalid, fields } = useForm();

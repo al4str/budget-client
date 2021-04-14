@@ -3,7 +3,7 @@ import { isEmpty } from '@/libs/isEmpty';
 import { idInvalid } from '@/libs/id';
 import { formsCreate } from '@/helpers/forms';
 import { categoriesExist, categoriesInvalidType } from '@/helpers/categories';
-import { useT9n } from '@/hooks/useI18n';
+import { useT9ns } from '@/hooks/useI18n';
 import { useMounted } from '@/hooks/useMounted';
 import { categoriesCreateItem } from '@/hooks/useCategories';
 
@@ -36,12 +36,21 @@ const { set, validate, getValues, useForm } = formsCreate({
 export function useCategoriesCreate(params) {
   const { initialType, onCreate } = params;
   const mountedRef = useMounted();
-  const typeIncome = useT9n('categories.type.income');
-  const typeExpense = useT9n('categories.type.expense');
-  const errorsEmpty = useT9n('forms.errors.empty');
-  const errorsExist = useT9n('forms.errors.exist');
-  const errorsInvalidId = useT9n('forms.errors.invalid-id');
-  const errorsInvalidType = useT9n('forms.errors.invalid-type');
+  const {
+    typeIncome,
+    typeExpense,
+    errorsEmpty,
+    errorsExist,
+    errorsInvalidId,
+    errorsInvalidType,
+  } = useT9ns({
+    typeIncome: 'categories.type.income',
+    typeExpense: 'categories.type.expense',
+    errorsEmpty: 'forms.errors.empty',
+    errorsExist: 'forms.errors.exist',
+    errorsInvalidId: 'forms.errors.invalid-id',
+    errorsInvalidType: 'forms.errors.invalid-type',
+  });
   const [pending, setPending] = useState(false);
   const [reason, setReason] = useState('');
   const { anyPending, anyInvalid, fields } = useForm();
