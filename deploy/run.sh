@@ -1,11 +1,23 @@
 #!/bin/bash
 
-cd /var/www/budget-client
+NAME=budget-client
+PUBLIC=public
+
+cd "/var/www/${NAME}"
+
 git pull origin master
-docker build -t budget-client-image -f ./deploy/Dockerfile .
-docker run --name budget-client -d budget-client-image
-rm -rf ./public
-mkdir ./public
-docker cp budget-client:/usr/src/app/dist/. ./public
-docker stop budget-client
-docker rm budget-client
+
+docker build -t "${NAME}-image" \
+  -f ./deploy/Dockerfile \
+  .
+
+docker run --name "${NAME}" \
+  -d \
+  "${NAME}-image"
+
+rm -rf PUBLIC
+mkdir PUBLIC
+
+docker cp "${NAME}":/usr/src/app/dist/. PUBLIC
+
+docker rm -f "${NAME}"
