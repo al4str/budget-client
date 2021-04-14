@@ -20,3 +20,5 @@ rm -rf "${PUBLIC}/*"
 docker cp "${NAME}":/usr/src/app/dist/. PUBLIC
 
 docker rm -f "${NAME}"
+
+cat "${PUBLIC}/meta.json"
