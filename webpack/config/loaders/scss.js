@@ -1,5 +1,4 @@
 const Sass = require('sass');
-const Fiber = require('fibers');
 
 module.exports = {
   /**
@@ -11,9 +10,6 @@ module.exports = {
       options: {
         sourceMap: true,
         implementation: Sass,
-        sassOptions: {
-          fiber: Fiber,
-        },
       },
     };
   },
