@@ -4,9 +4,12 @@ import '@/styles/global.scss';
 import { PAGES } from '@/helpers/pages';
 import { historyGet } from '@/libs/navigationManager';
 import { handleSplashScreen } from '@/components/splash';
+import { viewportHeightProvide } from '@/libs/viewportHeight';
 import RoutesSwitcher from '@/components/page/RoutesSwitcher';
 
 handleSplashScreen();
+
+viewportHeightProvide();
 
 function App() {
   return (
