@@ -3,13 +3,16 @@ import { Router } from 'react-router-dom';
 import '@/styles/global.scss';
 import { PAGES } from '@/helpers/pages';
 import { historyGet } from '@/libs/navigationManager';
-import { handleSplashScreen } from '@/components/splash';
 import { viewportHeightProvide } from '@/libs/viewportHeight';
+import { i18nInit } from '@/hooks/useI18n';
+import { handleSplashScreen } from '@/components/splash';
 import RoutesSwitcher from '@/components/page/RoutesSwitcher';
 
 handleSplashScreen();
 
 viewportHeightProvide();
+
+i18nInit().catch();
 
 function App() {
   return (

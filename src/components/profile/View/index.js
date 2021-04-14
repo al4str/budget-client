@@ -1,6 +1,7 @@
 import propTypes from 'prop-types';
 import cn from 'classnames';
 import { useT9ns } from '@/hooks/useI18n';
+import ProfileLanguages from '@/components/profile/Languages';
 import ProfileForm from '@/components/profile/Form';
 import s from './styles.scss';
 
@@ -39,6 +40,7 @@ function ProfileView(props) {
       <h1 className={s.title}>
         {title}
       </h1>
+      <ProfileLanguages className={s.lang} />
       <ProfileForm
         className={s.form}
         profile={data}

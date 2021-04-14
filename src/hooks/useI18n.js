@@ -1,112 +1,155 @@
-const VALUES = {
-  'titles.profile': 'Profile',
-  'titles.main': 'Main',
-  'titles.create-income': 'New income',
-  'titles.create-expense': 'New expanse',
-  'titles.categories': 'Categories',
-  'titles.category': 'Category',
-  'titles.category-create': 'New category',
-  'titles.commodity-create': 'New commodity',
-  'titles.expenditure-create': 'New expenditure',
-  //
-  'errors.db.invalid-name': '[DB] Invalid name',
-  'errors.db.invalid-user': '[DB] Invalid user',
-  'errors.db.invalid-selector': '[DB] Invalid selector',
-  'errors.resize.invalid-params': '[RESIZER] Invalid params',
-  'errors.sessions.corrupted-token': '[SESSIONS] Corrupted token',
-  'errors.sessions.unknown-token': '[SESSIONS] Unknown token',
-  'errors.sessions.unknown-user': '[SESSIONS] Unknown user',
-  'errors.sessions.wrong-user': '[SESSIONS] Wrong user',
-  'errors.sessions.wrong-session': '[SESSIONS] Wrong session',
-  'errors.resource.invalid-params': '[RESOURCE] Invalid params',
-  'errors.resource.not-exist': '[RESOURCE] Does not exist',
-  'errors.resource.already-exist': '[RESOURCE] Already exist',
-  'errors.resource.unknown-user': '[RESOURCE] Unknown user',
-  'errors.categories.invalid-id': '[CATEGORIES] Invalid machine name',
-  'errors.categories.invalid-title': '[CATEGORIES] Invalid title',
-  'errors.categories.invalid-type': '[CATEGORIES] Invalid type',
-  'errors.commodities.invalid-id': '[CATEGORIES] Invalid machine name',
-  'errors.commodities.invalid-title': '[COMMODITIES] Invalid title',
-  'errors.commodities.invalid-category': '[COMMODITIES] Invalid category',
-  'errors.expenditures.invalid-id': '[COMMODITIES] Invalid machine name',
-  'errors.expenditures.invalid-expense': '[EXPENDITURES] Invalid expense',
-  'errors.expenditures.invalid-commodity': '[EXPENDITURES] Invalid commodity',
-  'errors.expenses.invalid-id': '[EXPENDITURES] Invalid ID',
-  'errors.expenses.invalid-user': '[EXPENSES] Invalid user',
-  'errors.expenses.invalid-category': '[EXPENSES] Invalid category',
-  'errors.expenses.invalid-date': '[EXPENSES] Invalid date',
-  'errors.expenses.invalid-sum': '[EXPENSES] Invalid sum',
-  'errors.income.invalid-id': '[EXPENSES] Invalid ID',
-  'errors.income.invalid-user': '[INCOME] Invalid user',
-  'errors.income.invalid-category': '[INCOME] Invalid category',
-  'errors.income.invalid-date': '[INCOME] Invalid date',
-  'errors.income.invalid-sum': '[INCOME] Invalid sum',
-  //
-  'errors.chunks.messages': 'You tried navigating to/loading a page/resource, that is no longer available',
-  'errors.chunks.title': 'Application might be stale 🏚',
-  'errors.default.title': 'Something went wrong 😢',
-  'errors.offline.message': 'Your device seems to be offline or using slow internet connection or "lie-fi"',
-  'errors.offline.title': 'Your are offline 🔴',
-  'errors.reload': 'Please, reload the page',
-  //
-  'forms.errors.empty': 'Empty value',
-  'forms.errors.invalid-type': 'Invalid type',
-  'forms.errors.invalid-size': 'Invalid size',
-  'forms.errors.invalid-dimensions': 'Invalid dimensions',
-  'forms.errors.invalid-id': 'Invalid ID',
-  'forms.errors.invalid-machine-name': 'Invalid ID',
-  'forms.errors.invalid-sum': 'Invalid amount',
-  'forms.errors.already-exist': 'Already exist',
-  'forms.errors.does-not-exist': 'Does not exist',
-  'forms.select.placeholder': 'Nothing to select',
-  'forms.id.label': 'Machine name',
-  'forms.id.placeholder': 'machine-name',
-  'forms.id.desc': 'Enter a unique name for soulless machines. Use only: "a-z", "A-Z", "0-9", "-", "_"',
-  'forms.name.label': 'Title for humans',
-  'forms.name.placeholder': 'Title',
-  'forms.type.label': 'Select a type',
-  'forms.type.placeholder': 'Type',
-  'forms.comment.label': 'Comment (optional)',
-  'forms.comment.placeholder': 'Comment',
-  'forms.category.label': 'Select a category',
-  'forms.category.placeholder': 'Category',
-  'forms.amount.label': 'Amount',
-  'forms.amount.placeholder': '0.00',
-  'forms.essential.label': 'Is essential',
-  'forms.actions.search': 'Search',
-  'forms.actions.next': 'Next',
-  'forms.actions.confirm': 'Confirm',
-  'forms.actions.save': 'Save',
-  'forms.actions.create': 'Create',
-  'forms.actions.ok': 'OK',
-  //
-  'profile.id.label': 'Enter your username',
-  'profile.id.placeholder': 'Username',
-  'profile.name.label': 'Real name',
-  'profile.avatar.label': 'Avatar',
-  //
-  'categories.type.income': 'Income',
-  'categories.type.expense': 'Expense',
-  //
-  'expenditures.essential.yes': 'is essential',
-  'expenditures.essential.no': 'is not essential',
-  //
-  'messages.welcome': 'Welcome back, my lord',
-  //
-  'create.titles.sum': 'How much',
-  'create.titles.category': 'Category',
-  'create.titles.commodities': 'What for',
-  'create.titles.date': 'When',
-  'create.titles.user': 'Who',
-  'create.titles.confirm': 'Confirmation',
-  //
-  'month.total.caption': 'Total',
-  'month.total.income': 'Income',
-  'month.total.expenses': 'Expenses',
-  'month.total.rest': 'Balance',
-  'month.date.when': 'When',
-  'month.users.by': 'By',
+import { storeCreate } from '@/libs/store';
+import {
+  i18nDetectLanguageTag,
+  i18nObtainTranslations,
+  i18nTranslationFromStorage,
+  i18nTranslationToStorage,
+} from '@/helpers/i18n';
+
+const READY_STATE = {
+  INITIAL: 'INITIAL',
+  FETCHING: 'FETCHING',
+  READY: 'READY',
 };
+
+/**
+ * @typedef {'INITIAL'|'FETCHING'|'READY'} I18nStoreReadyState
+ * */
+
+const ACTION_TYPES = {
+  SET_READY_STATE: 'SET_READY_STATE',
+  SET_TAG: 'SET_TAG',
+  SET_VALUES: 'SET_VALUES',
+};
+
+/**
+ * @typedef {'SET_READY_STATE'|'SET_TAG'
+ * |'SET_VALUES'} I18nStoreActionType
+ * */
+
+/** @type {I18nStoreState} */
+const initialState = {
+  readyState: READY_STATE.INITIAL,
+  initial: true,
+  pending: true,
+  fetching: false,
+  ready: false,
+  tag: '',
+  values: {},
+};
+
+/**
+ * @typedef {Object} I18nStoreState
+ * @property {I18nStoreReadyState} readyState
+ * @property {boolean} initial
+ * @property {boolean} pending
+ * @property {boolean} fetching
+ * @property {boolean} ready
+ * @property {I18nLangTag} tag
+ * @property {I18nValues} values
+ * */
+
+const { getState, dispatch, useStore } = storeCreate(initialState, reducer);
+
+/** @type {function(): I18nStoreState} */
+export const i18nGetState = getState;
+
+/** @type {function(type: I18nStoreActionType,
+ * payload: I18nStorePayload): void} */
+export const i18nDispatch = dispatch;
+
+/**
+ * @typedef {Partial<I18nStoreState>} I18nStorePayload
+ * */
+
+/**
+ * @return {Promise<void>}
+ * */
+export async function i18nInit() {
+  const translation = i18nTranslationFromStorage();
+  if (translation.tag) {
+    i18nDispatch(ACTION_TYPES.SET_TAG, {
+      tag: translation.tag,
+    });
+    i18nDispatch(ACTION_TYPES.SET_VALUES, {
+      values: translation.values,
+    });
+    i18nDispatch(ACTION_TYPES.SET_READY_STATE, {
+      readyState: READY_STATE.READY,
+    });
+  }
+  const tag = translation.tag || i18nDetectLanguageTag();
+  await i18nFetch(tag);
+}
+
+/**
+ * @param {I18nLangTag} tag
+ * @return {Promise<void>}
+ * */
+export async function i18nFetch(tag) {
+  const { readyState: prevReadyState } = i18nGetState();
+  i18nDispatch(ACTION_TYPES.SET_TAG, {
+    tag,
+  });
+  i18nDispatch(ACTION_TYPES.SET_READY_STATE, {
+    readyState: prevReadyState === READY_STATE.READY
+      ? READY_STATE.READY
+      : READY_STATE.FETCHING,
+  });
+  const response = await i18nObtainTranslations({
+    tag,
+  });
+  const { status, body: data } = response;
+  if (status === 'success' && data.tag) {
+    i18nTranslationToStorage(data);
+    i18nDispatch(ACTION_TYPES.SET_VALUES, {
+      values: data.values,
+    });
+  }
+  i18nDispatch(ACTION_TYPES.SET_READY_STATE, {
+    readyState: READY_STATE.READY,
+  });
+}
+
+/**
+ * @return {UseI18nStore}
+ * */
+export function useI18n() {
+  const {
+    readyState,
+    initial,
+    pending,
+    fetching,
+    ready,
+    tag,
+    values,
+  } = i18nGetState();
+
+  useStore();
+
+  return {
+    readyState,
+    initial,
+    pending,
+    fetching,
+    ready,
+    tag,
+    values,
+    READY_STATE,
+  };
+}
+
+/**
+ * @typedef {Object} UseI18nStore
+ * @property {I18nStoreReadyState} readyState
+ * @property {boolean} initial
+ * @property {boolean} pending
+ * @property {boolean} fetching
+ * @property {boolean} ready
+ * @property {I18nLangTag} tag
+ * @property {I18nValues} values
+ * @property {Record<I18nStoreReadyState>} READY_STATE
+ * */
 
 /**
  * @template {string} Key
@@ -118,12 +161,53 @@ const VALUES = {
  * @return {Record<Name, Value>}
  * */
 export function useT9ns(keys) {
+  const { values } = i18nGetState();
+
+  useStore();
+
   return Object
     .entries(keys)
     .reduce((result, [name, key]) => {
-      result[name] = typeof VALUES[key] === 'string'
-        ? VALUES[key]
+      result[name] = typeof values[key] === 'string'
+        ? values[key]
         : key;
       return result;
     }, {});
+}
+
+/**
+ * @param {I18nStoreState} state
+ * @param {{
+ *   type: I18nStoreActionType
+ *   payload: I18nStorePayload
+ * }} action
+ * @return {I18nStoreState}
+ * */
+function reducer(state, action) {
+  switch (action.type) {
+    case ACTION_TYPES.SET_READY_STATE:
+      return {
+        ...state,
+        readyState: action.payload.readyState,
+        initial: action.payload.readyState === READY_STATE.INITIAL,
+        pending: [
+          READY_STATE.INITIAL,
+          READY_STATE.FETCHING,
+        ].includes(action.payload.readyState),
+        fetching: action.payload.readyState === READY_STATE.FETCHING,
+        ready: action.payload.readyState === READY_STATE.READY,
+      };
+    case ACTION_TYPES.SET_TAG:
+      return {
+        ...state,
+        tag: action.payload.tag,
+      };
+    case ACTION_TYPES.SET_VALUES:
+      return {
+        ...state,
+        values: action.payload.values,
+      };
+    default:
+      return state;
+  }
 }
