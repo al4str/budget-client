@@ -89,7 +89,7 @@ function CreateStepCommodities(props) {
       id: idGet(),
       expenseId: '',
       commodityId: nextCommodity.id,
-      amount: 0,
+      amount: 1,
       essential: false,
       title: nextCommodity.title,
     });
