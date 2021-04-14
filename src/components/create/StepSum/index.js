@@ -57,7 +57,6 @@ function CreateStepSum(props) {
   useEffect(() => {
     setTimeout(() => {
       fieldRef.current.select();
-      fieldRef.current.focus();
     }, 0);
   }, []);
 
@@ -69,7 +68,7 @@ function CreateStepSum(props) {
       <FieldText
         className={s.field}
         ref={fieldRef}
-        inputMode="numeric"
+        inputMode="decimal"
         autoComplete="off"
         placeholder="0,00"
         maxLength={14}
