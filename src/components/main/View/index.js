@@ -2,6 +2,8 @@ import { useState, useMemo, useCallback } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
 import { dateGetNow, datesMonths } from '@/libs/date';
+import { connectUseHook } from '@/libs/connect';
+import { useSession } from '@/hooks/useSession';
 import IconArrowLeft from '@/components/icons/IconArrowLeft';
 import Action from '@/components/ui/Action';
 import CreateMenu from '@/components/create/Menu';
@@ -9,16 +11,29 @@ import MainMonth from '@/components/main/Month';
 import btn from '@/styles/button.scss';
 import s from './styles.scss';
 
+function useHook() {
+  const { authed } = useSession();
+
+  return {
+    authed,
+  };
+}
+
 MainView.propTypes = {
+  authed: propTypes.bool,
   className: propTypes.string,
 };
 
 MainView.defaultProps = {
+  authed: false,
   className: '',
 };
 
 function MainView(props) {
-  const { className } = props;
+  const {
+    authed,
+    className,
+  } = props;
   const [dateObj, setDateObj] = useState(() => {
     return dateGetNow().startOf('month');
   });
@@ -60,6 +75,9 @@ function MainView(props) {
       .startOf('month'));
   }, []);
 
+  if (!authed) {
+    return null;
+  }
   return (
     <div className={cn(s.content, className)}>
       <div className={s.nav}>
@@ -115,4 +133,4 @@ function MainView(props) {
   );
 }
 
-export default MainView;
+export default connectUseHook(useHook)(MainView);
