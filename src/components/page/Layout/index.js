@@ -55,7 +55,7 @@ function PageLayout(props) {
           </Suspense>
         </main>
       </div>
-      <OverlaysContainer className={cn(s.overlays, layoutHidden && s.hidden)} />
+      <OverlaysContainer className={cn(s.overlays, !authed && s.hidden)} />
       <AuthView className={s.auth} />
     </Fragment>
   );
