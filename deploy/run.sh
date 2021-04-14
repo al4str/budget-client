@@ -1,7 +1,6 @@
 #!/bin/bash
 
 NAME=budget-client
-PUBLIC=public
 
 cd "/var/www/${NAME}"
 
@@ -15,10 +14,11 @@ docker run --name "${NAME}" \
   -d \
   "${NAME}-image"
 
-rm -rf "${PUBLIC}/*"
+rm -rf public
+mkdir public
 
-docker cp "${NAME}":/usr/src/app/dist/. PUBLIC
+docker cp "${NAME}":/usr/src/app/dist/. ./public
 
 docker rm -f "${NAME}"
 
-cat "${PUBLIC}/meta.json"
+cat ./public/meta.json
