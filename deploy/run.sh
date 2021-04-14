@@ -15,8 +15,7 @@ docker run --name "${NAME}" \
   -d \
   "${NAME}-image"
 
-rm -rf PUBLIC
-mkdir PUBLIC
+rm -rf "${PUBLIC}/*"
 
 docker cp "${NAME}":/usr/src/app/dist/. PUBLIC
 
