@@ -105,6 +105,7 @@ function CreateOverlay(props) {
   const [date, setDate] = useState(dateGetNow().toISODate());
   const [userId, setUserId] = useState(profileId);
 
+  /** @type {boolean} */
   const stepInvalid = useMemo(() => {
     switch (step) {
       case STEP.SUM:
@@ -332,7 +333,7 @@ function CreateOverlay(props) {
           date={date}
           userId={userId}
         />}
-        <div className={s.actions}>
+        <div className={cn(s.actions, stepInvalid && s.actionsHidden)}>
           <Submit
             className={s.action}
             pending={pending}
