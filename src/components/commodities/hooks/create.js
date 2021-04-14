@@ -99,7 +99,6 @@ export function useCommoditiesCreate(params) {
       set({
         id: '',
         title: '',
-        categoryId: '',
       });
     }
   }, [
