@@ -58,6 +58,7 @@ function AuthUser(props) {
             placeholder={profileIdLabel}
             autoComplete="username"
             maxLength={20}
+            autoCapitalize="off"
             value={userId}
             onChange={onIdChange}
           />}
