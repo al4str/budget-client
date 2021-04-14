@@ -54,14 +54,14 @@
 
 @supports (backdrop-filter: blur(5px)) {
   .income {
-    background-color: color.adjust(mediumseagreen, $alpha: -0.15);
+    background-color: color.adjust(mediumseagreen, $alpha: -0.25);
     backdrop-filter: blur(5px);
   }
   .income:not(:disabled):active {
     background-color: mediumseagreen;
   }
   .expense {
-    background-color: color.adjust(indianred, $alpha: -0.15);
+    background-color: color.adjust(indianred, $alpha: -0.25);
     backdrop-filter: blur(5px);
   }
   .expense:not(:disabled):active {
