@@ -3,6 +3,11 @@
   "version": "1.0.2",
   "description": "Home budget client app",
   "author": "al4str",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/al4str/budget-client"
+  },
+  "license": "MIT",
   "scripts": {
     "dev": "npm run dev:modern",
     "dev:legacy": "BROWSERSLIST_ENV=legacy npx nodemon",
