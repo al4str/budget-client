@@ -10,6 +10,7 @@
     "titles.category-create": "New category",
     "titles.commodity-create": "New commodity",
     "titles.expenditure-create": "New expenditure",
+    "titles.backups": "Backups",
     "errors.db.invalid-name": "[DB] Invalid name",
     "errors.db.invalid-user": "[DB] Invalid user",
     "errors.db.invalid-selector": "[DB] Invalid selector",

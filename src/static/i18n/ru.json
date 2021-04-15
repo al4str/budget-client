@@ -10,6 +10,7 @@
     "titles.category-create": "Новая категория",
     "titles.commodity-create": "Новый товар",
     "titles.expenditure-create": "Новая позиция товара",
+    "titles.backups": "Бэкапы",
     "errors.db.invalid-name": "[БД] Неверное название таблицы",
     "errors.db.invalid-user": "[БД] Неверное имя пользователя",
     "errors.db.invalid-selector": "[БД] Неверный селектор",

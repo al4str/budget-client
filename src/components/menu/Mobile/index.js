@@ -5,6 +5,7 @@ import { connectUseHook } from '@/libs/connect';
 import { ROUTES } from '@/helpers/routes';
 import { useProfile } from '@/hooks/useProfile';
 import IconLogo from '@/components/icons/IconLogo';
+import IconBackup from '@/components/icons/IconBackup';
 import Anchor from '@/components/ui/Anchor';
 import UsersAvatar from '@/components/users/Avatar';
 import btn from '@/styles/button.scss';
@@ -44,7 +45,13 @@ function MenuMobile(props) {
         key: ROUTES.main,
         to: ROUTES.main,
         Icon: IconLogo,
-        iconClassName: s.logo,
+        iconClassName: s.icon,
+      },
+      {
+        key: ROUTES.backups,
+        to: ROUTES.backups,
+        Icon: IconBackup,
+        iconClassName: s.icon,
       },
       {
         key: ROUTES.profile,

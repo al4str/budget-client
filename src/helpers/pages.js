@@ -35,6 +35,14 @@ export const PAGES = [
       '@/components/create/PageExpense'
     )),
   },
+  {
+    url: ROUTES.backups,
+    chunkGroupName: 'pageBackups',
+    Component: lazy(() => import(
+      /* webpackChunkName: "pageBackups" */
+      '@/components/backups/Page'
+    )),
+  },
 ];
 
 /**

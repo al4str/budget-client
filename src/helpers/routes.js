@@ -5,6 +5,7 @@ export const ROUTES = {
   profile: '/profile',
   createIncome: '/create-income',
   createExpense: '/create-expense',
+  backups: '/backups',
 };
 
 const ROUTE_PARAMS = {
@@ -19,6 +20,9 @@ const ROUTE_PARAMS = {
   },
   [ROUTES.createExpense]: {
     chunks: ['pageCreateExpense'],
+  },
+  [ROUTES.backups]: {
+    chunks: ['pageBackups'],
   },
 };
 
