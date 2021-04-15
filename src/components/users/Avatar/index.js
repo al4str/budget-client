@@ -11,13 +11,7 @@ UsersAvatar.propTypes = {
   avatarId: propTypes.string,
   userId: propTypes.string,
   name: propTypes.string,
-  size: propTypes.oneOf([
-    '',
-    '16',
-    '24',
-    '48',
-    '96',
-  ]),
+  size: propTypes.string,
 };
 
 UsersAvatar.defaultProps = {
@@ -26,7 +20,7 @@ UsersAvatar.defaultProps = {
   avatarId: '',
   userId: '',
   name: '',
-  size: '24',
+  size: '16',
 };
 
 /**
@@ -36,7 +30,7 @@ UsersAvatar.defaultProps = {
  * @param {string} props.avatarId
  * @param {string} props.userId
  * @param {string} props.name
- * @param {string|'24'|'48'|'96'} props.size
+ * @param {string} props.size
  * */
 function UsersAvatar(props) {
   const {

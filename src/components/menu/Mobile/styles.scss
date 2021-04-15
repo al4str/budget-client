@@ -1,19 +1,22 @@
+@use "sass:color";
 @use "src/styles/variables" as vars;
 
 .menu {}
 
 .list {
   display: flex;
-  align-items: center;
+  align-items: stretch;
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
   margin: 0;
-  padding: 0;
+  padding: 0 vars.$offset-sm;
   list-style: none;
 }
 
 .item {
-  padding: vars.$offset-xs;
+  display: flex;
+  padding: 0;
 }
 
 .profile {
@@ -22,31 +25,23 @@
 
 .link {
   display: block;
-  min-width: vars.$height-button;
-  height: vars.$height-button;
+  height: 100%;
   padding: 0 vars.$offset-sm;
   overflow: visible;
   text-decoration: none;
-  border-radius: vars.$offset-xs;
-  transition: background-color 0.15s;
-}
-
-.linkWrp {}
-
-.linkLabel {
-  font-weight: 500;
+  border-top: vars.$offset-xxs solid transparent;
+  transition: border-color 0.15s;
 }
 
 .active {
-  background-color: dimgray;
+  background-image: linear-gradient(
+      to bottom,
+      color.adjust(whitesmoke, $alpha: -0.9),
+      transparent 70%);
+  border-color: whitesmoke;
 }
 
 .logo {
-  width: 32px;
-  height: 32px;
-}
-
-.avatar {
-  flex-shrink: 0;
-  margin-right: vars.$offset-xs;
+  width: 28px;
+  height: 28px;
 }
