@@ -1,4 +1,5 @@
 import { storeCreate } from '@/libs/store';
+import { fetchAddCodeCatcher } from '@/libs/fetch';
 import {
   sessionsObtainToken,
   sessionsValidateToken,
@@ -51,6 +52,22 @@ export const sessionDispatch = dispatch;
  * @typedef {Object} SessionStorePayload
  * @property {SessionStoreReadyState} [readyState]
  * */
+
+/**
+ * @return {void}
+ * */
+export function sessionHandle403() {
+  fetchAddCodeCatcher(async (code) => {
+    if (code === 403) {
+      sessionsTokenWipe();
+      sessionDispatch(ACTION_TYPES.SET_READY_STATE, {
+        readyState: READY_STATE.UN_AUTHED,
+      });
+      return false;
+    }
+    return true;
+  });
+}
 
 /**
  * @param {Object} params

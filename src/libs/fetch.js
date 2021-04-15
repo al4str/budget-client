@@ -1,5 +1,23 @@
 import { propertyGetBoolean, propertyGet } from '@/libs/property';
 
+/** @type {Set<FetchCodeCatcher>} */
+const CODE_CATCHERS = new Set();
+
+/**
+ * @typedef {function(code: number):
+ *   Promise<boolean>} FetchCodeCatcher
+ * */
+
+/**
+ * @param {FetchCodeCatcher} catcher
+ * @return {void}
+ * */
+export function fetchAddCodeCatcher(catcher) {
+  if (typeof catcher === 'function') {
+    CODE_CATCHERS.add(catcher);
+  }
+}
+
 /**
  * @param {string} [baseUrl='']
  * @return {FetchTransport}
@@ -39,6 +57,16 @@ export async function fetchExec(params) {
   try {
     const transport = fetchTransport();
     const raw = await transport(url, options);
+    /** @type {Array<boolean>} */
+    const catchersResults = await Promise.all(Array
+      .from(CODE_CATCHERS)
+      .map((catcher) => catcher(raw.status)));
+    if (catchersResults.some((result) => result === false)) {
+      response.body = typeof bodyMapper === 'function'
+        ? bodyMapper(null)
+        : null;
+      return response;
+    }
     const data = typeof responseCooker === 'function'
       ? await responseCooker(raw)
       : null;
@@ -83,7 +111,8 @@ export function fetchCookResponse(raw) {
 }
 
 /**
- * @typedef {function(raw: Response): Promise<*>} FetchResponseCooker
+ * @typedef {function(raw: Response):
+ *   Promise<*>} FetchResponseCooker
  * */
 
 /**

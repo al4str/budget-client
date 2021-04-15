@@ -31,6 +31,10 @@ function useHook() {
           setFailure('');
         }, 600);
       }
+      else {
+        setUserPIN('');
+        setFailure('');
+      }
     }
   }, [
     userId,
