@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { ROUTES } from '@/helpers/routes';
 import { useTitle } from '@/hooks/useTitle';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import {
   categoriesFetchItem,
   categoriesUpdateItem,
@@ -15,7 +15,7 @@ import FieldSelect from '@/components/ui/fields/Select';
 
 // eslint-disable-next-line react/prop-types
 function CategoriesPageItem({ match: { params: { id } } }) {
-  const { pageTitle } = useT9ns({
+  const { pageTitle } = useI18nTranslations({
     pageTitle: 'titles.category',
   });
   const { items } = useCategories();

@@ -1,6 +1,6 @@
 import propTypes from 'prop-types';
 import cn from 'classnames';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import { useCommoditiesCreate } from '@/components/commodities/hooks/create';
 import Submit from '@/components/ui/Submit';
 import FieldLabel from '@/components/ui/fields/Label';
@@ -47,7 +47,7 @@ function CommoditiesFormCreate(props) {
     categoryLabel,
     categoryPlaceholder,
     createLabel,
-  } = useT9ns({
+  } = useI18nTranslations({
     idLabel: 'forms.id.label',
     idPlaceholder: 'forms.id.placeholder',
     idDesc: 'forms.id.desc',

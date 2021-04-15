@@ -1,12 +1,12 @@
 import propTypes from 'prop-types';
 import { connectUseHook } from '@/libs/connect';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import { useTitle } from '@/hooks/useTitle';
 import { useProfile } from '@/hooks/useProfile';
 import ProfileView from '@/components/profile/View';
 
 function useHook() {
-  const { pageTitle } = useT9ns({
+  const { pageTitle } = useI18nTranslations({
     pageTitle: 'titles.profile',
   });
   const { pending, ready, data } = useProfile();

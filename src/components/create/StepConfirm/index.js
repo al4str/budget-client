@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import cn from 'classnames';
 import { sumFormat } from '@/libs/sum';
 import { dateGetObjFromISO } from '@/libs/date';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import { useCategories } from '@/hooks/useCategories';
 import { useCommodities } from '@/hooks/useCommodities';
 import { useUsers } from '@/hooks/useUsers';
@@ -64,7 +64,7 @@ function CreateStepConfirm(props) {
     stepTitleUser,
     essentialYes,
     essentialNo,
-  } = useT9ns({
+  } = useI18nTranslations({
     stepTitleSum: 'create.titles.sum',
     stepTitleCategory: 'create.titles.category',
     stepTitleCommodities: 'create.titles.commodities',

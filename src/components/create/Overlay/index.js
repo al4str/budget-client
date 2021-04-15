@@ -7,7 +7,7 @@ import { sumInvalid } from '@/libs/sum';
 import { ROUTES } from '@/helpers/routes';
 import { historyPush } from '@/libs/navigationManager';
 import { useMounted } from '@/hooks/useMounted';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import { useProfile } from '@/hooks/useProfile';
 import { expendituresCreateItem } from '@/hooks/useExpenditures';
 import { incomeCreateItem } from '@/hooks/useIncome';
@@ -81,7 +81,7 @@ function CreateOverlay(props) {
     stepTitleConfirm,
     actionNext,
     actionConfirm,
-  } = useT9ns({
+  } = useI18nTranslations({
     overlayTitleIncome: 'titles.create-income',
     overlayTitleExpense: 'titles.create-expense',
     stepTitleSum: 'create.titles.sum',

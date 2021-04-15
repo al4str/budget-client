@@ -55,12 +55,25 @@
   height: 100vh;
 }
 
+.notifications {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: vars.$z-notifications;
+}
+
 @supports ((--custom-property: 0)) {
   .layout {
     min-height: calc(var(--vh, 1vh) * 100);
   }
 
   .auth {
+    height: calc(var(--vh, 1vh) * 100);
+  }
+
+  .notifications {
     height: calc(var(--vh, 1vh) * 100);
   }
 }

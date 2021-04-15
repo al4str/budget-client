@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { ROUTES } from '@/helpers/routes';
 import { useTitle } from '@/hooks/useTitle';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import { categoriesExist } from '@/helpers/categories';
 import { categoriesCreateItem } from '@/hooks/useCategories';
 import Anchor from '@/components/ui/Anchor';
@@ -10,7 +10,7 @@ import FieldText from '@/components/ui/fields/Text';
 import FieldSelect from '@/components/ui/fields/Select';
 
 function CategoriesPageCreate() {
-  const { pageTitle } = useT9ns({
+  const { pageTitle } = useI18nTranslations({
     pageTitle: 'titles.category-create',
   });
   const [category, setCategory] = useState(null);

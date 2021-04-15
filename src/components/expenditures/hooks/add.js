@@ -1,7 +1,7 @@
 import { useMemo, useCallback, useEffect } from 'react';
 import { sumInvalid } from '@/libs/sum';
 import { formsCreate } from '@/helpers/forms';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 
 const { set, validate, getValues, useForm } = formsCreate({
   values: {
@@ -28,7 +28,7 @@ export function useExpendituresAdd(params) {
     initialEssential,
     onAdd,
   } = params;
-  const { errorsInvalidSum } = useT9ns({
+  const { errorsInvalidSum } = useI18nTranslations({
     errorsInvalidSum: 'forms.errors.invalid-sum',
   });
   const { anyPending, anyInvalid, fields } = useForm();

@@ -160,10 +160,32 @@ export function useI18n() {
  *
  * @return {Record<Name, Value>}
  * */
-export function useT9ns(keys) {
+export function useI18nTranslations(keys) {
   const { values } = i18nGetState();
 
   useStore();
+
+  return Object
+    .entries(keys)
+    .reduce((result, [name, key]) => {
+      result[name] = typeof values[key] === 'string'
+        ? values[key]
+        : key;
+      return result;
+    }, {});
+}
+
+/**
+ * @template {string} Key
+ * @template {string} Value
+ * @template {string} Name
+ *
+ * @param {Record<Name, Key>} keys
+ *
+ * @return {Record<Name, Value>}
+ * */
+export function i18nGetTranslations(keys) {
+  const { values } = i18nGetState();
 
   return Object
     .entries(keys)

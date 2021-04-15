@@ -1,7 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import IconEdit from '@/components/icons/IconEdit';
 import IconDelete from '@/components/icons/IconDelete';
 import Action from '@/components/ui/Action';
@@ -45,7 +45,7 @@ function CreateExpenditures(props) {
   const {
     essentialYes,
     essentialNo,
-  } = useT9ns({
+  } = useI18nTranslations({
     essentialYes: 'expenditures.essential.yes',
     essentialNo: 'expenditures.essential.no',
   });

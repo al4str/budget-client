@@ -8,6 +8,7 @@ import PageLoading from '@/components/page/Loading';
 import MenuMobile from '@/components/menu/Mobile';
 import OverlaysContainer from '@/components/overlays/Container';
 import AuthView from '@/components/auth/View';
+import NotificationsContainer from '@/components/notifications/Container';
 import s from './styles.scss';
 
 function useHook() {
@@ -57,6 +58,7 @@ function PageLayout(props) {
       </div>
       <OverlaysContainer className={cn(s.overlays, !authed && s.hidden)} />
       <AuthView className={s.auth} />
+      <NotificationsContainer className={s.notifications} />
     </Fragment>
   );
 }

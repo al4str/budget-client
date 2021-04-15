@@ -6,7 +6,7 @@ import { sumFormat } from '@/libs/sum';
 import { connectUseHook } from '@/libs/connect';
 import { usersGetEmptyItem } from '@/helpers/users';
 import { commoditiesGetEmpty } from '@/helpers/commodities';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import { usersFetchList, useUsers }
   from '@/hooks/useUsers';
 import { categoriesFetchList, useCategories }
@@ -32,7 +32,7 @@ function useHook(props) {
     restLabel,
     essentialYes,
     essentialNo,
-  } = useT9ns({
+  } = useI18nTranslations({
     incomeLabel: 'month.total.income',
     expensesLabel: 'month.total.expenses',
     restLabel: 'month.total.rest',
@@ -332,7 +332,7 @@ function MainMonth(props) {
     expensesCaption,
     dateWhen,
     usersBy,
-  } = useT9ns({
+  } = useI18nTranslations({
     totalsCaption: 'month.total.caption',
     incomeCaption: 'month.total.income',
     expensesCaption: 'month.total.expenses',

@@ -1,6 +1,6 @@
 import propTypes from 'prop-types';
 import cn from 'classnames';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import FieldText from '@/components/ui/fields/Text';
 import UsersAvatar from '@/components/users/Avatar';
 import s from './styles.scss';
@@ -35,7 +35,7 @@ function AuthUser(props) {
     onIdChange,
   } = props;
   const withProfile = name.length > 0;
-  const { profileIdLabel } = useT9ns({
+  const { profileIdLabel } = useI18nTranslations({
     profileIdLabel: 'profile.id.label',
   });
 

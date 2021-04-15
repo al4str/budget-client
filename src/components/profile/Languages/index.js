@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import propTypes from 'prop-types';
 import { I18N_TAGS } from '@/helpers/i18n';
-import { i18nFetch, useI18n, useT9ns } from '@/hooks/useI18n';
+import { i18nFetch, useI18n, useI18nTranslations } from '@/hooks/useI18n';
 import FieldLabel from '@/components/ui/fields/Label';
 import FieldSelect from '@/components/ui/fields/Select';
 
@@ -19,7 +19,7 @@ ProfileLanguages.defaultProps = {
  * */
 function ProfileLanguages(props) {
   const { className } = props;
-  const { label } = useT9ns({
+  const { label } = useI18nTranslations({
     label: 'profile.language.label',
   });
   const { pending, tag } = useI18n();

@@ -1,6 +1,6 @@
 import propTypes from 'prop-types';
 import cn from 'classnames';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import ProfileLanguages from '@/components/profile/Languages';
 import ProfileForm from '@/components/profile/Form';
 import s from './styles.scss';
@@ -31,7 +31,7 @@ function ProfileView(props) {
     className,
     data,
   } = props;
-  const { title } = useT9ns({
+  const { title } = useI18nTranslations({
     title: 'titles.profile',
   });
 

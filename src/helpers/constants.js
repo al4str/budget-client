@@ -11,27 +11,6 @@ export const API_URL = '/api';
 /** @type {string} */
 export const APP_VERSION = process.env.PACKAGE_VERSION || '0.0.0';
 
-export const PHOTOS_ACCEPTS = [
-  'image/jpeg',
-  'image/jpg',
-  'image/png',
-];
-
-export const MAX_PHOTO_SIZE = (2 ** 20) * 5;
-
-export const LANGUAGE_DEFAULT = {
-  code: 'eng',
-  tag: 'en-US',
-};
-
-export const NOTIFICATIONS_TYPES = {
-  INFO: 'info',
-  WARNING: 'warning',
-  ERROR: 'error',
-  SUCCESS: 'success',
-  CONTENT: 'content',
-};
-
 export const ASSETS_VAR_NAME = '__ASSETS_MAP__';
 
 export const ROUTE_CHUNKS_VAR_NAME = '__ROUTES_CHUNKS_MAP__';

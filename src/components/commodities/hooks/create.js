@@ -4,7 +4,7 @@ import { idInvalid } from '@/libs/id';
 import { formsCreate } from '@/helpers/forms';
 import { categoriesExist } from '@/helpers/categories';
 import { commoditiesExist } from '@/helpers/commodities';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import { useMounted } from '@/hooks/useMounted';
 import {
   categoriesFetchList,
@@ -51,7 +51,7 @@ export function useCommoditiesCreate(params) {
     errorsAlreadyExist,
     errorsEmpty,
     errorsDoesNotExist,
-  } = useT9ns({
+  } = useI18nTranslations({
     errorsInvalidId: 'forms.errors.invalid-machine-name',
     errorsAlreadyExist: 'forms.errors.already-exist',
     errorsEmpty: 'forms.errors.empty',

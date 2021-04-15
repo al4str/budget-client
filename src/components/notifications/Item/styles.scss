@@ -1,0 +1,181 @@
+@use "sass:color";
+@use "src/styles/variables" as vars;
+
+.notification {
+  position: relative;
+  color: whitesmoke;
+  background-color: color.adjust(darkslategray, $alpha: -0.05);
+  border-radius: vars.$offset-xs;
+  box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.15);
+  transition: none 0.3s ease-in-out;
+  animation: show 0.3s ease-in-out both;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.info {
+  color: darkslategray;
+  background-color: color.adjust(deepskyblue, $alpha: -0.05);
+}
+
+.warning {
+  color: darkslategray;
+  background-color: color.adjust(khaki, $alpha: -0.05);
+}
+
+.error {
+  color: darkslategray;
+  background-color: color.adjust(lightsalmon, $alpha: -0.05);
+}
+
+.success {
+  color: darkslategray;
+  background-color: color.adjust(mediumspringgreen, $alpha: -0.05);
+}
+
+.hidden {
+  animation:
+    slide 0.15s ease-in-out forwards,
+    hide 0.15s 0.15s ease-in-out both;
+  will-change: height;
+}
+
+.noTransition {
+  transition-duration: 0s;
+}
+
+.closeBtn {
+  position: absolute;
+  top: vars.$offset-xs;
+  right: vars.$offset-xs;
+  z-index: 1;
+  width: 22px;
+  height: 22px;
+  overflow: visible;
+}
+
+.closeTimeOut {
+  position: absolute;
+  top: calc(50% - 13px);
+  left: calc(50% - 13px);
+  display: block;
+  width: 26px;
+  height: 26px;
+  background-color: transparent;
+  border-radius: 50%;
+  transform: rotate(-90deg);
+}
+
+.closeTimeOutCircle {
+  opacity: 0.15;
+  transition: stroke-dasharray 0.15s linear;
+  fill: transparent;
+  stroke: rgba(0, 0, 0, 0.3);
+  stroke-width: 32;
+  stroke-dasharray: 100, 100;
+}
+
+.closeIcon {}
+
+.wrp {
+  position: relative;
+  z-index: 0;
+  padding: vars.$offset-xs vars.$offset-sm vars.$offset-sm;
+}
+.closeBtn + .wrp {
+  padding-right: vars.$offset-xs + 26px;
+}
+
+.title {
+  display: block;
+  margin-bottom: vars.$offset-xs;
+  font-weight: 600;
+}
+
+.titlePadded {
+  padding-right: vars.$offset-xs + 26px + vars.$offset-xs;
+}
+
+.text {
+  font-size: 1rem;
+}
+.text + .text {
+  margin-top: vars.$offset-xs;
+}
+.text p {
+  margin: 0;
+}
+.text a {
+  text-decoration: underline;
+}
+.text * + * {
+  margin-top: vars.$offset-xs;
+}
+
+@supports (backdrop-filter: blur(5px)) {
+  .notification {
+    background-color: color.adjust(darkslategray, $alpha: -0.25);
+    backdrop-filter: blur(5px);
+  }
+
+  .info {
+    background-color: color.adjust(deepskyblue, $alpha: -0.25);
+  }
+
+  .warning {
+    background-color: color.adjust(khaki, $alpha: -0.25);
+  }
+
+  .error {
+    background-color: color.adjust(lightsalmon, $alpha: -0.25);
+  }
+
+  .success {
+    background-color: color.adjust(mediumspringgreen, $alpha: -0.25);
+  }
+}
+
+@keyframes show {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+  1% {
+    display: block;
+    transform: translateY(vars.$offset-sm) scale(1.15);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide {
+  0% {
+    overflow: hidden;
+    opacity: 1;
+  }
+  100% {
+    overflow: hidden;
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes hide {
+  0% {
+    display: block;
+    overflow: hidden;
+  }
+  99% {
+    display: block;
+    height: 0;
+    overflow: hidden;
+  }
+  100% {
+    display: none;
+    height: 0;
+    overflow: hidden;
+  }
+}

@@ -48,6 +48,8 @@
     "errors.offline.message": "Your device seems to be offline or using slow internet connection or \"lie-fi\"",
     "errors.offline.title": "Your are offline 🔴",
     "errors.reload": "Please, reload the page",
+    "warning.stale.title": "New version is available",
+    "warning.stale.message": "Please, reload the page to avoid app crushing and weird bugs",
     "forms.errors.empty": "Empty value",
     "forms.errors.invalid-type": "Invalid type",
     "forms.errors.invalid-size": "Invalid size",

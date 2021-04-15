@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useMemo } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
 import { idGet } from '@/libs/id';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import {
   commoditiesFetchList,
   useCommodities,
@@ -61,7 +61,7 @@ function CreateStepCommodities(props) {
   const {
     commentLabel,
     commentPlaceholder,
-  } = useT9ns({
+  } = useI18nTranslations({
     commentLabel: 'forms.comment.label',
     commentPlaceholder: 'forms.comment.placeholder',
   });

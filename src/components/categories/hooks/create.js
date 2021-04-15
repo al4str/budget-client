@@ -3,7 +3,7 @@ import { isEmpty } from '@/libs/isEmpty';
 import { idInvalid } from '@/libs/id';
 import { formsCreate } from '@/helpers/forms';
 import { categoriesExist, categoriesInvalidType } from '@/helpers/categories';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import { useMounted } from '@/hooks/useMounted';
 import { categoriesCreateItem } from '@/hooks/useCategories';
 
@@ -43,7 +43,7 @@ export function useCategoriesCreate(params) {
     errorsExist,
     errorsInvalidId,
     errorsInvalidType,
-  } = useT9ns({
+  } = useI18nTranslations({
     typeIncome: 'categories.type.income',
     typeExpense: 'categories.type.expense',
     errorsEmpty: 'forms.errors.empty',

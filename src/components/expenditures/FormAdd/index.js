@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import { useExpendituresAdd }
   from '@/components/expenditures/hooks/add';
 import Submit from '@/components/ui/Submit';
@@ -53,7 +53,7 @@ function ExpendituresFormAdd(props) {
     amountPlaceholder,
     essentialLabel,
     submitLabel,
-  } = useT9ns({
+  } = useI18nTranslations({
     amountLabel: 'forms.amount.label',
     amountPlaceholder: 'forms.amount.placeholder',
     essentialLabel: 'forms.essential.label',

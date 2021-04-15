@@ -8,7 +8,7 @@ import {
   filesIsImageInvalid,
 } from '@/libs/files';
 import { useMounted } from '@/hooks/useMounted';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import { formsCreate } from '@/helpers/forms';
 import { profileEdit, profileUploadAvatar } from '@/hooks/useProfile';
 import FieldLabel from '@/components/ui/fields/Label';
@@ -50,7 +50,7 @@ function ProfileForm(props) {
     errorsInvalidSize,
     errorsInvalidDimensions,
     saveLabel,
-  } = useT9ns({
+  } = useI18nTranslations({
     idLabel: 'profile.id.label',
     nameLabel: 'profile.name.label',
     avatarLabel: 'profile.avatar.label',

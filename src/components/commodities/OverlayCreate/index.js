@@ -1,5 +1,5 @@
 import propTypes from 'prop-types';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import Overlay from '@/components/overlays/Overlay';
 import OverlayHeader from '@/components/overlays/Header';
 import OverlayBody from '@/components/overlays/Body';
@@ -34,7 +34,7 @@ function CommoditiesOverlayCreate(props) {
     categoryId,
     onCreate,
   } = props;
-  const { title } = useT9ns({
+  const { title } = useI18nTranslations({
     title: 'titles.commodity-create',
   });
 

@@ -4,8 +4,10 @@ import { throttle } from '@/libs/throttle';
 
 /**
  * @template {Object} T
+ *
  * @param {T} initialState
  * @param {function(T, { type: string, payload: Partial<T>}): T} reducer
+ *
  * @return {{
  *   getState: function(): T
  *   dispatch: function(string, Partial<T>): void
@@ -24,6 +26,9 @@ export function storeCreate(initialState, reducer) {
     });
   }, 1000 / 60, { leading: true, trailing: true });
 
+  /**
+   * @return {void}
+   * */
   function useStore() {
     const keyRef = useRef(idGet());
     const [, forceRender] = useState(0);
@@ -38,10 +43,18 @@ export function storeCreate(initialState, reducer) {
     }, []);
   }
 
+  /**
+   * @return {Object}
+   * */
   function getState() {
     return innerState;
   }
 
+  /**
+   * @param {string} type
+   * @param {Partial<Object>} payload
+   * @return {void}
+   * */
   function dispatch(type, payload) {
     const prevState = innerState;
     const nextState = reducer(innerState, { type, payload });

@@ -4,6 +4,7 @@ import '@/styles/global.scss';
 import { PAGES } from '@/helpers/pages';
 import { historyGet } from '@/libs/navigationManager';
 import { viewportHeightProvide } from '@/libs/viewportHeight';
+import { isAppStaleInit } from '@/helpers/isAppStale';
 import { i18nInit } from '@/hooks/useI18n';
 import { handleSplashScreen } from '@/components/splash';
 import RoutesSwitcher from '@/components/page/RoutesSwitcher';
@@ -11,6 +12,8 @@ import RoutesSwitcher from '@/components/page/RoutesSwitcher';
 handleSplashScreen();
 
 viewportHeightProvide();
+
+isAppStaleInit();
 
 i18nInit().catch();
 

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
-import { useT9ns } from '@/hooks/useI18n';
+import { useI18nTranslations } from '@/hooks/useI18n';
 import s from './styles.scss';
 
 ErrorBoundaryFallback.propTypes = {
@@ -34,7 +34,7 @@ function ErrorBoundaryFallback(props) {
     errorsChunksMessages,
     errorsDefaultTitle,
     errorsReload,
-  } = useT9ns({
+  } = useI18nTranslations({
     errorsOfflineTitle: 'errors.offline.title',
     errorsOfflineMessage: 'errors.offline.message',
     errorsChunksTitle: 'errors.chunks.title',
