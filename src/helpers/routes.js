@@ -5,9 +5,6 @@ export const ROUTES = {
   profile: '/profile',
   createIncome: '/create-income',
   createExpense: '/create-expense',
-  categories: '/categories',
-  categoriesCreate: '/categories/create',
-  categoriesItem: '/categories/:id',
 };
 
 const ROUTE_PARAMS = {
@@ -23,22 +20,13 @@ const ROUTE_PARAMS = {
   [ROUTES.createExpense]: {
     chunks: ['pageCreateExpense'],
   },
-  [ROUTES.categories]: {
-    chunks: ['pageCategories'],
-  },
-  [ROUTES.categoriesCreate]: {
-    chunks: ['pageCategoriesCreate'],
-  },
-  [ROUTES.categoriesItem]: {
-    chunks: ['pageCategoriesItem'],
-  },
 };
 
 /**
  * @param {string} pathname
  * @return {RouteParams}
  * */
-export function getRouteParams(pathname) {
+export function routesGetParams(pathname) {
   const [, { chunks = [] }] = Object
     .entries(ROUTE_PARAMS)
     .find(([routePath]) => {
@@ -64,7 +52,7 @@ export function getRouteParams(pathname) {
  * @param {Array<string>} matchers
  * @return {boolean}
  * */
-export function isPathnameMatched(pathname = '', matchers = []) {
+export function routesIsMatched(pathname = '', matchers = []) {
   const index = matchers.findIndex((routePath) => matchPath(pathname, {
     path: routePath,
     exact: true,

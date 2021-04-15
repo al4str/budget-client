@@ -1,7 +1,7 @@
 import { createBrowserHistory } from 'history';
 import { scrollToY } from '@/libs/scroll';
 import { routeMountSubscribe } from '@/libs/routeMounting';
-import { getRouteParams } from '@/helpers/routes';
+import { routesGetParams } from '@/helpers/routes';
 
 window.history.scrollRestoration = 'manual';
 
@@ -74,7 +74,7 @@ function handleHistoryChange(nextLocation) {
     : null;
   locations.push(nextLocation);
   scrollMap.set(currentLocationKey, currentLocationScroll);
-  const routeParams = getRouteParams(nextLocationPathname);
+  const routeParams = routesGetParams(nextLocationPathname);
   if (!routeParams.scrollTo) {
     return;
   }

@@ -35,30 +35,6 @@ export const PAGES = [
       '@/components/create/PageExpense'
     )),
   },
-  {
-    url: ROUTES.categories,
-    chunkGroupName: 'pageCategories',
-    Component: lazy(() => import(
-      /* webpackChunkName: "pageCategories" */
-      '@/components/categories/PageList'
-    )),
-  },
-  {
-    url: ROUTES.categoriesCreate,
-    chunkGroupName: 'pageCategoriesCreate',
-    Component: lazy(() => import(
-      /* webpackChunkName: "pageCategoriesCreate" */
-      '@/components/categories/PageCreate'
-    )),
-  },
-  {
-    url: ROUTES.categoriesItem,
-    chunkGroupName: 'pageCategoriesItem',
-    Component: lazy(() => import(
-      /* webpackChunkName: "pageCategoriesItem" */
-      '@/components/categories/PageItem'
-    )),
-  },
 ];
 
 /**

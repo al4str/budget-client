@@ -1,5 +1,5 @@
 import { ROUTE_CHUNKS_VAR_NAME } from '@/helpers/constants';
-import { getRouteParams } from '@/helpers/routes';
+import { routesGetParams } from '@/helpers/routes';
 
 /** @type {{ [string]: Array<string> }} */
 const ROUTE_CHUNKS_MAP = window[ROUTE_CHUNKS_VAR_NAME];
@@ -72,7 +72,7 @@ export function chunksUnWatchLink(link) {
  * */
 function prepareChunksByRoute(routePath, hint) {
   return new Promise((resolve) => {
-    const routeParams = getRouteParams(routePath);
+    const routeParams = routesGetParams(routePath);
     const chunkNames = routeParams.chunks;
     if (!chunkNames.length) {
       resolve();
