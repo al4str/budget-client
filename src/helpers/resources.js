@@ -330,10 +330,19 @@ export function resourcesOperations(resourceName, mapper) {
  *   exist: function(params: {
  *     id: string
  *   }): Promise<ResourceStoreExistResponse>
- *   empty: ResourceStoreItem
+ *   empty: function(): ResourceStoreItem
  * }} operations
  *
  * @return {{
+ *   getState: function(): {
+ *     readyState: ResourceReadyState
+ *     initial: boolean
+ *     fetching: boolean
+ *     pending: boolean
+ *     ready: boolean
+ *     updating: boolean
+ *     items: Array<ResourceStoreItem>
+ *   }
  *   list: function(): Promise<void>
  *   read: function(params: {
  *     id: string
@@ -626,6 +635,7 @@ export function resourcesStore(operations) {
   }
 
   return {
+    getState,
     list,
     read,
     create,
