@@ -5,13 +5,13 @@ import FieldLabel from '@/components/ui/fields/Label';
 import FieldsDate from '@/components/ui/fields/Date';
 import s from './styles.scss';
 
-CreateStepDate.propTypes = {
+TransactionStepDate.propTypes = {
   className: propTypes.string,
   date: propTypes.string,
   onDateChange: propTypes.func,
 };
 
-CreateStepDate.defaultProps = {
+TransactionStepDate.defaultProps = {
   className: '',
   date: '',
   onDateChange: null,
@@ -23,7 +23,7 @@ CreateStepDate.defaultProps = {
  * @param {string} props.date
  * @param {function(string): void} props.onDateChange
  * */
-function CreateStepDate(props) {
+function TransactionStepDate(props) {
   const {
     className,
     date,
@@ -46,4 +46,4 @@ function CreateStepDate(props) {
   );
 }
 
-export default CreateStepDate;
+export default TransactionStepDate;

@@ -9,7 +9,7 @@ import common from '@/styles/common.scss';
 import btn from '@/styles/button.scss';
 import s from './styles.scss';
 
-CreateExpenditures.propTypes = {
+TransactionExpenditures.propTypes = {
   className: propTypes.string,
   commodities: propTypes.array,
   expenditures: propTypes.array,
@@ -17,7 +17,7 @@ CreateExpenditures.propTypes = {
   onDelete: propTypes.func,
 };
 
-CreateExpenditures.defaultProps = {
+TransactionExpenditures.defaultProps = {
   className: '',
   commodities: [],
   expenditures: [],
@@ -34,7 +34,7 @@ CreateExpenditures.defaultProps = {
  *   & { title: string }): void} props.onEdit
  * @param {function(string): void} props.onDelete
  * */
-function CreateExpenditures(props) {
+function TransactionExpenditures(props) {
   const {
     className,
     commodities,
@@ -131,4 +131,4 @@ function CreateExpenditures(props) {
   );
 }
 
-export default CreateExpenditures;
+export default TransactionExpenditures;

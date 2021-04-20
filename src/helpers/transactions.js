@@ -1,5 +1,6 @@
 import { propertyGet } from '@/libs/property';
 import { resourcesOperations } from '@/helpers/resources';
+import { categoriesGetState } from '@/hooks/useCategories';
 
 /**
  * @typedef {'income'|'expense'} TransactionType
@@ -43,7 +44,16 @@ export const transactionsOperations = operations;
 
 export const transactionsExist = operations.exist;
 
-/**
- * @return {TransactionItem}
- * */
 export const transactionsGetEmpty = operations.empty;
+
+/**
+ * @param {TransactionItem} item
+ * @return {TransactionType}
+ * */
+export function transactionsGetType(item) {
+  const { items: categories } = categoriesGetState();
+  const { type } = categories.find((category) => category.id === item.categoryId)
+    || { type: 'expense' };
+
+  return type;
+}

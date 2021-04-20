@@ -15,13 +15,13 @@ import CommoditiesOverlayCreate
   from '@/components/commodities/OverlayCreate';
 import ExpendituresOverlayAdd
   from '@/components/expenditures/OverlayAdd';
-import CreateExpenditures
+import TransactionExpenditures
   from '@/components/transaction/StepExpenditures';
 import common from '@/styles/common.scss';
 import btn from '@/styles/button.scss';
 import s from './styles.scss';
 
-CreateStepCommodities.propTypes = {
+TransactionStepCommodities.propTypes = {
   className: propTypes.string,
   categoryId: propTypes.string,
   comment: propTypes.string,
@@ -30,7 +30,7 @@ CreateStepCommodities.propTypes = {
   onExpendituresChange: propTypes.func,
 };
 
-CreateStepCommodities.defaultProps = {
+TransactionStepCommodities.defaultProps = {
   className: '',
   categoryId: '',
   comment: '',
@@ -49,7 +49,7 @@ CreateStepCommodities.defaultProps = {
  * @param {function(function(Array<ExpenditureItem>):
  *   Array<ExpenditureItem>): void} props.onExpendituresChange
  * */
-function CreateStepCommodities(props) {
+function TransactionStepCommodities(props) {
   const {
     className,
     categoryId,
@@ -210,7 +210,7 @@ function CreateStepCommodities(props) {
           </Action>
         </li>}
       </ul>
-      <CreateExpenditures
+      <TransactionExpenditures
         className={s.expenditures}
         commodities={items}
         expenditures={expenditures}
@@ -232,4 +232,4 @@ function CreateStepCommodities(props) {
   );
 }
 
-export default CreateStepCommodities;
+export default TransactionStepCommodities;

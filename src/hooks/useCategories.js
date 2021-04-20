@@ -3,6 +3,8 @@ import { categoriesOperations } from '@/helpers/categories';
 
 const store = resourcesStore(categoriesOperations);
 
+export const categoriesGetState = store.getState;
+
 export const categoriesFetchList = store.list;
 
 export const categoriesFetchItem = store.read;

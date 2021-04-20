@@ -9,13 +9,13 @@ import Action from '@/components/ui/Action';
 import btn from '@/styles/button.scss';
 import s from './styles.scss';
 
-CreateStepUsers.propTypes = {
+TransactionStepUsers.propTypes = {
   className: propTypes.string,
   userId: propTypes.string,
   onUserIdChange: propTypes.func,
 };
 
-CreateStepUsers.defaultProps = {
+TransactionStepUsers.defaultProps = {
   className: '',
   userId: '',
   onUserIdChange: null,
@@ -27,7 +27,7 @@ CreateStepUsers.defaultProps = {
  * @param {string} props.userId
  * @param {function(string): void} props.onUserIdChange
  * */
-function CreateStepUsers(props) {
+function TransactionStepUsers(props) {
   const {
     className,
     userId,
@@ -87,4 +87,4 @@ function CreateStepUsers(props) {
   );
 }
 
-export default CreateStepUsers;
+export default TransactionStepUsers;

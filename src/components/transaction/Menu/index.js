@@ -7,15 +7,15 @@ import Anchor from '@/components/ui/Anchor';
 import btn from '@/styles/button.scss';
 import s from './styles.scss';
 
-CreateMenu.propTypes = {
+TransactionMenu.propTypes = {
   className: propTypes.string,
 };
 
-CreateMenu.defaultProps = {
+TransactionMenu.defaultProps = {
   className: '',
 };
 
-function CreateMenu(props) {
+function TransactionMenu(props) {
   const { className } = props;
 
   return (
@@ -25,7 +25,7 @@ function CreateMenu(props) {
           <Anchor
             className={cn(s.link, s.income)}
             type="link"
-            to={ROUTES.createIncome}
+            to={ROUTES.transactionsCreateIncome}
           >
             <span className={btn.wrp}>
               <IconAdd className={cn(btn.icon, s.icon)} />
@@ -36,7 +36,7 @@ function CreateMenu(props) {
           <Anchor
             className={cn(s.link, s.expense)}
             type="link"
-            to={ROUTES.createExpense}
+            to={ROUTES.transactionsCreateExpense}
           >
             <span className={btn.wrp}>
               <IconSubtract className={cn(btn.icon, s.icon)} />
@@ -48,4 +48,4 @@ function CreateMenu(props) {
   );
 }
 
-export default CreateMenu;
+export default TransactionMenu;

@@ -20,27 +20,19 @@ export const PAGES = [
     )),
   },
   {
-    url: ROUTES.createIncome,
-    chunkGroupName: 'pageCreateIncome',
-    Component: lazy(() => import(
-      /* webpackChunkName: "pageCreateIncome" */
-      '@/components/transaction/PageIncome'
-    )),
-  },
-  {
-    url: ROUTES.createExpense,
-    chunkGroupName: 'pageCreateExpense',
-    Component: lazy(() => import(
-      /* webpackChunkName: "pageCreateExpense" */
-      '@/components/transaction/PageExpense'
-    )),
-  },
-  {
     url: ROUTES.backups,
     chunkGroupName: 'pageBackups',
     Component: lazy(() => import(
       /* webpackChunkName: "pageBackups" */
       '@/components/backups/Page'
+    )),
+  },
+  {
+    url: ROUTES.transactionsCreate,
+    chunkGroupName: 'pageTransactionsCreate',
+    Component: lazy(() => import(
+      /* webpackChunkName: "pageTransactionsCreate" */
+      '@/components/transaction/Page'
     )),
   },
 ];

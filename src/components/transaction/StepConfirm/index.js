@@ -9,7 +9,7 @@ import { useCommodities } from '@/hooks/useCommodities';
 import { useUsers } from '@/hooks/useUsers';
 import s from './styles.scss';
 
-CreateStepConfirm.propTypes = {
+TransactionStepConfirm.propTypes = {
   className: propTypes.string,
   categoryType: propTypes.oneOf([
     'income',
@@ -23,7 +23,7 @@ CreateStepConfirm.propTypes = {
   userId: propTypes.string,
 };
 
-CreateStepConfirm.defaultProps = {
+TransactionStepConfirm.defaultProps = {
   className: '',
   categoryType: 'expense',
   sum: 0.00,
@@ -45,7 +45,7 @@ CreateStepConfirm.defaultProps = {
  * @param {string} props.date
  * @param {string} props.userId
  * */
-function CreateStepConfirm(props) {
+function TransactionStepConfirm(props) {
   const {
     className,
     categoryType,
@@ -65,11 +65,11 @@ function CreateStepConfirm(props) {
     essentialYes,
     essentialNo,
   } = useI18nTranslations({
-    stepTitleSum: 'create.titles.sum',
-    stepTitleCategory: 'create.titles.category',
-    stepTitleCommodities: 'create.titles.commodities',
-    stepTitleDate: 'create.titles.date',
-    stepTitleUser: 'create.titles.user',
+    stepTitleSum: 'transaction.titles.sum',
+    stepTitleCategory: 'transaction.titles.category',
+    stepTitleCommodities: 'transaction.titles.commodities',
+    stepTitleDate: 'transaction.titles.date',
+    stepTitleUser: 'transaction.titles.user',
     essentialYes: 'expenditures.essential.yes',
     essentialNo: 'expenditures.essential.no',
   });
@@ -208,4 +208,4 @@ function CreateStepConfirm(props) {
   );
 }
 
-export default CreateStepConfirm;
+export default TransactionStepConfirm;

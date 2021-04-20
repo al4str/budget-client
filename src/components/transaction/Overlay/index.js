@@ -15,15 +15,15 @@ import SubmitSticky from '@/components/ui/SubmitSticky';
 import Overlay from '@/components/overlays/Overlay';
 import OverlayHeader from '@/components/overlays/Header';
 import OverlayBody from '@/components/overlays/Body';
-import CreateStepSum from '@/components/transaction/StepSum';
-import CreateStepCategory from '@/components/transaction/StepCategory';
-import CreateStepCommodities from '@/components/transaction/StepCommodities';
-import CreateStepDate from '@/components/transaction/StepDate';
-import CreateStepUsers from '@/components/transaction/StepUser';
-import CreateStepConfirm from '@/components/transaction/StepConfirm';
+import TransactionStepSum from '@/components/transaction/StepSum';
+import TransactionStepCategory from '@/components/transaction/StepCategory';
+import TransactionStepCommodities from '@/components/transaction/StepCommodities';
+import TransactionStepDate from '@/components/transaction/StepDate';
+import TransactionStepUsers from '@/components/transaction/StepUser';
+import TransactionStepConfirm from '@/components/transaction/StepConfirm';
 import s from './styles.scss';
 
-/** @type {Record<CreateStep>} */
+/** @type {Record<TransactionStep>} */
 const STEP = {
   SUM: 'SUM',
   CATEGORY: 'CATEGORY',
@@ -35,10 +35,10 @@ const STEP = {
 
 /**
  * @typedef {'SUM'|'CATEGORY'|'COMMODITIES'|'DATE'
- * |'USER'|'CONFIRM'} CreateStep
+ * |'USER'|'CONFIRM'} TransactionStep
  * */
 
-/** @type {CreateSteps} */
+/** @type {TransactionSteps} */
 const STEPS = [
   STEP.SUM,
   STEP.CATEGORY,
@@ -49,17 +49,17 @@ const STEPS = [
 ];
 
 /**
- * @typedef {Array<CreateStep>} CreateSteps
+ * @typedef {Array<TransactionStep>} TransactionSteps
  * */
 
-CreateOverlay.propTypes = {
+TransactionOverlay.propTypes = {
   type: propTypes.oneOf([
     'income',
     'expense',
   ]),
 };
 
-CreateOverlay.defaultProps = {
+TransactionOverlay.defaultProps = {
   type: 'expense',
 };
 
@@ -67,7 +67,7 @@ CreateOverlay.defaultProps = {
  * @param {Object} props
  * @param {TransactionType} props.type
  * */
-function CreateOverlay(props) {
+function TransactionOverlay(props) {
   const { type } = props;
   const {
     overlayTitleIncome,
@@ -81,14 +81,14 @@ function CreateOverlay(props) {
     actionNext,
     actionConfirm,
   } = useI18nTranslations({
-    overlayTitleIncome: 'titles.create-income',
-    overlayTitleExpense: 'titles.create-expense',
-    stepTitleSum: 'create.titles.sum',
-    stepTitleCategory: 'create.titles.category',
-    stepTitleCommodities: 'create.titles.commodities',
-    stepTitleDate: 'create.titles.date',
-    stepTitleUser: 'create.titles.user',
-    stepTitleConfirm: 'create.titles.confirm',
+    overlayTitleIncome: 'titles.transaction-income',
+    overlayTitleExpense: 'titles.transaction-expense',
+    stepTitleSum: 'transaction.titles.sum',
+    stepTitleCategory: 'transaction.titles.category',
+    stepTitleCommodities: 'transaction.titles.commodities',
+    stepTitleDate: 'transaction.titles.date',
+    stepTitleUser: 'transaction.titles.user',
+    stepTitleConfirm: 'transaction.titles.confirm',
     actionNext: 'forms.actions.next',
     actionConfirm: 'forms.actions.confirm',
   });
@@ -283,21 +283,21 @@ function CreateOverlay(props) {
           {stepTitle}
         </p>
         {step === STEP.SUM
-        && <CreateStepSum
+        && <TransactionStepSum
           className={cn(s.step, s.stepSum)}
           categoryType={type}
           sum={sum}
           onSumChange={setSum}
         />}
         {step === STEP.CATEGORY
-        && <CreateStepCategory
+        && <TransactionStepCategory
           className={cn(s.step, s.stepCategory)}
           categoryType={type}
           categoryId={categoryId}
           onCategoryIdChange={setCategoryId}
         />}
         {step === STEP.COMMODITIES
-        && <CreateStepCommodities
+        && <TransactionStepCommodities
           className={cn(s.step, s.stepCommodities)}
           categoryId={categoryId}
           comment={comment}
@@ -306,19 +306,19 @@ function CreateOverlay(props) {
           onExpendituresChange={setExpenditures}
         />}
         {step === STEP.DATE
-        && <CreateStepDate
+        && <TransactionStepDate
           className={cn(s.step, s.stepDate)}
           date={date}
           onDateChange={setDate}
         />}
         {step === STEP.USER
-        && <CreateStepUsers
+        && <TransactionStepUsers
           className={cn(s.step, s.stepUsers)}
           userId={userId}
           onUserIdChange={setUserId}
         />}
         {step === STEP.CONFIRM
-        && <CreateStepConfirm
+        && <TransactionStepConfirm
           className={cn(s.step, s.stepConfirm)}
           categoryType={type}
           sum={sum}
@@ -350,4 +350,4 @@ function CreateOverlay(props) {
   );
 }
 
-export default CreateOverlay;
+export default TransactionOverlay;

@@ -3,9 +3,10 @@ import { matchPath } from 'react-router-dom';
 export const ROUTES = {
   main: '/',
   profile: '/profile',
-  createIncome: '/create-income',
-  createExpense: '/create-expense',
   backups: '/backups',
+  transactionsCreate: '/transactions/create/:type',
+  transactionsCreateIncome: '/transactions/create/income',
+  transactionsCreateExpense: '/transactions/create/expense',
 };
 
 const ROUTE_PARAMS = {
@@ -15,14 +16,17 @@ const ROUTE_PARAMS = {
   [ROUTES.profile]: {
     chunks: ['pageProfile'],
   },
-  [ROUTES.createIncome]: {
-    chunks: ['pageCreateIncome'],
-  },
-  [ROUTES.createExpense]: {
-    chunks: ['pageCreateExpense'],
-  },
   [ROUTES.backups]: {
     chunks: ['pageBackups'],
+  },
+  [ROUTES.transactionsCreate]: {
+    chunks: ['pageTransactionsCreate'],
+  },
+  [ROUTES.transactionsCreateIncome]: {
+    chunks: ['pageTransactionsCreate'],
+  },
+  [ROUTES.transactionsCreateExpense]: {
+    chunks: ['pageTransactionsCreate'],
   },
 };
 

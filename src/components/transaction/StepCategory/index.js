@@ -13,7 +13,7 @@ import common from '@/styles/common.scss';
 import btn from '@/styles/button.scss';
 import s from './styles.scss';
 
-CreateStepCategory.propTypes = {
+TransactionStepCategory.propTypes = {
   className: propTypes.string,
   categoryType: propTypes.oneOf([
     'income',
@@ -23,7 +23,7 @@ CreateStepCategory.propTypes = {
   onCategoryIdChange: propTypes.func,
 };
 
-CreateStepCategory.defaultProps = {
+TransactionStepCategory.defaultProps = {
   className: '',
   categoryType: 'expense',
   categoryId: '',
@@ -37,7 +37,7 @@ CreateStepCategory.defaultProps = {
  * @param {string} props.categoryId
  * @param {function(string): void} props.onCategoryIdChange
  * */
-function CreateStepCategory(props) {
+function TransactionStepCategory(props) {
   const {
     className,
     categoryType,
@@ -130,4 +130,4 @@ function CreateStepCategory(props) {
   );
 }
 
-export default CreateStepCategory;
+export default TransactionStepCategory;

@@ -6,7 +6,7 @@ import FieldLabel from '@/components/ui/fields/Label';
 import FieldText from '@/components/ui/fields/Text';
 import s from './styles.scss';
 
-CreateStepSum.propTypes = {
+TransactionStepSum.propTypes = {
   className: propTypes.string,
   categoryType: propTypes.oneOf([
     'income',
@@ -16,7 +16,7 @@ CreateStepSum.propTypes = {
   onSumChange: propTypes.func,
 };
 
-CreateStepSum.defaultProps = {
+TransactionStepSum.defaultProps = {
   className: '',
   categoryType: 'expense',
   sum: 0.00,
@@ -30,7 +30,7 @@ CreateStepSum.defaultProps = {
  * @param {number} props.sum
  * @param {function(number): void} props.onSumChange
  * */
-function CreateStepSum(props) {
+function TransactionStepSum(props) {
   const {
     className,
     categoryType,
@@ -79,4 +79,4 @@ function CreateStepSum(props) {
   );
 }
 
-export default CreateStepSum;
+export default TransactionStepSum;
