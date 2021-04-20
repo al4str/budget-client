@@ -16,7 +16,7 @@ import CommoditiesOverlayCreate
 import ExpendituresOverlayAdd
   from '@/components/expenditures/OverlayAdd';
 import TransactionExpenditures
-  from '@/components/transaction/StepExpenditures';
+  from '@/components/transaction/Expenditures';
 import common from '@/styles/common.scss';
 import btn from '@/styles/button.scss';
 import s from './styles.scss';

@@ -1,25 +1,23 @@
-import { useMemo, useCallback, useEffect } from 'react';
+import { useMemo, useCallback } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
 import { dateGetObjFromISO } from '@/libs/date';
 import { sumFormat } from '@/libs/sum';
 import { connectUseHook } from '@/libs/connect';
+import { ROUTES } from '@/helpers/routes';
 import { usersGetEmptyItem } from '@/helpers/users';
 import { categoriesGetEmpty } from '@/helpers/categories';
 import { commoditiesGetEmpty } from '@/helpers/commodities';
 import { useI18nTranslations } from '@/hooks/useI18n';
-import { usersFetchList, useUsers }
-  from '@/hooks/useUsers';
-import { categoriesFetchList, useCategories }
-  from '@/hooks/useCategories';
-import { commoditiesFetchList, useCommodities }
-  from '@/hooks/useCommodities';
-import { transactionsFetchList, useTransactions }
-  from '@/hooks/useTransactions';
-import { expendituresFetchList, useExpenditures }
-  from '@/hooks/useExpenditures';
+import { useUsers } from '@/hooks/useUsers';
+import { useCategories } from '@/hooks/useCategories';
+import { useCommodities } from '@/hooks/useCommodities';
+import { useTransactions } from '@/hooks/useTransactions';
+import { useExpenditures } from '@/hooks/useExpenditures';
 import Table from '@/components/ui/Table';
+import Anchor from '@/components/ui/Anchor';
 import UsersAvatar from '@/components/users/Avatar';
+import links from '@/styles/links.scss';
 import s from './styles.scss';
 
 /** @param {{ date: string }} props */
@@ -249,16 +247,6 @@ function useHook(props) {
     monthTransactionItems,
   ]);
 
-  useEffect(() => {
-    Promise.all([
-      usersFetchList(),
-      categoriesFetchList(),
-      commoditiesFetchList(),
-      transactionsFetchList(),
-      expendituresFetchList(),
-    ]).catch();
-  }, []);
-
   return {
     currentMonth,
     totalData,
@@ -482,7 +470,17 @@ function MainMonth(props) {
           cellClassName: s.cell,
           /** @param {MonthExpenditureItem} row */
           onRender(row) {
-            return row.label;
+            const url = ROUTES.transactionsItem.replace(':id', row.id);
+
+            return (
+              <Anchor
+                className={links.link}
+                type="link"
+                to={url}
+              >
+                {row.label}
+              </Anchor>
+            );
           },
         },
         {

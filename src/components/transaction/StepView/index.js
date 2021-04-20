@@ -1,20 +1,19 @@
-import { useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
-import { sumFormat } from '@/libs/sum';
-import { dateGetObjFromISO } from '@/libs/date';
+import { historyGoBack } from '@/libs/navigationManager';
+import { useMounted } from '@/hooks/useMounted';
 import { useI18nTranslations } from '@/hooks/useI18n';
-import { useCategories } from '@/hooks/useCategories';
-import { useCommodities } from '@/hooks/useCommodities';
-import { useUsers } from '@/hooks/useUsers';
+import { expendituresRemoveItem } from '@/hooks/useExpenditures';
+import { transactionsRemoveItem } from '@/hooks/useTransactions';
+import Submit from '@/components/ui/Submit';
+import TransactionOverview from '@/components/transaction/Overview';
 import s from './styles.scss';
 
 TransactionStepView.propTypes = {
   className: propTypes.string,
-  categoryType: propTypes.oneOf([
-    'income',
-    'expense',
-  ]),
+  type: propTypes.string,
+  id: propTypes.string,
   sum: propTypes.number,
   categoryId: propTypes.string,
   comment: propTypes.string,
@@ -25,7 +24,8 @@ TransactionStepView.propTypes = {
 
 TransactionStepView.defaultProps = {
   className: '',
-  categoryType: 'expense',
+  type: '',
+  id: '',
   sum: 0.00,
   categoryId: '',
   comment: '',
@@ -37,7 +37,8 @@ TransactionStepView.defaultProps = {
 /**
  * @param {Object} props
  * @param {string} props.className
- * @param {TransactionType} props.categoryType
+ * @param {TransactionType} props.type
+ * @param {string} props.id
  * @param {number} props.sum
  * @param {string} props.categoryId
  * @param {string} props.comment
@@ -48,7 +49,8 @@ TransactionStepView.defaultProps = {
 function TransactionStepView(props) {
   const {
     className,
-    categoryType,
+    type,
+    id,
     sum,
     categoryId,
     comment,
@@ -56,154 +58,66 @@ function TransactionStepView(props) {
     date,
     userId,
   } = props;
+  const mountedRef = useMounted();
   const {
-    stepTitleSum,
-    stepTitleCategory,
-    stepTitleCommodities,
-    stepTitleDate,
-    stepTitleUser,
-    essentialYes,
-    essentialNo,
+    removeLabel,
   } = useI18nTranslations({
-    stepTitleSum: 'transaction.titles.sum',
-    stepTitleCategory: 'transaction.titles.category',
-    stepTitleCommodities: 'transaction.titles.commodities',
-    stepTitleDate: 'transaction.titles.date',
-    stepTitleUser: 'transaction.titles.user',
-    essentialYes: 'expenditures.essential.yes',
-    essentialNo: 'expenditures.essential.no',
+    removeLabel: 'forms.actions.remove',
   });
-  const { items: categoriesItems } = useCategories();
-  const { items: commoditiesItems } = useCommodities();
-  const { items: usersItems } = useUsers();
+  const [removing, setRemoving] = useState(false);
+  const [reason, setReason] = useState('');
 
-  /** @type {string} */
-  const sumHuman = useMemo(() => {
-    return categoryType === 'income'
-      ? sumFormat(sum, 'currency')
-      : sumFormat(-1 * sum, 'currency');
+  const handleRemove = useCallback(async () => {
+    setRemoving(true);
+    setReason('');
+    const transactionResponse = await transactionsRemoveItem({
+      id,
+    });
+    if (mountedRef.current) {
+      if (transactionResponse.status === 'error' || !transactionResponse.body.ok) {
+        setReason(transactionResponse.body.reason);
+      }
+      else {
+        await Promise.all(expenditures.map((expenditure) => {
+          return expendituresRemoveItem({
+            id: expenditure.id,
+          });
+        }));
+      }
+      setRemoving(false);
+      historyGoBack();
+    }
   }, [
-    categoryType,
-    sum,
-  ]);
-  /** @type {string} */
-  const categoryTitle = useMemo(() => {
-    const { title } = categoriesItems.find((category) => category.id === categoryId)
-      || { title: '' };
-
-    return title;
-  }, [
-    categoryId,
-    categoriesItems,
-  ]);
-  /** @type {string} */
-  const expendituresJoined = useMemo(() => {
-    return expenditures
-      .map((expenditure) => {
-        const { title } = commoditiesItems.find((commodity) => commodity.id === expenditure.commodityId)
-        || { title: '' };
-
-        return {
-          title,
-          amount: expenditure.amount,
-          essential: expenditure.essential,
-        };
-      })
-      .filter((expenditure) => !!expenditure.title)
-      .map((expenditure) => {
-        return `${expenditure.title} x${expenditure.amount} ${expenditure.essential ? essentialYes : essentialNo}`;
-      })
-      .join(', ');
-  }, [
+    id,
     expenditures,
-    commoditiesItems,
-    essentialYes,
-    essentialNo,
-  ]);
-  /** @type {string} */
-  const dateHuman = useMemo(() => {
-    return dateGetObjFromISO(date).toFormat('dd.MM.yyyy');
-  }, [
-    date,
-  ]);
-  /** @type {string} */
-  const userName = useMemo(() => {
-    const { name } = usersItems.find((user) => user.id === userId)
-    || { name: '' };
-
-    return name;
-  }, [
-    userId,
-    usersItems,
-  ]);
-  /** @type {Array<{
-   * key: string
-   * label: string
-   * value: string
-  }>} */
-  const values = useMemo(() => {
-    return [
-      {
-        key: 'sum',
-        label: stepTitleSum,
-        value: sumHuman,
-      },
-      {
-        key: 'categoryId',
-        label: stepTitleCategory,
-        value: categoryTitle,
-      },
-      {
-        key: 'comment+commodities',
-        label: stepTitleCommodities,
-        value: [comment, expendituresJoined]
-          .filter((item) => item.trim().length > 0)
-          .join(', '),
-      },
-      {
-        key: 'date',
-        label: stepTitleDate,
-        value: dateHuman,
-      },
-      {
-        key: 'userId',
-        label: stepTitleUser,
-        value: userName,
-      },
-    ];
-  }, [
-    sumHuman,
-    categoryTitle,
-    comment,
-    expendituresJoined,
-    dateHuman,
-    userName,
-    stepTitleSum,
-    stepTitleCategory,
-    stepTitleCommodities,
-    stepTitleDate,
-    stepTitleUser,
+    mountedRef,
   ]);
 
   return (
     <div className={cn(s.step, className)}>
-      <ul className={s.list}>
-        {values.map((item) => (
-          <li
-            className={s.item}
-            key={item.key}
-          >
-            <div className={s.itemWrp}>
-              <span className={s.itemLabel}>
-                {item.label}
-              </span>
-              <span className={s.itemValue}>
-                {item.value}
-              </span>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <TransactionOverview
+        className={s.overview}
+        type={type}
+        sum={sum}
+        categoryId={categoryId}
+        comment={comment}
+        expenditures={expenditures}
+        date={date}
+        userId={userId}
+      />
+      {reason.length > 0
+      && <p className={s.reason}>
+        {reason}
+      </p>}
+      <div className={s.actions}>
+        <Submit
+          className={s.removeBtn}
+          pending={removing}
+          type="button"
+          label={removeLabel}
+          onClick={handleRemove}
+        />
+      </div>
     </div>
   );
 }

@@ -35,6 +35,14 @@ export const PAGES = [
       '@/components/transaction/Page'
     )),
   },
+  {
+    url: ROUTES.transactionsItem,
+    chunkGroupName: 'pageTransactionsCreate',
+    Component: lazy(() => import(
+      /* webpackChunkName: "pageTransactionsCreate" */
+      '@/components/transaction/Page'
+    )),
+  },
 ];
 
 /**

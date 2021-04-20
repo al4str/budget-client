@@ -1,20 +1,32 @@
-import { useState, useMemo, useCallback, Fragment } from 'react';
+import {
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
+  Fragment,
+} from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
-import { idGet } from '@/libs/id';
-import { dateGetNow } from '@/libs/date';
+import { isEqual } from '@/libs/isEqual';
 import { sumInvalid } from '@/libs/sum';
 import { ROUTES } from '@/helpers/routes';
 import { historyPush } from '@/libs/navigationManager';
 import { useMounted } from '@/hooks/useMounted';
 import { useI18nTranslations } from '@/hooks/useI18n';
-import { useProfile } from '@/hooks/useProfile';
-import { expendituresCreateItem } from '@/hooks/useExpenditures';
-import { transactionsCreateItem } from '@/hooks/useTransactions';
+import {
+  expendituresCreateItem,
+  expendituresUpdateItem,
+  expendituresRemoveItem,
+} from '@/hooks/useExpenditures';
+import {
+  transactionsCreateItem,
+  transactionsUpdateItem,
+} from '@/hooks/useTransactions';
 import SubmitSticky from '@/components/ui/SubmitSticky';
 import Overlay from '@/components/overlays/Overlay';
 import OverlayHeader from '@/components/overlays/Header';
 import OverlayBody from '@/components/overlays/Body';
+import TransactionStepView from '@/components/transaction/StepView';
 import TransactionStepSum from '@/components/transaction/StepSum';
 import TransactionStepCategory from '@/components/transaction/StepCategory';
 import TransactionStepCommodities from '@/components/transaction/StepCommodities';
@@ -25,6 +37,7 @@ import s from './styles.scss';
 
 /** @type {Record<TransactionStep>} */
 const STEP = {
+  VIEW: 'VIEW',
   SUM: 'SUM',
   CATEGORY: 'CATEGORY',
   COMMODITIES: 'COMMODITIES',
@@ -34,42 +47,72 @@ const STEP = {
 };
 
 /**
- * @typedef {'SUM'|'CATEGORY'|'COMMODITIES'|'DATE'
+ * @typedef {'VIEW'|'SUM'|'CATEGORY'|'COMMODITIES'|'DATE'
  * |'USER'|'CONFIRM'} TransactionStep
  * */
-
-/** @type {TransactionSteps} */
-const STEPS = [
-  STEP.SUM,
-  STEP.CATEGORY,
-  STEP.COMMODITIES,
-  STEP.DATE,
-  STEP.USER,
-  STEP.CONFIRM,
-];
 
 /**
  * @typedef {Array<TransactionStep>} TransactionSteps
  * */
 
 TransactionOverlay.propTypes = {
+  ready: propTypes.bool,
+  mode: propTypes.string,
   type: propTypes.string,
+  id: propTypes.string,
+  initialSum: propTypes.number,
+  initialCategoryId: propTypes.string,
+  initialComment: propTypes.string,
+  initialExpenditures: propTypes.array,
+  initialDate: propTypes.string,
+  initialUserId: propTypes.string,
 };
 
 TransactionOverlay.defaultProps = {
+  ready: false,
+  mode: '',
   type: '',
+  id: '',
+  initialSum: 0.00,
+  initialCategoryId: '',
+  initialComment: '',
+  initialExpenditures: [],
+  initialDate: '',
+  initialUserId: '',
 };
 
 /**
  * @param {Object} props
+ * @param {boolean} props.ready
+ * @param {'create'|'update'} props.mode
  * @param {TransactionType} props.type
+ * @param {string} props.id
+ * @param {number} props.initialSum
+ * @param {string} props.initialCategoryId
+ * @param {string} props.initialComment
+ * @param {Array<ExpenditureItem>} props.initialExpenditures
+ * @param {string} props.initialDate
+ * @param {string} props.initialUserId
  * */
 function TransactionOverlay(props) {
-  const { type } = props;
+  const {
+    ready,
+    mode,
+    type,
+    id,
+    initialSum,
+    initialCategoryId,
+    initialComment,
+    initialExpenditures,
+    initialDate,
+    initialUserId,
+  } = props;
+  const isCreate = mode === 'create';
   const isExpense = type === 'expense';
   const {
     overlayTitleIncome,
     overlayTitleExpense,
+    stepTitleView,
     stepTitleSum,
     stepTitleCategory,
     stepTitleCommodities,
@@ -81,6 +124,7 @@ function TransactionOverlay(props) {
   } = useI18nTranslations({
     overlayTitleIncome: 'titles.transaction-income',
     overlayTitleExpense: 'titles.transaction-expense',
+    stepTitleView: 'transaction.titles.view',
     stepTitleSum: 'transaction.titles.sum',
     stepTitleCategory: 'transaction.titles.category',
     stepTitleCommodities: 'transaction.titles.commodities',
@@ -91,20 +135,45 @@ function TransactionOverlay(props) {
     actionConfirm: 'forms.actions.confirm',
   });
   const mountedRef = useMounted();
-  const { data: { id: profileId } } = useProfile();
-  const [pending, setPending] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [reason, setReason] = useState('');
-  const [step, setStep] = useState(STEP.SUM);
-  const [sum, setSum] = useState(0.00);
-  const [categoryId, setCategoryId] = useState('');
-  const [comment, setComment] = useState('');
-  const [expenditures, setExpenditures] = useState([]);
-  const [date, setDate] = useState(dateGetNow().toISODate());
-  const [userId, setUserId] = useState(profileId);
+  const [step, setStep] = useState(isCreate ? STEP.SUM : STEP.VIEW);
+  const [sum, setSum] = useState(initialSum);
+  const [categoryId, setCategoryId] = useState(initialCategoryId);
+  const [comment, setComment] = useState(initialComment);
+  const [expenditures, setExpenditures] = useState(initialExpenditures);
+  const [date, setDate] = useState(initialDate);
+  const [userId, setUserId] = useState(initialUserId);
 
+  /** @type {TransactionSteps} */
+  const steps = useMemo(() => {
+    if (isCreate) {
+      return [
+        STEP.SUM,
+        STEP.CATEGORY,
+        STEP.COMMODITIES,
+        STEP.DATE,
+        STEP.USER,
+        STEP.CONFIRM,
+      ];
+    }
+    return [
+      STEP.VIEW,
+      STEP.SUM,
+      STEP.CATEGORY,
+      STEP.COMMODITIES,
+      STEP.DATE,
+      STEP.USER,
+      STEP.CONFIRM,
+    ];
+  }, [
+    isCreate,
+  ]);
   /** @type {boolean} */
   const stepInvalid = useMemo(() => {
     switch (step) {
+      case STEP.VIEW:
+        return false;
       case STEP.SUM:
         return sumInvalid(sum) || sum === 0;
       case STEP.CATEGORY:
@@ -130,6 +199,7 @@ function TransactionOverlay(props) {
     date,
     userId,
   ]);
+  /** @type {string} */
   const overlayTitle = useMemo(() => {
     if (isExpense) {
       return overlayTitleExpense;
@@ -142,6 +212,8 @@ function TransactionOverlay(props) {
   ]);
   const stepTitle = useMemo(() => {
     switch (step) {
+      case STEP.VIEW:
+        return stepTitleView;
       case STEP.SUM:
         return stepTitleSum;
       case STEP.CATEGORY:
@@ -159,6 +231,7 @@ function TransactionOverlay(props) {
     }
   }, [
     step,
+    stepTitleView,
     stepTitleSum,
     stepTitleCategory,
     stepTitleCommodities,
@@ -168,66 +241,143 @@ function TransactionOverlay(props) {
   ]);
   /** @type {Array<{ key: string, filled: boolean, current: boolean }>} */
   const stepsDots = useMemo(() => {
-    const currentIndex = STEPS.indexOf(step);
+    const currentIndex = steps.indexOf(step);
 
-    return STEPS.map((item) => ({
+    return steps.map((item) => ({
       key: item,
-      filled: STEPS.indexOf(item) < currentIndex,
+      filled: steps.indexOf(item) < currentIndex,
       current: item === step,
     }));
   }, [
     step,
+    steps,
   ]);
 
-  const handleClose = useCallback(() => {
-    historyPush(ROUTES.main);
-  }, []);
-  const handleBack = useCallback(() => {
-    const currentIndex = STEPS.indexOf(step);
-    const nextIndex = Math.max(0, currentIndex - 1);
-    const nextStep = STEPS[nextIndex];
-    if (nextStep) {
-      setStep(nextStep);
-    }
-  }, [
-    step,
-  ]);
-  const handleNext = useCallback(() => {
-    const currentIndex = STEPS.indexOf(step);
-    const nextIndex = Math.min(currentIndex + 1, STEPS.length - 1);
-    const nextStep = STEPS[nextIndex];
-    if (nextStep) {
-      setStep(nextStep);
-    }
-  }, [
-    step,
-  ]);
-  const handleConfirm = useCallback(async () => {
-    setPending(true);
-    setReason('');
-    const { body } = await transactionsCreateItem({
-      payload: {
-        id: idGet(),
-        sum,
-        categoryId,
-        comment,
-        date,
-        userId,
-      },
+  /** @type {function(string): Promise<void>} */
+  const handleExpenditures = useCallback(async (transactionId) => {
+    /** @type {Array<ExpenditureItem>} */
+    const itemsToCreate = [];
+    /** @type {Array<ExpenditureItem>} */
+    const itemsToUpdate = [];
+    /** @type {Array<ExpenditureItem>} */
+    const itemsToDelete = [];
+    /**
+     * @param {string} expenditureId
+     * @return {null|ExpenditureItem}
+     * */
+    const getFromInitial = (expenditureId) => {
+      return initialExpenditures.find((expenditure) => expenditure.id === expenditureId);
+    };
+    /**
+     * @param {string} expenditureId
+     * @return {null|ExpenditureItem}
+     * */
+    const getFromCurrent = (expenditureId) => {
+      return expenditures.find((expenditure) => expenditure.id === expenditureId);
+    };
+    expenditures.forEach((expenditure) => {
+      const initialExpenditure = getFromInitial(expenditure.id);
+      if (!initialExpenditure) {
+        itemsToCreate.push(expenditure);
+      }
+      else if (!isEqual(initialExpenditure, expenditure)) {
+        itemsToUpdate.push(expenditure);
+      }
     });
-    if (isExpense && body.ok) {
-      const createdId = body.data.id;
-      await Promise.all(expenditures.map((expenditure) => {
+    initialExpenditures.forEach((expenditure) => {
+      const currentExpenditure = getFromCurrent(expenditure.id);
+      if (!currentExpenditure) {
+        itemsToDelete.push(expenditure);
+      }
+    });
+    await Promise.all([
+      ...itemsToCreate.map((expenditure) => {
         return expendituresCreateItem({
           payload: {
             id: expenditure.id,
-            transactionId: createdId,
+            transactionId,
             commodityId: expenditure.commodityId,
             amount: expenditure.amount,
             essential: expenditure.essential,
           },
         });
-      }));
+      }),
+      ...itemsToUpdate.map((expenditure) => {
+        return expendituresUpdateItem({
+          id: expenditure.id,
+          payload: {
+            transactionId,
+            commodityId: expenditure.commodityId,
+            amount: expenditure.amount,
+            essential: expenditure.essential,
+          },
+        });
+      }),
+      ...itemsToDelete.map((expenditure) => {
+        return expendituresRemoveItem({
+          id: expenditure.id,
+        });
+      }),
+    ]);
+  }, [
+    expenditures,
+    initialExpenditures,
+  ]);
+  const handleClose = useCallback(() => {
+    historyPush(ROUTES.main);
+  }, []);
+  const handleBack = useCallback(() => {
+    const currentIndex = steps.indexOf(step);
+    const nextIndex = Math.max(0, currentIndex - 1);
+    const nextStep = steps[nextIndex];
+    if (nextStep) {
+      setStep(nextStep);
+    }
+  }, [
+    step,
+    steps,
+  ]);
+  const handleNext = useCallback(() => {
+    const currentIndex = steps.indexOf(step);
+    const nextIndex = Math.min(currentIndex + 1, steps.length - 1);
+    const nextStep = steps[nextIndex];
+    if (nextStep) {
+      setStep(nextStep);
+    }
+  }, [
+    step,
+    steps,
+  ]);
+  const handleConfirm = useCallback(async () => {
+    setSaving(true);
+    setReason('');
+    const method = isCreate
+      ? transactionsCreateItem
+      : transactionsUpdateItem;
+    const payload = isCreate
+      ? {
+        payload: {
+          id,
+          sum,
+          categoryId,
+          comment,
+          date,
+          userId,
+        },
+      }
+      : {
+        id,
+        payload: {
+          sum,
+          categoryId,
+          comment,
+          date,
+          userId,
+        },
+      };
+    const { body } = await method(payload);
+    if (isExpense && body.ok) {
+      await handleExpenditures(body.data.id);
     }
     if (mountedRef.current) {
       if (!body.ok) {
@@ -236,18 +386,39 @@ function TransactionOverlay(props) {
       else {
         handleClose();
       }
-      setPending(false);
+      setSaving(false);
     }
   }, [
+    id,
+    isCreate,
     isExpense,
     mountedRef,
     sum,
     categoryId,
     comment,
-    expenditures,
     date,
     userId,
     handleClose,
+    handleExpenditures,
+  ]);
+
+  useEffect(() => {
+    if (ready) {
+      setSum(initialSum);
+      setCategoryId(initialCategoryId);
+      setComment(initialComment);
+      setExpenditures(initialExpenditures);
+      setDate(initialDate);
+      setUserId(initialUserId);
+    }
+  }, [
+    ready,
+    initialSum,
+    initialCategoryId,
+    initialComment,
+    initialExpenditures,
+    initialDate,
+    initialUserId,
   ]);
 
   return (
@@ -278,6 +449,18 @@ function TransactionOverlay(props) {
         <p className={s.title}>
           {stepTitle}
         </p>
+        {step === STEP.VIEW
+        && <TransactionStepView
+          className={cn(s.step, s.stepView)}
+          type={type}
+          id={id}
+          sum={sum}
+          categoryId={categoryId}
+          comment={comment}
+          expenditures={expenditures}
+          date={date}
+          userId={userId}
+        />}
         {step === STEP.SUM
         && <TransactionStepSum
           className={cn(s.step, s.stepSum)}
@@ -331,7 +514,7 @@ function TransactionOverlay(props) {
         </p>}
         <SubmitSticky
           className={s.submit}
-          pending={pending}
+          pending={saving}
           shown={!stepInvalid}
           disabled={stepInvalid}
           type="button"

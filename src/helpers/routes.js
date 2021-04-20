@@ -7,6 +7,7 @@ export const ROUTES = {
   transactionsCreate: '/transactions/create/:type',
   transactionsCreateIncome: '/transactions/create/income',
   transactionsCreateExpense: '/transactions/create/expense',
+  transactionsItem: '/transactions/item/:id',
 };
 
 const ROUTE_PARAMS = {
@@ -26,6 +27,9 @@ const ROUTE_PARAMS = {
     chunks: ['pageTransactionsCreate'],
   },
   [ROUTES.transactionsCreateExpense]: {
+    chunks: ['pageTransactionsCreate'],
+  },
+  [ROUTES.transactionsItem]: {
     chunks: ['pageTransactionsCreate'],
   },
 };

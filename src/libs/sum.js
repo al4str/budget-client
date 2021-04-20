@@ -18,7 +18,9 @@ export function sumFormat(raw, style) {
     : raw) || 0;
   const formatter = new Intl.NumberFormat('ru-RU', {
     style,
-    signDisplay: 'exceptZero',
+    signDisplay: style === 'currency'
+      ? 'exceptZero'
+      : 'never',
     currency: 'RUB',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,

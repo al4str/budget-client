@@ -2,32 +2,33 @@
 
 .step {}
 
-.list {
-  margin: auto;
-  padding: 0;
-  list-style: none;
+.overview {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
-.item {
-  padding: 0;
-}
-.item + .item {
-  margin-top: vars.$offset-sm;
+.reason {
+  margin: vars.$offset-md 0 0 0;
+  padding: vars.$offset-xs vars.$offset-sm;
+  font-size: 0.875rem;
+  background-color: salmon;
+  border-radius: vars.$offset-xxs;
 }
 
-.itemWrp {
+.actions {
   display: flex;
-  align-items: baseline;
+  margin-top: vars.$offset-md;
 }
 
-.itemLabel {
-  flex-shrink: 0;
-  max-width: 60%;
-  margin-right: vars.$offset-sm;
-  color: silver;
-}
-
-.itemValue {
-  flex-grow: 1;
-  text-align: right;
+.removeBtn {
+  display: block;
+  min-width: 200px;
+  min-height: vars.$height-button;
+  padding: vars.$offset-xs vars.$offset-md;
+  margin: 0 auto;
+  color: whitesmoke;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: crimson;
+  border-radius: vars.$offset-xs;
 }
