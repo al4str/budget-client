@@ -4,7 +4,7 @@ import { resourcesOperations } from '@/helpers/resources';
 /**
  * @typedef {Object} ExpenditureItem
  * @property {string} id
- * @property {string} expenseId
+ * @property {string} transactionId
  * @property {string} commodityId
  * @property {number} amount
  * @property {boolean} essential
@@ -16,14 +16,14 @@ import { resourcesOperations } from '@/helpers/resources';
  * */
 function mapper(raw) {
   const id = propertyGet(raw, ['id'], '');
-  const expenseId = propertyGet(raw, ['expenseId'], '');
+  const transactionId = propertyGet(raw, ['transactionId'], '');
   const commodityId = propertyGet(raw, ['commodityId'], '');
   const amount = propertyGet(raw, ['amount'], 0);
   const essential = propertyGetBoolean(raw, ['essential'], false);
 
   return {
     id,
-    expenseId,
+    transactionId,
     commodityId,
     amount,
     essential,

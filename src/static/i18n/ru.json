@@ -83,6 +83,7 @@
     "profile.avatar.label": "Аватар",
     "categories.type.income": "Доходы",
     "categories.type.expense": "Траты",
+    "expenditures.unknown": "На нечто",
     "expenditures.essential.yes": "нужное",
     "expenditures.essential.no": "ненужное",
     "messages.welcome": "Добро пожаловать",

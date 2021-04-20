@@ -11,10 +11,7 @@ import s from './styles.scss';
 
 TransactionStepConfirm.propTypes = {
   className: propTypes.string,
-  categoryType: propTypes.oneOf([
-    'income',
-    'expense',
-  ]),
+  type: propTypes.string,
   sum: propTypes.number,
   categoryId: propTypes.string,
   comment: propTypes.string,
@@ -25,7 +22,7 @@ TransactionStepConfirm.propTypes = {
 
 TransactionStepConfirm.defaultProps = {
   className: '',
-  categoryType: 'expense',
+  type: '',
   sum: 0.00,
   categoryId: '',
   comment: '',
@@ -37,7 +34,7 @@ TransactionStepConfirm.defaultProps = {
 /**
  * @param {Object} props
  * @param {string} props.className
- * @param {TransactionType} props.categoryType
+ * @param {TransactionType} props.type
  * @param {number} props.sum
  * @param {string} props.categoryId
  * @param {string} props.comment
@@ -48,7 +45,7 @@ TransactionStepConfirm.defaultProps = {
 function TransactionStepConfirm(props) {
   const {
     className,
-    categoryType,
+    type,
     sum,
     categoryId,
     comment,
@@ -56,6 +53,7 @@ function TransactionStepConfirm(props) {
     date,
     userId,
   } = props;
+  const isExpense = type === 'expense';
   const {
     stepTitleSum,
     stepTitleCategory,
@@ -79,11 +77,11 @@ function TransactionStepConfirm(props) {
 
   /** @type {string} */
   const sumHuman = useMemo(() => {
-    return categoryType === 'income'
-      ? sumFormat(sum, 'currency')
-      : sumFormat(-1 * sum, 'currency');
+    return isExpense
+      ? sumFormat(-1 * sum, 'currency')
+      : sumFormat(sum, 'currency');
   }, [
-    categoryType,
+    isExpense,
     sum,
   ]);
   /** @type {string} */
@@ -121,6 +119,19 @@ function TransactionStepConfirm(props) {
     essentialNo,
   ]);
   /** @type {string} */
+  const commoditiesHuman = useMemo(() => {
+    if (isExpense) {
+      return [comment, expendituresJoined]
+        .filter((item) => item.trim().length > 0)
+        .join(', ');
+    }
+    return comment;
+  }, [
+    isExpense,
+    comment,
+    expendituresJoined,
+  ]);
+  /** @type {string} */
   const dateHuman = useMemo(() => {
     return dateGetObjFromISO(date).toFormat('dd.MM.yyyy');
   }, [
@@ -154,11 +165,9 @@ function TransactionStepConfirm(props) {
         value: categoryTitle,
       },
       {
-        key: 'comment+commodities',
+        key: 'commodities',
         label: stepTitleCommodities,
-        value: [comment, expendituresJoined]
-          .filter((item) => item.trim().length > 0)
-          .join(', '),
+        value: commoditiesHuman,
       },
       {
         key: 'date',
@@ -170,12 +179,11 @@ function TransactionStepConfirm(props) {
         label: stepTitleUser,
         value: userName,
       },
-    ];
+    ].filter((item) => item.value.trim().length > 0);
   }, [
     sumHuman,
     categoryTitle,
-    comment,
-    expendituresJoined,
+    commoditiesHuman,
     dateHuman,
     userName,
     stepTitleSum,

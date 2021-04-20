@@ -53,14 +53,11 @@ const STEPS = [
  * */
 
 TransactionOverlay.propTypes = {
-  type: propTypes.oneOf([
-    'income',
-    'expense',
-  ]),
+  type: propTypes.string,
 };
 
 TransactionOverlay.defaultProps = {
-  type: 'expense',
+  type: '',
 };
 
 /**
@@ -69,6 +66,7 @@ TransactionOverlay.defaultProps = {
  * */
 function TransactionOverlay(props) {
   const { type } = props;
+  const isExpense = type === 'expense';
   const {
     overlayTitleIncome,
     overlayTitleExpense,
@@ -112,7 +110,7 @@ function TransactionOverlay(props) {
       case STEP.CATEGORY:
         return !categoryId;
       case STEP.COMMODITIES:
-        return !comment && !expenditures.length;
+        return false;
       case STEP.DATE:
         return !date;
       case STEP.USER:
@@ -120,7 +118,6 @@ function TransactionOverlay(props) {
       case STEP.CONFIRM:
         return (sumInvalid(sum) || sum === 0)
           || !categoryId
-          || (!comment && !expenditures.length)
           || !date
           || !userId;
       default:
@@ -130,18 +127,16 @@ function TransactionOverlay(props) {
     step,
     sum,
     categoryId,
-    expenditures,
-    comment,
     date,
     userId,
   ]);
   const overlayTitle = useMemo(() => {
-    if (type === 'income') {
-      return overlayTitleIncome;
+    if (isExpense) {
+      return overlayTitleExpense;
     }
-    return overlayTitleExpense;
+    return overlayTitleIncome;
   }, [
-    type,
+    isExpense,
     overlayTitleIncome,
     overlayTitleExpense,
   ]);
@@ -220,13 +215,13 @@ function TransactionOverlay(props) {
         userId,
       },
     });
-    if (body.ok) {
+    if (isExpense && body.ok) {
       const createdId = body.data.id;
       await Promise.all(expenditures.map((expenditure) => {
         return expendituresCreateItem({
           payload: {
             id: expenditure.id,
-            expenseId: createdId,
+            transactionId: createdId,
             commodityId: expenditure.commodityId,
             amount: expenditure.amount,
             essential: expenditure.essential,
@@ -244,6 +239,7 @@ function TransactionOverlay(props) {
       setPending(false);
     }
   }, [
+    isExpense,
     mountedRef,
     sum,
     categoryId,
@@ -285,20 +281,21 @@ function TransactionOverlay(props) {
         {step === STEP.SUM
         && <TransactionStepSum
           className={cn(s.step, s.stepSum)}
-          categoryType={type}
+          type={type}
           sum={sum}
           onSumChange={setSum}
         />}
         {step === STEP.CATEGORY
         && <TransactionStepCategory
           className={cn(s.step, s.stepCategory)}
-          categoryType={type}
+          type={type}
           categoryId={categoryId}
           onCategoryIdChange={setCategoryId}
         />}
         {step === STEP.COMMODITIES
         && <TransactionStepCommodities
           className={cn(s.step, s.stepCommodities)}
+          type={type}
           categoryId={categoryId}
           comment={comment}
           expenditures={expenditures}
@@ -320,7 +317,7 @@ function TransactionOverlay(props) {
         {step === STEP.CONFIRM
         && <TransactionStepConfirm
           className={cn(s.step, s.stepConfirm)}
-          categoryType={type}
+          type={type}
           sum={sum}
           categoryId={categoryId}
           comment={comment}

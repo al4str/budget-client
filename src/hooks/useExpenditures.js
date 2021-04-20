@@ -11,7 +11,7 @@ export const expendituresFetchItem = store.read;
  * @param {Object} params
  * @param {Object} params.payload
  * @param {string} params.payload.id
- * @param {string} params.payload.expenseId
+ * @param {string} params.payload.transactionId
  * @param {string} params.payload.commodityId
  * @param {number} params.payload.amount
  * @param {boolean} params.payload.essential
@@ -27,7 +27,7 @@ export const expendituresCreateItem = store.create;
  * @param {Object} params
  * @param {string} params.id
  * @param {Object} params.payload
- * @param {string} params.payload.expenseId
+ * @param {string} params.payload.transactionId
  * @param {string} params.payload.commodityId
  * @param {number} params.payload.amount
  * @param {boolean} params.payload.essential

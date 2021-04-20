@@ -29,12 +29,14 @@ function useHook(props) {
     incomeLabel,
     expensesLabel,
     restLabel,
+    unknownLabel,
     essentialYes,
     essentialNo,
   } = useI18nTranslations({
     incomeLabel: 'month.total.income',
     expensesLabel: 'month.total.expenses',
     restLabel: 'month.total.rest',
+    unknownLabel: 'expenditures.unknown',
     essentialYes: 'expenditures.essential.yes',
     essentialNo: 'expenditures.essential.no',
   });
@@ -192,7 +194,7 @@ function useHook(props) {
         ? byCategoryMap.get(item.categoryId)
         : [];
       const expenditures = expendituresItems
-        .filter((expenditure) => expenditure.expenseId === item.id)
+        .filter((expenditure) => expenditure.transactionId === item.id)
         .map((expenditure) => {
           const commodity = getCommodityItem(expenditure.commodityId);
           const title = commodity.title;
@@ -209,7 +211,9 @@ function useHook(props) {
       const user = getUserItem(item.userId);
       const nextItems = prevItems.concat([{
         id: item.id,
-        label,
+        label: label.trim().length > 0
+          ? label
+          : unknownLabel,
         sum: item.sum,
         date: item.date,
         userId: user.id,
@@ -235,6 +239,7 @@ function useHook(props) {
       };
     });
   }, [
+    unknownLabel,
     essentialYes,
     essentialNo,
     categoriesItems,

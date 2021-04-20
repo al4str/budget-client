@@ -83,6 +83,7 @@
     "profile.avatar.label": "Avatar",
     "categories.type.income": "Income",
     "categories.type.expense": "Expense",
+    "expenditures.unknown": "Unknown",
     "expenditures.essential.yes": "is essential",
     "expenditures.essential.no": "is not essential",
     "messages.welcome": "Welcome back, my lord",

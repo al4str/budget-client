@@ -15,17 +15,14 @@ import s from './styles.scss';
 
 TransactionStepCategory.propTypes = {
   className: propTypes.string,
-  categoryType: propTypes.oneOf([
-    'income',
-    'expense',
-  ]),
+  type: propTypes.string,
   categoryId: propTypes.string,
   onCategoryIdChange: propTypes.func,
 };
 
 TransactionStepCategory.defaultProps = {
   className: '',
-  categoryType: 'expense',
+  type: '',
   categoryId: '',
   onCategoryIdChange: null,
 };
@@ -33,14 +30,14 @@ TransactionStepCategory.defaultProps = {
 /**
  * @param {Object} props
  * @param {string} props.className
- * @param {TransactionType} props.categoryType
+ * @param {TransactionType} props.type
  * @param {string} props.categoryId
  * @param {function(string): void} props.onCategoryIdChange
  * */
 function TransactionStepCategory(props) {
   const {
     className,
-    categoryType,
+    type,
     categoryId,
     onCategoryIdChange,
   } = props;
@@ -55,7 +52,7 @@ function TransactionStepCategory(props) {
   }>} */
   const categories = useMemo(() => {
     return items
-      .filter((item) => item.type === categoryType)
+      .filter((item) => item.type === type)
       .map((item) => ({
         key: item.id,
         selected: item.id === categoryId,
@@ -63,7 +60,7 @@ function TransactionStepCategory(props) {
         onSelect: onCategoryIdChange.bind(null, item.id),
       }));
   }, [
-    categoryType,
+    type,
     categoryId,
     onCategoryIdChange,
     items,

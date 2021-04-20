@@ -23,6 +23,7 @@ import s from './styles.scss';
 
 TransactionStepCommodities.propTypes = {
   className: propTypes.string,
+  type: propTypes.string,
   categoryId: propTypes.string,
   comment: propTypes.string,
   expenditures: propTypes.array,
@@ -32,6 +33,7 @@ TransactionStepCommodities.propTypes = {
 
 TransactionStepCommodities.defaultProps = {
   className: '',
+  type: '',
   categoryId: '',
   comment: '',
   expenditures: [],
@@ -42,6 +44,7 @@ TransactionStepCommodities.defaultProps = {
 /**
  * @param {Object} props
  * @param {string} props.className
+ * @param {TransactionType} props.type
  * @param {string} props.categoryId
  * @param {string} props.comment
  * @param {Array<ExpenditureItem>} props.expenditures
@@ -52,12 +55,14 @@ TransactionStepCommodities.defaultProps = {
 function TransactionStepCommodities(props) {
   const {
     className,
+    type,
     categoryId,
     comment,
     expenditures,
     onCommentChange,
     onExpendituresChange,
   } = props;
+  const isExpense = type === 'expense';
   const {
     commentLabel,
     commentPlaceholder,
@@ -87,7 +92,7 @@ function TransactionStepCommodities(props) {
     setCommodityOpened(false);
     handleExpenditureOpen({
       id: idGet(),
-      expenseId: '',
+      transactionId: '',
       commodityId: nextCommodity.id,
       amount: 1,
       essential: false,
@@ -144,7 +149,7 @@ function TransactionStepCommodities(props) {
         onSelect: () => {
           handleExpenditureOpen({
             id: idGet(),
-            expenseId: '',
+            transactionId: '',
             commodityId: commodity.id,
             amount: 1,
             essential: false,
@@ -179,7 +184,8 @@ function TransactionStepCommodities(props) {
           onChange={onCommentChange}
         />
       </FieldLabel>
-      <ul className={s.list}>
+      {isExpense
+      && <ul className={s.list}>
         {commodities.map((item) => (
           <li
             className={s.item}
@@ -209,7 +215,7 @@ function TransactionStepCommodities(props) {
             </span>
           </Action>
         </li>}
-      </ul>
+      </ul>}
       <TransactionExpenditures
         className={s.expenditures}
         commodities={items}

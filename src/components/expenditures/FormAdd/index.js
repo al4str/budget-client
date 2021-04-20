@@ -51,7 +51,6 @@ function ExpendituresFormAdd(props) {
     submitLabel: 'forms.actions.ok',
   });
   const {
-    changed,
     disabled,
     messages,
     fields,
@@ -105,7 +104,7 @@ function ExpendituresFormAdd(props) {
       </FieldLabel>
       <SubmitSticky
         className={s.submit}
-        shown={changed}
+        shown={true}
         disabled={disabled}
         label={submitLabel}
       />

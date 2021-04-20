@@ -8,17 +8,14 @@ import s from './styles.scss';
 
 TransactionStepSum.propTypes = {
   className: propTypes.string,
-  categoryType: propTypes.oneOf([
-    'income',
-    'expense',
-  ]),
+  type: propTypes.string,
   sum: propTypes.number,
   onSumChange: propTypes.func,
 };
 
 TransactionStepSum.defaultProps = {
   className: '',
-  categoryType: 'expense',
+  type: '',
   sum: 0.00,
   onSumChange: null,
 };
@@ -26,23 +23,24 @@ TransactionStepSum.defaultProps = {
 /**
  * @param {Object} props
  * @param {string} props.className
- * @param {TransactionType} props.categoryType
+ * @param {TransactionType} props.type
  * @param {number} props.sum
  * @param {function(number): void} props.onSumChange
  * */
 function TransactionStepSum(props) {
   const {
     className,
-    categoryType,
+    type,
     sum,
     onSumChange,
   } = props;
+  const isExpense = type === 'expense';
   /** @type {React.RefObject<HTMLInputElement>} */
   const fieldRef = useRef(null);
   const [value, setValue] = useState(sumFormat(sum, 'decimal'));
-  const displaySum = categoryType === 'income'
-    ? sumFormat(sum, 'currency')
-    : sumFormat(-1 * sum, 'currency');
+  const displaySum = isExpense
+    ? sumFormat(-1 * sum, 'currency')
+    : sumFormat(sum, 'currency');
 
   const handleChange = useCallback((nextValue) => {
     const sanitized = parseFloat(nextValue
