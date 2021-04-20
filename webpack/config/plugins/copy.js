@@ -24,6 +24,11 @@ module.exports = {
           to: 'robots.txt',
           noErrorOnMissing: true,
         },
+        {
+          from: './src/static/manifest.json',
+          to: '[name].[contenthash:8].json',
+          noErrorOnMissing: true,
+        },
       ],
     });
   },

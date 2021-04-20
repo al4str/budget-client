@@ -36,10 +36,10 @@ const FRAMEWORK_PACKAGES = [
 
 const LINKS = [
   {
-    originalPath: 'favicons/favicon.ico',
+    originalPath: 'favicons/apple-touch-icon.png',
     attributes: {
-      rel: 'shortcut icon',
-      type: 'image/x-icon',
+      rel: 'apple-touch-icon',
+      sizes: '180x180',
     },
   },
   {
@@ -56,6 +56,26 @@ const LINKS = [
       rel: 'icon',
       type: 'image/png',
       sizes: '16x16',
+    },
+  },
+  {
+    originalPath: 'manifest.json',
+    attributes: {
+      rel: 'manifest',
+    },
+  },
+  {
+    originalPath: 'safari-pinned-tab.svg',
+    attributes: {
+      rel: 'mask-icon',
+      color: '#5bbad5',
+    },
+  },
+  {
+    originalPath: 'favicons/favicon.ico',
+    attributes: {
+      rel: 'shortcut icon',
+      type: 'image/x-icon',
     },
   },
 ];
