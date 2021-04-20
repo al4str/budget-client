@@ -25,25 +25,6 @@
   min-width: 0;
 }
 
-.submitWrp {
-  display: flex;
-  margin-top: vars.$offset-lg;
-}
-
 .submit {
-  display: block;
-  min-width: 200px;
-  height: vars.$height-button;
-  padding: 0 vars.$offset-md;
-  margin: 0 auto;
-  font-weight: 500;
-  background-color: seagreen;
-  border-radius: vars.$offset-xs;
-  transition: background-color 0.15s;
-}
-.submit:disabled {
-  opacity: 0.6;
-}
-.submit:active {
-  background-color: darkolivegreen;
+  margin-top: vars.$offset-lg;
 }

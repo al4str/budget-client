@@ -15,6 +15,12 @@
   margin-top: vars.$offset-md;
 }
 
-.form {
-  margin-top: vars.$offset-md;
+.separator {
+  display: block;
+  box-sizing: border-box;
+  height: 1px;
+  margin: vars.$offset-md;
+  background-color: dimgray;
 }
+
+.form {}

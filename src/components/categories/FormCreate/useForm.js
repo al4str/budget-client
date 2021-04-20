@@ -2,97 +2,101 @@ import { useState, useMemo, useCallback, useEffect } from 'react';
 import { isEmpty } from '@/libs/isEmpty';
 import { idInvalid } from '@/libs/id';
 import { formsCreate } from '@/helpers/forms';
-import { categoriesExist } from '@/helpers/categories';
-import { commoditiesExist } from '@/helpers/commodities';
+import { categoriesExist, categoriesInvalidType } from '@/helpers/categories';
 import { useI18nTranslations } from '@/hooks/useI18n';
 import { useMounted } from '@/hooks/useMounted';
-import {
-  categoriesFetchList,
-  useCategories,
-} from '@/hooks/useCategories';
-import {
-  commoditiesCreateItem,
-} from '@/hooks/useCommodities';
+import { categoriesCreateItem } from '@/hooks/useCategories';
 
 const { set, validate, getValues, useForm } = formsCreate({
   values: {
     id: '',
     title: '',
-    categoryId: '',
+    type: '',
   },
   schema: {
     id: {
-      idInvalid,
+      isEmpty,
       alreadyExist,
+      idInvalid,
     },
     title: {
       isEmpty,
     },
-    categoryId: {
-      doesNotExist,
+    type: {
+      invalidType: categoriesInvalidType,
     },
   },
 });
 
 /**
  * @param {Object} params
- * @param {CategoryType} [params.initialCategoryId]
+ * @param {CategoryType} [params.initialType]
  * @param {Function} params.onCreate
  * */
-export function useCommoditiesCreate(params) {
-  const {
-    initialCategoryId,
-    onCreate,
-  } = params;
+export function useCategoriesCreate(params) {
+  const { initialType, onCreate } = params;
   const mountedRef = useMounted();
-  const { items } = useCategories();
   const {
-    errorsInvalidId,
-    errorsAlreadyExist,
+    typeIncome,
+    typeExpense,
     errorsEmpty,
-    errorsDoesNotExist,
+    errorsExist,
+    errorsInvalidId,
+    errorsInvalidType,
   } = useI18nTranslations({
-    errorsInvalidId: 'forms.errors.invalid-machine-name',
-    errorsAlreadyExist: 'forms.errors.already-exist',
+    typeIncome: 'categories.type.income',
+    typeExpense: 'categories.type.expense',
     errorsEmpty: 'forms.errors.empty',
-    errorsDoesNotExist: 'forms.errors.does-not-exist',
+    errorsExist: 'forms.errors.exist',
+    errorsInvalidId: 'forms.errors.invalid-id',
+    errorsInvalidType: 'forms.errors.invalid-type',
   });
   const [pending, setPending] = useState(false);
   const [reason, setReason] = useState('');
-  const { anyPending, anyInvalid, fields } = useForm();
+  const { anyPending, anyInvalid, anyChanged, fields } = useForm();
+  const disabled = anyPending || anyInvalid;
+  const changed = anyChanged;
 
-  const categories = useMemo(() => {
-    return items.map((item) => ({
-      key: item.id,
-      label: item.title,
-      value: item.id,
-    }));
+  const types = useMemo(() => {
+    return [
+      {
+        key: 'income',
+        label: typeIncome,
+        value: 'income',
+      },
+      {
+        key: 'expense',
+        label: typeExpense,
+        value: 'expense',
+      },
+    ];
   }, [
-    items,
+    typeIncome,
+    typeExpense,
   ]);
   const messages = useMemo(() => {
     return {
       id: {
         idInvalid: errorsInvalidId,
-        alreadyExist: errorsAlreadyExist,
+        alreadyExist: errorsExist,
       },
       title: {
         isEmpty: errorsEmpty,
       },
-      categoryId: {
-        doesNotExist: errorsDoesNotExist,
+      type: {
+        invalidType: errorsInvalidType,
       },
     };
   }, [
     errorsInvalidId,
-    errorsAlreadyExist,
+    errorsExist,
     errorsEmpty,
-    errorsDoesNotExist,
+    errorsInvalidType,
   ]);
 
   const handleCreate = useCallback(async () => {
     setPending(true);
-    const response = await commoditiesCreateItem({
+    const response = await categoriesCreateItem({
       payload: getValues(),
     });
     if (mountedRef.current) {
@@ -106,6 +110,7 @@ export function useCommoditiesCreate(params) {
       set({
         id: '',
         title: '',
+        type: '',
       });
     }
   }, [
@@ -138,28 +143,19 @@ export function useCommoditiesCreate(params) {
   ]);
 
   useEffect(() => {
-    if (initialCategoryId) {
-      categoriesExist({ id: initialCategoryId })
-        .then((response) => {
-          if (response.body.data) {
-            set({ categoryId: initialCategoryId });
-          }
-        })
-        .catch();
+    if (!categoriesInvalidType(initialType)) {
+      set({ type: initialType });
     }
   }, [
-    initialCategoryId,
+    initialType,
   ]);
-  useEffect(() => {
-    categoriesFetchList()
-      .then()
-      .catch();
-  }, []);
 
   return {
     pending,
+    changed,
+    disabled,
     reason,
-    categories,
+    types,
     messages,
     fields,
     onSubmit,
@@ -174,18 +170,6 @@ async function alreadyExist(value) {
   if (!value) {
     return false;
   }
-  const response = await commoditiesExist({ id: value });
-  return response.body.data;
-}
-
-/**
- * @param {string} value
- * @return {Promise<boolean>}
- * */
-async function doesNotExist(value) {
-  if (!value) {
-    return false;
-  }
   const response = await categoriesExist({ id: value });
-  return !response.body.data;
+  return response.body.data;
 }

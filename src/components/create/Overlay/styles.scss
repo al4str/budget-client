@@ -76,41 +76,6 @@
 
 .stepConfirm {}
 
-.actions {
-  position: sticky;
-  bottom: vars.$offset-md;
-  display: flex;
-  margin-top: vars.$offset-md;
-  transform: translateY(0);
-  opacity: 1;
-  transition:
-    transform 0.15s ease,
-    opacity 0.15s;
-}
-
-.actionsHidden {
-  transform: translateY(vars.$offset-md);
-  opacity: 0;
-}
-
-.action {
-  display: block;
-  min-width: 200px;
-  min-height: vars.$height-button;
-  padding: vars.$offset-xs vars.$offset-md;
-  margin: 0 auto;
-  font-weight: 700;
-  text-transform: uppercase;
-  background-color: color.adjust(mediumseagreen, $alpha: -0.05);
-  border-radius: vars.$offset-xs;
-}
-.action:disabled {
-  opacity: 1;
-}
-.action:not(:disabled):active {
-  background-color: mediumseagreen;
-}
-
 .reason {
   margin: vars.$offset-md 0 0 0;
   padding: vars.$offset-xs vars.$offset-sm;
@@ -119,12 +84,6 @@
   border-radius: vars.$offset-xxs;
 }
 
-@supports (backdrop-filter: blur(5px)) {
-  .action {
-    background-color: color.adjust(mediumseagreen, $alpha: -0.25);
-    backdrop-filter: blur(5px);
-  }
-  .action:not(:disabled):active {
-    background-color: mediumseagreen;
-  }
+.submit {
+  margin-top: vars.$offset-md;
 }

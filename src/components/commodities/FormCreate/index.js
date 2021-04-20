@@ -1,8 +1,8 @@
 import propTypes from 'prop-types';
 import cn from 'classnames';
 import { useI18nTranslations } from '@/hooks/useI18n';
-import { useCommoditiesCreate } from '@/components/commodities/hooks/create';
-import Submit from '@/components/ui/Submit';
+import { useCommoditiesCreate } from '@/components/commodities/FormCreate/useForm';
+import SubmitSticky from '@/components/ui/SubmitSticky';
 import FieldLabel from '@/components/ui/fields/Label';
 import FieldText from '@/components/ui/fields/Text';
 import FieldSelect from '@/components/ui/fields/Select';
@@ -28,17 +28,6 @@ function CommoditiesFormCreate(props) {
     onCreate,
   } = props;
   const {
-    pending,
-    reason,
-    categories,
-    messages,
-    fields,
-    onSubmit,
-  } = useCommoditiesCreate({
-    initialCategoryId: categoryId,
-    onCreate,
-  });
-  const {
     idLabel,
     idPlaceholder,
     idDesc,
@@ -56,6 +45,19 @@ function CommoditiesFormCreate(props) {
     categoryLabel: 'forms.category.label',
     categoryPlaceholder: 'forms.category.placeholder',
     createLabel: 'forms.actions.create',
+  });
+  const {
+    pending,
+    changed,
+    disabled,
+    reason,
+    categories,
+    messages,
+    fields,
+    onSubmit,
+  } = useCommoditiesCreate({
+    initialCategoryId: categoryId,
+    onCreate,
   });
 
   return (
@@ -113,17 +115,17 @@ function CommoditiesFormCreate(props) {
           onChange={fields.categoryId.onChange}
         />
       </FieldLabel>
-      <div className={s.submitWrp}>
-        <Submit
-          className={s.submit}
-          pending={pending}
-          label={createLabel}
-        />
-      </div>
       {reason
       && <p className={s.reason}>
         {reason}
       </p>}
+      <SubmitSticky
+        className={s.submit}
+        pending={pending}
+        shown={changed}
+        disabled={disabled}
+        label={createLabel}
+      />
     </form>
   );
 }

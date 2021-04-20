@@ -12,7 +12,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { expendituresCreateItem } from '@/hooks/useExpenditures';
 import { incomeCreateItem } from '@/hooks/useIncome';
 import { expensesCreateItem } from '@/hooks/useExpenses';
-import Submit from '@/components/ui/Submit';
+import SubmitSticky from '@/components/ui/SubmitSticky';
 import Overlay from '@/components/overlays/Overlay';
 import OverlayHeader from '@/components/overlays/Header';
 import OverlayBody from '@/components/overlays/Body';
@@ -333,24 +333,23 @@ function CreateOverlay(props) {
           date={date}
           userId={userId}
         />}
-        <div className={cn(s.actions, stepInvalid && s.actionsHidden)}>
-          <Submit
-            className={s.action}
-            pending={pending}
-            disabled={stepInvalid}
-            type="button"
-            label={step === STEP.CONFIRM
-              ? actionConfirm
-              : actionNext}
-            onClick={step === STEP.CONFIRM
-              ? handleConfirm
-              : handleNext}
-          />
-        </div>
         {reason.length > 0
         && <p className={s.reason}>
           {reason}
         </p>}
+        <SubmitSticky
+          className={s.submit}
+          pending={pending}
+          shown={!stepInvalid}
+          disabled={stepInvalid}
+          type="button"
+          label={step === STEP.CONFIRM
+            ? actionConfirm
+            : actionNext}
+          onClick={step === STEP.CONFIRM
+            ? handleConfirm
+            : handleNext}
+        />
       </OverlayBody>
     </Overlay>
   );

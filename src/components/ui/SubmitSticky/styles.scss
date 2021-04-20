@@ -1,0 +1,56 @@
+@use "sass:color";
+@use "src/styles/variables" as vars;
+
+.wrp {
+  position: sticky;
+  bottom: vars.$offset-md;
+  display: flex;
+  transform: translateY(-1 * vars.$offset-md);
+  opacity: 0;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s;
+}
+
+.shown {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.submit {
+  display: block;
+  min-width: 200px;
+  min-height: vars.$height-button;
+  padding: vars.$offset-xs vars.$offset-md;
+  margin: 0 auto;
+  color: whitesmoke;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: color.adjust(mediumseagreen, $alpha: -0.05);
+  border-radius: vars.$offset-xs;
+  transition:
+    color 0.15s,
+    background-color 0.15s;
+}
+.submit:disabled {
+  color: color.adjust(whitesmoke, $alpha: -0.5);
+  background-color: color.adjust(mediumseagreen, $alpha: -0.25);
+  opacity: 1;
+}
+.submit:not(:disabled):active {
+  background-color: mediumseagreen;
+}
+
+@supports (backdrop-filter: blur(5px)) {
+  .submit {
+    background-color: color.adjust(mediumseagreen, $alpha: -0.25);
+    backdrop-filter: blur(5px);
+  }
+  .submit:disabled {
+    color: color.adjust(whitesmoke, $alpha: -0.5);
+    background-color: color.adjust(mediumseagreen, $alpha: -0.35);
+  }
+  .submit:not(:disabled):active {
+    background-color: mediumseagreen;
+  }
+}

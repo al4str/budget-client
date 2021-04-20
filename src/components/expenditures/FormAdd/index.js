@@ -3,8 +3,8 @@ import propTypes from 'prop-types';
 import cn from 'classnames';
 import { useI18nTranslations } from '@/hooks/useI18n';
 import { useExpendituresAdd }
-  from '@/components/expenditures/hooks/add';
-import Submit from '@/components/ui/Submit';
+  from '@/components/expenditures/FormAdd/useForm';
+import SubmitSticky from '@/components/ui/SubmitSticky';
 import FieldLabel from '@/components/ui/fields/Label';
 import FieldText from '@/components/ui/fields/Text';
 import FieldCheckbox from '@/components/ui/fields/Checkbox';
@@ -40,15 +40,6 @@ function ExpendituresFormAdd(props) {
     onAdd,
   } = props;
   const {
-    messages,
-    fields,
-    onSubmit,
-  } = useExpendituresAdd({
-    initialAmount,
-    initialEssential,
-    onAdd,
-  });
-  const {
     amountLabel,
     amountPlaceholder,
     essentialLabel,
@@ -58,6 +49,17 @@ function ExpendituresFormAdd(props) {
     amountPlaceholder: 'forms.amount.placeholder',
     essentialLabel: 'forms.essential.label',
     submitLabel: 'forms.actions.ok',
+  });
+  const {
+    changed,
+    disabled,
+    messages,
+    fields,
+    onSubmit,
+  } = useExpendituresAdd({
+    initialAmount,
+    initialEssential,
+    onAdd,
   });
 
   /** @type {function(string): void} */
@@ -101,12 +103,12 @@ function ExpendituresFormAdd(props) {
           onChange={fields.essential.onChange}
         />
       </FieldLabel>
-      <div className={s.submitWrp}>
-        <Submit
-          className={s.submit}
-          label={submitLabel}
-        />
-      </div>
+      <SubmitSticky
+        className={s.submit}
+        shown={changed}
+        disabled={disabled}
+        label={submitLabel}
+      />
     </form>
   );
 }

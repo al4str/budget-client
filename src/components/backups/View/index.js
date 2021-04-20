@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { backupsObtainLatest } from '@/helpers/backups';
 import { useMounted } from '@/hooks/useMounted';
 import { useI18nTranslations } from '@/hooks/useI18n';
-import Submit from '@/components/ui/Submit';
+import SubmitSticky from '@/components/ui/SubmitSticky';
 import s from './styles.scss';
 
 BackupsView.propTypes = {
@@ -67,19 +67,18 @@ function BackupsView(props) {
       <h1 className={s.title}>
         {title}
       </h1>
-      <div className={s.actions}>
-        <Submit
-          className={s.action}
-          pending={pending}
-          type="button"
-          label={label}
-          onClick={handleCreate}
-        />
-      </div>
       {reason.length > 0
       && <p className={s.reason}>
         {reason}
       </p>}
+      <SubmitSticky
+        className={s.submit}
+        pending={pending}
+        shown={true}
+        type="button"
+        label={label}
+        onClick={handleCreate}
+      />
     </div>
   );
 }

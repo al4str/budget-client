@@ -1,12 +1,12 @@
 import propTypes from 'prop-types';
 import cn from 'classnames';
 import { useI18nTranslations } from '@/hooks/useI18n';
-import { useCategoriesCreate } from '@/components/categories/hooks/create';
-import Submit from '@/components/ui/Submit';
+import SubmitSticky from '@/components/ui/SubmitSticky';
 import FieldLabel from '@/components/ui/fields/Label';
 import FieldText from '@/components/ui/fields/Text';
 import FieldSelect from '@/components/ui/fields/Select';
 import input from '@/styles/input.scss';
+import { useCategoriesCreate } from './useForm';
 import s from './styles.scss';
 
 CategoriesFormCreate.propTypes = {
@@ -28,17 +28,6 @@ function CategoriesFormCreate(props) {
     onCreate,
   } = props;
   const {
-    pending,
-    reason,
-    messages,
-    types,
-    fields,
-    onSubmit,
-  } = useCategoriesCreate({
-    initialType: type,
-    onCreate,
-  });
-  const {
     idLabel,
     idPlaceholder,
     idDesc,
@@ -56,6 +45,19 @@ function CategoriesFormCreate(props) {
     typeLabel: 'forms.type.label',
     typePlaceholder: 'forms.type.placeholder',
     createLabel: 'forms.actions.create',
+  });
+  const {
+    pending,
+    changed,
+    disabled,
+    reason,
+    messages,
+    types,
+    fields,
+    onSubmit,
+  } = useCategoriesCreate({
+    initialType: type,
+    onCreate,
   });
 
   return (
@@ -113,17 +115,17 @@ function CategoriesFormCreate(props) {
           onChange={fields.type.onChange}
         />
       </FieldLabel>
-      <div className={s.submitWrp}>
-        <Submit
-          className={s.submit}
-          pending={pending}
-          label={createLabel}
-        />
-      </div>
       {reason
       && <p className={s.reason}>
         {reason}
       </p>}
+      <SubmitSticky
+        className={s.submit}
+        pending={pending}
+        shown={changed}
+        disabled={disabled}
+        label={createLabel}
+      />
     </form>
   );
 }
