@@ -2,7 +2,11 @@ import { propertyGet } from '@/libs/property';
 import { resourcesOperations } from '@/helpers/resources';
 
 /**
- * @typedef {Object} IncomeItem
+ * @typedef {'income'|'expense'} TransactionType
+ * */
+
+/**
+ * @typedef {Object} TransactionItem
  * @property {string} id
  * @property {string} userId
  * @property {string} categoryId
@@ -13,7 +17,7 @@ import { resourcesOperations } from '@/helpers/resources';
 
 /**
  * @param {null|Object} raw
- * @return {IncomeItem}
+ * @return {TransactionItem}
  * */
 function mapper(raw) {
   const id = propertyGet(raw, ['id'], '');
@@ -33,13 +37,13 @@ function mapper(raw) {
   };
 }
 
-const operations = resourcesOperations('income', mapper);
+const operations = resourcesOperations('transactions', mapper);
 
-export const incomeOperations = operations;
+export const transactionsOperations = operations;
 
-export const incomeExist = operations.exist;
+export const transactionsExist = operations.exist;
 
 /**
- * @return {IncomeItem}
+ * @return {TransactionItem}
  * */
-export const incomeGetEmpty = operations.empty;
+export const transactionsGetEmpty = operations.empty;

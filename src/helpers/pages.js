@@ -24,7 +24,7 @@ export const PAGES = [
     chunkGroupName: 'pageCreateIncome',
     Component: lazy(() => import(
       /* webpackChunkName: "pageCreateIncome" */
-      '@/components/create/PageIncome'
+      '@/components/transaction/PageIncome'
     )),
   },
   {
@@ -32,7 +32,7 @@ export const PAGES = [
     chunkGroupName: 'pageCreateExpense',
     Component: lazy(() => import(
       /* webpackChunkName: "pageCreateExpense" */
-      '@/components/create/PageExpense'
+      '@/components/transaction/PageExpense'
     )),
   },
   {

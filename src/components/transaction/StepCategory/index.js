@@ -33,7 +33,7 @@ CreateStepCategory.defaultProps = {
 /**
  * @param {Object} props
  * @param {string} props.className
- * @param {CategoryType} props.categoryType
+ * @param {TransactionType} props.categoryType
  * @param {string} props.categoryId
  * @param {function(string): void} props.onCategoryIdChange
  * */

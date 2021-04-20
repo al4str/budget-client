@@ -1,4 +1,4 @@
-import CreateOverlay from '@/components/create/Overlay';
+import CreateOverlay from '@/components/transaction/Overlay';
 
 function CreateIncomePage() {
   return (

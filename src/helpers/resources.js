@@ -5,8 +5,8 @@ import { API_URL } from '@/helpers/constants';
 import { sessionsWithTokenHeader } from '@/helpers/sessions';
 
 /**
- * @typedef {'categories'|'commodities'|'income'
- * |'expenses'|'expenditures'} ResourcesName
+ * @typedef {'categories'|'commodities'|'transactions'
+ * |'expenditures'} ResourcesName
  * */
 
 /**
@@ -65,7 +65,7 @@ import { sessionsWithTokenHeader } from '@/helpers/sessions';
  *   exist: function(params: {
  *     id: string
  *   }): Promise<ResourcesExistResponse>
- *   empty: ResourcesItem
+ *   empty: function(): ResourcesItem
  * }}
  * */
 export function resourcesOperations(resourceName, mapper) {

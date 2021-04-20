@@ -1,11 +1,11 @@
 import { resourcesStore } from '@/helpers/resources';
-import { expensesOperations } from '@/helpers/expenses';
+import { transactionsOperations } from '@/helpers/transactions';
 
-const store = resourcesStore(expensesOperations);
+const store = resourcesStore(transactionsOperations);
 
-export const expensesFetchList = store.list;
+export const transactionsFetchList = store.list;
 
-export const expensesFetchItem = store.read;
+export const transactionsFetchItem = store.read;
 
 /**
  * @param {Object} params
@@ -18,11 +18,11 @@ export const expensesFetchItem = store.read;
  * @param {string} params.payload.comment
  * @return {Promise<FetchResponse & {
  *   body: FetchGenericData & {
- *     data: ExpensesItem
+ *     data: TransactionItem
  *   }
  * }>}
  * */
-export const expensesCreateItem = store.create;
+export const transactionsCreateItem = store.create;
 
 /**
  * @param {Object} params
@@ -35,22 +35,22 @@ export const expensesCreateItem = store.create;
  * @param {string} params.payload.comment
  * @return {Promise<FetchResponse & {
  *   body: FetchGenericData & {
- *     data: ExpensesItem
+ *     data: TransactionItem
  *   }
  * }>}
  * */
-export const expensesUpdateItem = store.update;
+export const transactionsUpdateItem = store.update;
 
 /**
  * @param {Object} params
  * @param {string} params.id
  * @return {Promise<FetchResponse & {
  *   body: FetchGenericData & {
- *     data: ExpensesItem
+ *     data: TransactionItem
  *   }
  * }>}
  * */
-export const expensesRemoveItem = store.remove;
+export const transactionsRemoveItem = store.remove;
 
 /**
  * @return {{
@@ -59,8 +59,8 @@ export const expensesRemoveItem = store.remove;
  *   fetching: boolean
  *   pending: boolean
  *   ready: boolean
- *   items: Array<ExpensesItem>
+ *   items: Array<TransactionItem>
  *   READY_STATES: Record<'INITIAL'|'FETCHING'|'READY'>
  * }}
  * */
-export const useExpenses = store.useResource;
+export const useTransactions = store.useResource;

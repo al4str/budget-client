@@ -6,7 +6,7 @@ import { connectUseHook } from '@/libs/connect';
 import { useSession } from '@/hooks/useSession';
 import IconArrowLeft from '@/components/icons/IconArrowLeft';
 import Action from '@/components/ui/Action';
-import CreateMenu from '@/components/create/Menu';
+import CreateMenu from '@/components/transaction/Menu';
 import MainMonth from '@/components/main/Month';
 import btn from '@/styles/button.scss';
 import s from './styles.scss';

@@ -5,6 +5,7 @@ import { dateGetObjFromISO } from '@/libs/date';
 import { sumFormat } from '@/libs/sum';
 import { connectUseHook } from '@/libs/connect';
 import { usersGetEmptyItem } from '@/helpers/users';
+import { categoriesGetEmpty } from '@/helpers/categories';
 import { commoditiesGetEmpty } from '@/helpers/commodities';
 import { useI18nTranslations } from '@/hooks/useI18n';
 import { usersFetchList, useUsers }
@@ -13,10 +14,8 @@ import { categoriesFetchList, useCategories }
   from '@/hooks/useCategories';
 import { commoditiesFetchList, useCommodities }
   from '@/hooks/useCommodities';
-import { incomeFetchList, useIncome }
-  from '@/hooks/useIncome';
-import { expensesFetchList, useExpenses }
-  from '@/hooks/useExpenses';
+import { transactionsFetchList, useTransactions }
+  from '@/hooks/useTransactions';
 import { expendituresFetchList, useExpenditures }
   from '@/hooks/useExpenditures';
 import Table from '@/components/ui/Table';
@@ -42,8 +41,7 @@ function useHook(props) {
   const { items: usersItems } = useUsers();
   const { items: categoriesItems } = useCategories();
   const { items: commoditiesItems } = useCommodities();
-  const { items: incomeItems } = useIncome();
-  const { items: expensesItems } = useExpenses();
+  const { items: transactionsItems } = useTransactions();
   const { items: expendituresItems } = useExpenditures();
 
   /** @type {function(string): UsersItem} */
@@ -52,6 +50,13 @@ function useHook(props) {
       || usersGetEmptyItem();
   }, [
     usersItems,
+  ]);
+  /** @type {function(string): CategoryItem} */
+  const getCategoryItem = useCallback((categoryId) => {
+    return categoriesItems.find((category) => category.id === categoryId)
+      || categoriesGetEmpty();
+  }, [
+    categoriesItems,
   ]);
   /** @type {function(string): CommodityItem} */
   const getCommodityItem = useCallback((commodityId) => {
@@ -71,42 +76,44 @@ function useHook(props) {
   }, [
     currentDateObj,
   ]);
-  /** @type {Array<IncomeItem>} */
+  /** @type {Array<TransactionItem>} */
+  const monthTransactionItems = useMemo(() => {
+    return transactionsItems.filter((item) => {
+      return dateGetObjFromISO(item.date)
+        .hasSame(currentDateObj, 'month');
+    });
+  }, [
+    transactionsItems,
+    currentDateObj,
+  ]);
+  /** @type {Array<TransactionItem>} */
   const monthIncomeItems = useMemo(() => {
-    return incomeItems.filter((item) => {
-      return dateGetObjFromISO(item.date)
-        .hasSame(currentDateObj, 'month');
+    return monthTransactionItems.filter((item) => {
+      const category = getCategoryItem(item.categoryId);
+
+      return category.id && category.type === 'income';
     });
   }, [
-    incomeItems,
-    currentDateObj,
+    getCategoryItem,
+    monthTransactionItems,
   ]);
-  /** @type {Array<ExpensesItem>} */
-  const monthExpensesItems = useMemo(() => {
-    return expensesItems.filter((item) => {
-      return dateGetObjFromISO(item.date)
-        .hasSame(currentDateObj, 'month');
+  /** @type {Array<TransactionItem>} */
+  const monthExpenseItems = useMemo(() => {
+    return monthTransactionItems.filter((item) => {
+      const category = getCategoryItem(item.categoryId);
+
+      return category.id && category.type === 'expense';
     });
   }, [
-    expensesItems,
-    currentDateObj,
-  ]);
-  /** @type {Array<IncomeItem & ExpensesItem>} */
-  const monthIncomeExpensesItems = useMemo(() => {
-    return [
-      ...monthIncomeItems,
-      ...monthExpensesItems,
-    ];
-  }, [
-    monthIncomeItems,
-    monthExpensesItems,
+    getCategoryItem,
+    monthTransactionItems,
   ]);
   /** @type {Array<MonthTotalItem>} */
   const totalData = useMemo(() => {
     const income = monthIncomeItems.reduce((result, item) => {
       return result + item.sum;
     }, 0);
-    const expenses = monthExpensesItems.reduce((result, item) => {
+    const expenses = monthExpenseItems.reduce((result, item) => {
       return result + item.sum;
     }, 0);
     const rest = income - expenses;
@@ -130,7 +137,7 @@ function useHook(props) {
     ];
   }, [
     monthIncomeItems,
-    monthExpensesItems,
+    monthExpenseItems,
     incomeLabel,
     expensesLabel,
     restLabel,
@@ -142,7 +149,7 @@ function useHook(props) {
   const byCategoryData = useMemo(() => {
     /** @type {Map<string, number>} */
     const byCategoryMap = new Map();
-    monthIncomeExpensesItems.forEach((item) => {
+    monthTransactionItems.forEach((item) => {
       const prevSum = byCategoryMap.has(item.categoryId)
         ? byCategoryMap.get(item.categoryId)
         : 0;
@@ -172,7 +179,7 @@ function useHook(props) {
     }, byType);
   }, [
     categoriesItems,
-    monthIncomeExpensesItems,
+    monthTransactionItems,
   ]);
   const incomeByCategoryData = byCategoryData.income;
   const expensesByCategoryData = byCategoryData.expense;
@@ -180,7 +187,7 @@ function useHook(props) {
   const expendituresData = useMemo(() => {
     /** @type {Map<string, Array<MonthExpenditureItem>>} */
     const byCategoryMap = new Map();
-    monthIncomeExpensesItems.forEach((item) => {
+    monthTransactionItems.forEach((item) => {
       const prevItems = byCategoryMap.has(item.categoryId)
         ? byCategoryMap.get(item.categoryId)
         : [];
@@ -234,7 +241,7 @@ function useHook(props) {
     expendituresItems,
     getUserItem,
     getCommodityItem,
-    monthIncomeExpensesItems,
+    monthTransactionItems,
   ]);
 
   useEffect(() => {
@@ -242,8 +249,7 @@ function useHook(props) {
       usersFetchList(),
       categoriesFetchList(),
       commoditiesFetchList(),
-      incomeFetchList(),
-      expensesFetchList(),
+      transactionsFetchList(),
       expendituresFetchList(),
     ]).catch();
   }, []);

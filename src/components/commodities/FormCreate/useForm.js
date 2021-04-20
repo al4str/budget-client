@@ -36,7 +36,7 @@ const { set, validate, getValues, useForm } = formsCreate({
 
 /**
  * @param {Object} params
- * @param {CategoryType} [params.initialCategoryId]
+ * @param {TransactionType} [params.initialCategoryId]
  * @param {Function} params.onCreate
  * */
 export function useCommoditiesCreate(params) {

@@ -37,7 +37,7 @@ CreateStepConfirm.defaultProps = {
 /**
  * @param {Object} props
  * @param {string} props.className
- * @param {CategoryType} props.categoryType
+ * @param {TransactionType} props.categoryType
  * @param {number} props.sum
  * @param {string} props.categoryId
  * @param {string} props.comment

@@ -10,18 +10,17 @@ import { useMounted } from '@/hooks/useMounted';
 import { useI18nTranslations } from '@/hooks/useI18n';
 import { useProfile } from '@/hooks/useProfile';
 import { expendituresCreateItem } from '@/hooks/useExpenditures';
-import { incomeCreateItem } from '@/hooks/useIncome';
-import { expensesCreateItem } from '@/hooks/useExpenses';
+import { transactionsCreateItem } from '@/hooks/useTransactions';
 import SubmitSticky from '@/components/ui/SubmitSticky';
 import Overlay from '@/components/overlays/Overlay';
 import OverlayHeader from '@/components/overlays/Header';
 import OverlayBody from '@/components/overlays/Body';
-import CreateStepSum from '@/components/create/StepSum';
-import CreateStepCategory from '@/components/create/StepCategory';
-import CreateStepCommodities from '@/components/create/StepCommodities';
-import CreateStepDate from '@/components/create/StepDate';
-import CreateStepUsers from '@/components/create/StepUser';
-import CreateStepConfirm from '@/components/create/StepConfirm';
+import CreateStepSum from '@/components/transaction/StepSum';
+import CreateStepCategory from '@/components/transaction/StepCategory';
+import CreateStepCommodities from '@/components/transaction/StepCommodities';
+import CreateStepDate from '@/components/transaction/StepDate';
+import CreateStepUsers from '@/components/transaction/StepUser';
+import CreateStepConfirm from '@/components/transaction/StepConfirm';
 import s from './styles.scss';
 
 /** @type {Record<CreateStep>} */
@@ -66,7 +65,7 @@ CreateOverlay.defaultProps = {
 
 /**
  * @param {Object} props
- * @param {CategoryType} props.type
+ * @param {TransactionType} props.type
  * */
 function CreateOverlay(props) {
   const { type } = props;
@@ -211,10 +210,7 @@ function CreateOverlay(props) {
   const handleConfirm = useCallback(async () => {
     setPending(true);
     setReason('');
-    const create = type === 'income'
-      ? incomeCreateItem
-      : expensesCreateItem;
-    const { body } = await create({
+    const { body } = await transactionsCreateItem({
       payload: {
         id: idGet(),
         sum,
@@ -248,7 +244,6 @@ function CreateOverlay(props) {
       setPending(false);
     }
   }, [
-    type,
     mountedRef,
     sum,
     categoryId,

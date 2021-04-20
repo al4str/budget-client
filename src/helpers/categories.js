@@ -5,11 +5,7 @@ import { resourcesOperations } from '@/helpers/resources';
  * @typedef {Object} CategoryItem
  * @property {string} id
  * @property {string} title
- * @property {CategoryType} type
- * */
-
-/**
- * @typedef {'income'|'expense'} CategoryType
+ * @property {TransactionType} type
  * */
 
 /**
@@ -34,13 +30,10 @@ export const categoriesOperations = operations;
 
 export const categoriesExist = operations.exist;
 
-/**
- * @return {CategoryItem}
- * */
 export const categoriesGetEmpty = operations.empty;
 
 /**
- * @param {string|CategoryType} value
+ * @param {string|TransactionType} value
  * @return {boolean}
  * */
 export function categoriesInvalidType(value) {
