@@ -11,7 +11,6 @@ import { sessionHandle403, useSession } from '@/hooks/useSession';
 import { usersFetchList } from '@/hooks/useUsers';
 import { categoriesFetchList } from '@/hooks/useCategories';
 import { commoditiesFetchList } from '@/hooks/useCommodities';
-import { transactionsFetchList } from '@/hooks/useTransactions';
 import { handleSplashScreen } from '@/components/splash';
 import RoutesSwitcher from '@/components/page/RoutesSwitcher';
 
@@ -35,7 +34,6 @@ function useHook() {
           usersFetchList(),
           categoriesFetchList(),
           commoditiesFetchList(),
-          transactionsFetchList(),
         ])
         .catch();
     }

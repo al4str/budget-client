@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useEffect } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
 import { dateGetObjFromISO } from '@/libs/date';
@@ -9,10 +9,12 @@ import { usersGetEmptyItem } from '@/helpers/users';
 import { categoriesGetEmpty } from '@/helpers/categories';
 import { commoditiesGetEmpty } from '@/helpers/commodities';
 import { useI18nTranslations } from '@/hooks/useI18n';
+import { useSession } from '@/hooks/useSession';
 import { useUsers } from '@/hooks/useUsers';
 import { useCategories } from '@/hooks/useCategories';
 import { useCommodities } from '@/hooks/useCommodities';
-import { useTransactions } from '@/hooks/useTransactions';
+import { transactionsFetchList, useTransactions }
+  from '@/hooks/useTransactions';
 import Table from '@/components/ui/Table';
 import Anchor from '@/components/ui/Anchor';
 import UsersAvatar from '@/components/users/Avatar';
@@ -37,6 +39,7 @@ function useHook(props) {
     essentialYes: 'expenditures.essential.yes',
     essentialNo: 'expenditures.essential.no',
   });
+  const { authed } = useSession();
   const { items: usersItems } = useUsers();
   const { items: categoriesItems } = useCategories();
   const { items: commoditiesItems } = useCommodities();
@@ -240,6 +243,17 @@ function useHook(props) {
     getUserItem,
     getCommodityItem,
     monthTransactionItems,
+  ]);
+
+  useEffect(() => {
+    if (authed && date) {
+      transactionsFetchList({ inDateRange: [date, date] })
+        .then()
+        .catch();
+    }
+  }, [
+    date,
+    authed,
   ]);
 
   return {

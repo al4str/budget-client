@@ -1,3 +1,4 @@
+import queries from 'query-string';
 import { fetchExec, fetchMapGenericBody } from '@/libs/fetch';
 import { propertyGet, propertyGetBoolean } from '@/libs/property';
 import { storeCreate } from '@/libs/store';
@@ -48,7 +49,7 @@ import { sessionsWithTokenHeader } from '@/helpers/sessions';
  * @param {function(null|Object): ResourcesItem} mapper
  *
  * @return {{
- *   list: function(): Promise<ResourcesListResponse>
+ *   list: function(query?: Object): Promise<ResourcesListResponse>
  *   read: function(params: {
  *     id: string
  *   }): Promise<ResourcesItemResponse>
@@ -81,11 +82,17 @@ export function resourcesOperations(resourceName, mapper) {
    * */
 
   /**
+   * @param {Object} [query]
    * @return {Promise<ResourceListResponse>}
    * */
-  function list() {
+  function list(query) {
+    const queryString = queries.stringify(query);
+    const url = queryString
+      ? `${API_URL}/${resourceName}?${queryString}`
+      : `${API_URL}/${resourceName}`;
+
     return fetchExec({
-      url: `${API_URL}/${resourceName}`,
+      url,
       options: {
         headers: sessionsWithTokenHeader({}),
       },
@@ -313,7 +320,7 @@ export function resourcesOperations(resourceName, mapper) {
  * }} ResourceStoreListResponse
  *
  * @param {{
- *   list: function(): Promise<ResourceStoreListResponse>
+ *   list: function(query?: Object): Promise<ResourceStoreListResponse>
  *   read: function(params: {
  *     id: string
  *   }): Promise<ResourceStoreItemResponse>
@@ -343,7 +350,7 @@ export function resourcesOperations(resourceName, mapper) {
  *     updating: boolean
  *     items: Array<ResourceStoreItem>
  *   }
- *   list: function(): Promise<void>
+ *   list: function(query?: Object): Promise<void>
  *   read: function(params: {
  *     id: string
  *   }): Promise<void>
@@ -455,16 +462,17 @@ export function resourcesStore(operations) {
   }
 
   /**
+   * @param {Object} [query]
    * @return {Promise<void>}
    * */
-  async function list() {
+  async function list(query) {
     const { readyState: prevReadyState } = getState();
     dispatch(ACTION_TYPES.SET_READY_STATE, {
       readyState: prevReadyState === READY_STATES.READY
         ? READY_STATES.UPDATING
         : READY_STATES.FETCHING,
     });
-    const { status, body: { ok, data } } = await operations.list();
+    const { status, body: { ok, data } } = await operations.list(query);
     if (status === 'success' && ok) {
       dispatch(ACTION_TYPES.SET_ITEMS, {
         items: data,

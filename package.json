@@ -1,6 +1,6 @@
 {
   "name": "budget-client",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Home budget client app",
   "author": "al4str",
   "repository": {
@@ -55,6 +55,7 @@
     "postcss-preset-env": "^6.7.0",
     "postcss-scss": "^3.0.4",
     "prop-types": "^15.7.2",
+    "query-string": "^7.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",

@@ -1,10 +1,12 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import propTypes from 'prop-types';
 import { idGet } from '@/libs/id';
 import { dateGetNow } from '@/libs/date';
 import { connectUseHook } from '@/libs/connect';
+import { useSession } from '@/hooks/useSession';
 import { useProfile } from '@/hooks/useProfile';
-import { useTransactions } from '@/hooks/useTransactions';
+import { transactionsFetchList, useTransactions }
+  from '@/hooks/useTransactions';
 import TransactionOverlay from '@/components/transaction/Overlay';
 
 /** @param {{
@@ -25,8 +27,10 @@ function useHook(props) {
     ? 'create'
     : 'update';
   const isCreate = mode === 'create';
+  const { authed } = useSession();
   const { data: { id: profileId } } = useProfile();
   const {
+    initial: transactionsInitial,
     ready: transactionsReady,
     items: transactionsItems,
   } = useTransactions();
@@ -91,6 +95,17 @@ function useHook(props) {
     isCreate,
     profileId,
     transactionItem,
+  ]);
+
+  useEffect(() => {
+    if (authed && transactionsInitial) {
+      transactionsFetchList()
+        .then()
+        .catch();
+    }
+  }, [
+    authed,
+    transactionsInitial,
   ]);
 
   return {
