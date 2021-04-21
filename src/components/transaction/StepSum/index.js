@@ -37,10 +37,10 @@ function TransactionStepSum(props) {
   const isExpense = type === 'expense';
   /** @type {React.RefObject<HTMLInputElement>} */
   const fieldRef = useRef(null);
-  const [value, setValue] = useState(sumFormat(sum, 'decimal'));
+  const [value, setValue] = useState(sumFormat(sum, { sign: 'never' }));
   const displaySum = isExpense
-    ? sumFormat(-1 * sum, 'currency')
-    : sumFormat(sum, 'currency');
+    ? sumFormat(-1 * sum, { style: 'currency' })
+    : sumFormat(sum, { style: 'currency' });
 
   const handleChange = useCallback((nextValue) => {
     const sanitized = parseFloat(nextValue

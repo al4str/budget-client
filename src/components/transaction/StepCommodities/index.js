@@ -91,8 +91,7 @@ function TransactionStepCommodities(props) {
   const handleCommodityCreate = useCallback((nextCommodity) => {
     setCommodityOpened(false);
     handleExpenditureOpen({
-      id: idGet(),
-      transactionId: '',
+      tempId: idGet(),
       commodityId: nextCommodity.id,
       amount: 1,
       essential: false,
@@ -105,10 +104,10 @@ function TransactionStepCommodities(props) {
   const handleExpenditureAdd = useCallback((nextExpenditure) => {
     setOpenedExpenditure(null);
     onExpendituresChange((prev) => {
-      const exist = prev.findIndex((prevItem) => prevItem.id === nextExpenditure.id) !== -1;
+      const exist = prev.findIndex((prevItem) => prevItem.tempId === nextExpenditure.tempId) !== -1;
       if (exist) {
         return prev.map((prevItem) => {
-          return prevItem.id === nextExpenditure.id
+          return prevItem.tempId === nextExpenditure.tempId
             ? nextExpenditure
             : prevItem;
         });
@@ -119,9 +118,9 @@ function TransactionStepCommodities(props) {
     onExpendituresChange,
   ]);
   /** @type {function(string): void} */
-  const handleExpenditureDelete = useCallback((expenditureId) => {
+  const handleExpenditureDelete = useCallback((expenditureTempId) => {
     onExpendituresChange((prev) => {
-      return prev.filter((prevItem) => prevItem.id !== expenditureId);
+      return prev.filter((prevItem) => prevItem.tempId !== expenditureTempId);
     });
   }, [
     onExpendituresChange,
@@ -148,8 +147,7 @@ function TransactionStepCommodities(props) {
         label: commodity.title,
         onSelect: () => {
           handleExpenditureOpen({
-            id: idGet(),
-            transactionId: '',
+            tempId: idGet(),
             commodityId: commodity.id,
             amount: 1,
             essential: false,

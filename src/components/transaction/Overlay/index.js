@@ -7,17 +7,11 @@ import {
 } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
-import { isEqual } from '@/libs/isEqual';
 import { sumInvalid } from '@/libs/sum';
 import { ROUTES } from '@/helpers/routes';
 import { historyPush } from '@/libs/navigationManager';
 import { useMounted } from '@/hooks/useMounted';
 import { useI18nTranslations } from '@/hooks/useI18n';
-import {
-  expendituresCreateItem,
-  expendituresUpdateItem,
-  expendituresRemoveItem,
-} from '@/hooks/useExpenditures';
 import {
   transactionsCreateItem,
   transactionsUpdateItem,
@@ -253,76 +247,6 @@ function TransactionOverlay(props) {
     steps,
   ]);
 
-  /** @type {function(string): Promise<void>} */
-  const handleExpenditures = useCallback(async (transactionId) => {
-    /** @type {Array<ExpenditureItem>} */
-    const itemsToCreate = [];
-    /** @type {Array<ExpenditureItem>} */
-    const itemsToUpdate = [];
-    /** @type {Array<ExpenditureItem>} */
-    const itemsToDelete = [];
-    /**
-     * @param {string} expenditureId
-     * @return {null|ExpenditureItem}
-     * */
-    const getFromInitial = (expenditureId) => {
-      return initialExpenditures.find((expenditure) => expenditure.id === expenditureId);
-    };
-    /**
-     * @param {string} expenditureId
-     * @return {null|ExpenditureItem}
-     * */
-    const getFromCurrent = (expenditureId) => {
-      return expenditures.find((expenditure) => expenditure.id === expenditureId);
-    };
-    expenditures.forEach((expenditure) => {
-      const initialExpenditure = getFromInitial(expenditure.id);
-      if (!initialExpenditure) {
-        itemsToCreate.push(expenditure);
-      }
-      else if (!isEqual(initialExpenditure, expenditure)) {
-        itemsToUpdate.push(expenditure);
-      }
-    });
-    initialExpenditures.forEach((expenditure) => {
-      const currentExpenditure = getFromCurrent(expenditure.id);
-      if (!currentExpenditure) {
-        itemsToDelete.push(expenditure);
-      }
-    });
-    await Promise.all([
-      ...itemsToCreate.map((expenditure) => {
-        return expendituresCreateItem({
-          payload: {
-            id: expenditure.id,
-            transactionId,
-            commodityId: expenditure.commodityId,
-            amount: expenditure.amount,
-            essential: expenditure.essential,
-          },
-        });
-      }),
-      ...itemsToUpdate.map((expenditure) => {
-        return expendituresUpdateItem({
-          id: expenditure.id,
-          payload: {
-            transactionId,
-            commodityId: expenditure.commodityId,
-            amount: expenditure.amount,
-            essential: expenditure.essential,
-          },
-        });
-      }),
-      ...itemsToDelete.map((expenditure) => {
-        return expendituresRemoveItem({
-          id: expenditure.id,
-        });
-      }),
-    ]);
-  }, [
-    expenditures,
-    initialExpenditures,
-  ]);
   const handleClose = useCallback(() => {
     historyPush(ROUTES.main);
   }, []);
@@ -354,13 +278,20 @@ function TransactionOverlay(props) {
     const method = isCreate
       ? transactionsCreateItem
       : transactionsUpdateItem;
+    const expendituresItems = expenditures.map((item) => ({
+      commodityId: item.commodityId,
+      amount: item.amount,
+      essential: item.essential,
+    }));
     const payload = isCreate
       ? {
         payload: {
           id,
+          type,
           sum,
           categoryId,
           comment,
+          expenditures: expendituresItems,
           date,
           userId,
         },
@@ -368,17 +299,16 @@ function TransactionOverlay(props) {
       : {
         id,
         payload: {
+          type,
           sum,
           categoryId,
           comment,
+          expenditures: expendituresItems,
           date,
           userId,
         },
       };
     const { body } = await method(payload);
-    if (isExpense && body.ok) {
-      await handleExpenditures(body.data.id);
-    }
     if (mountedRef.current) {
       if (!body.ok) {
         setReason(body.reason);
@@ -390,16 +320,16 @@ function TransactionOverlay(props) {
     }
   }, [
     id,
+    type,
     isCreate,
-    isExpense,
     mountedRef,
     sum,
     categoryId,
     comment,
+    expenditures,
     date,
     userId,
     handleClose,
-    handleExpenditures,
   ]);
 
   useEffect(() => {

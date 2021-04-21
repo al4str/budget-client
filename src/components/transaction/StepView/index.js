@@ -4,7 +4,6 @@ import cn from 'classnames';
 import { historyGoBack } from '@/libs/navigationManager';
 import { useMounted } from '@/hooks/useMounted';
 import { useI18nTranslations } from '@/hooks/useI18n';
-import { expendituresRemoveItem } from '@/hooks/useExpenditures';
 import { transactionsRemoveItem } from '@/hooks/useTransactions';
 import Submit from '@/components/ui/Submit';
 import TransactionOverview from '@/components/transaction/Overview';
@@ -70,26 +69,21 @@ function TransactionStepView(props) {
   const handleRemove = useCallback(async () => {
     setRemoving(true);
     setReason('');
-    const transactionResponse = await transactionsRemoveItem({
+    const response = await transactionsRemoveItem({
       id,
     });
     if (mountedRef.current) {
-      if (transactionResponse.status === 'error' || !transactionResponse.body.ok) {
-        setReason(transactionResponse.body.reason);
+      if (response.status === 'error') {
+        setReason(response.errorMessage);
       }
-      else {
-        await Promise.all(expenditures.map((expenditure) => {
-          return expendituresRemoveItem({
-            id: expenditure.id,
-          });
-        }));
+      if (!response.body.ok) {
+        setReason(response.body.reason);
       }
       setRemoving(false);
       historyGoBack();
     }
   }, [
     id,
-    expenditures,
     mountedRef,
   ]);
 

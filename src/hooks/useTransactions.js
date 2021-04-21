@@ -11,6 +11,7 @@ export const transactionsFetchItem = store.read;
  * @param {Object} params
  * @param {Object} params.payload
  * @param {string} params.payload.id
+ * @param {TransactionType} params.payload.type
  * @param {string} params.payload.userId
  * @param {string} params.payload.categoryId
  * @param {string} params.payload.date
@@ -28,6 +29,7 @@ export const transactionsCreateItem = store.create;
  * @param {Object} params
  * @param {string} params.id
  * @param {Object} params.payload
+ * @param {TransactionType} params.payload.type
  * @param {string} params.payload.userId
  * @param {string} params.payload.categoryId
  * @param {string} params.payload.date

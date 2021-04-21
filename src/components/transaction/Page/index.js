@@ -3,9 +3,7 @@ import propTypes from 'prop-types';
 import { idGet } from '@/libs/id';
 import { dateGetNow } from '@/libs/date';
 import { connectUseHook } from '@/libs/connect';
-import { transactionsGetType } from '@/helpers/transactions';
 import { useProfile } from '@/hooks/useProfile';
-import { useExpenditures } from '@/hooks/useExpenditures';
 import { useTransactions } from '@/hooks/useTransactions';
 import TransactionOverlay from '@/components/transaction/Overlay';
 
@@ -28,9 +26,6 @@ function useHook(props) {
     : 'update';
   const isCreate = mode === 'create';
   const { data: { id: profileId } } = useProfile();
-  const {
-    items: expendituresItems,
-  } = useExpenditures();
   const {
     ready: transactionsReady,
     items: transactionsItems,
@@ -56,7 +51,7 @@ function useHook(props) {
       return transactionType;
     }
     if (transactionItem) {
-      return transactionsGetType(transactionItem);
+      return transactionItem.type;
     }
     return '';
   }, [
@@ -88,7 +83,7 @@ function useHook(props) {
       sum: transactionItem.sum,
       categoryId: transactionItem.categoryId,
       comment: transactionItem.comment,
-      expenditures: expendituresItems.filter((expenditure) => expenditure.transactionId === transactionItem.id),
+      expenditures: transactionItem.expenditures,
       date: transactionItem.date,
       userId: transactionItem.userId,
     };
@@ -96,7 +91,6 @@ function useHook(props) {
     isCreate,
     profileId,
     transactionItem,
-    expendituresItems,
   ]);
 
   return {

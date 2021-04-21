@@ -73,7 +73,7 @@ function TransactionExpenditures(props) {
       const title = getCommodityTitle(expenditure.commodityId);
 
       return {
-        key: expenditure.id,
+        key: expenditure.tempId,
         title,
         amount: expenditure.amount,
         essential: expenditure.essential,
@@ -81,7 +81,7 @@ function TransactionExpenditures(props) {
           ...expenditure,
           title,
         }),
-        onDelete: onDelete.bind(null, expenditure.id),
+        onDelete: onDelete.bind(null, expenditure.tempId),
       };
     });
   }, [

@@ -78,8 +78,8 @@ function TransactionOverview(props) {
   /** @type {string} */
   const sumHuman = useMemo(() => {
     return isExpense
-      ? sumFormat(-1 * sum, 'currency')
-      : sumFormat(sum, 'currency');
+      ? sumFormat(-1 * sum, { style: 'currency' })
+      : sumFormat(sum, { style: 'currency' });
   }, [
     isExpense,
     sum,

@@ -1,42 +1,38 @@
+import { idGet } from '@/libs/id';
 import { propertyGet, propertyGetBoolean } from '@/libs/property';
-import { resourcesOperations } from '@/helpers/resources';
 
 /**
  * @typedef {Object} ExpenditureItem
- * @property {string} id
- * @property {string} transactionId
+ * @property {string} tempId
  * @property {string} commodityId
  * @property {number} amount
  * @property {boolean} essential
  * */
 
 /**
+ * @param {null|Object|Array} raw
+ * @return {Array<ExpenditureItem>}
+ * */
+export function expendituresMapItems(raw) {
+  return Array.isArray(raw)
+    ? raw.map((rawItem) => expendituresMapItem(rawItem))
+    : [];
+}
+
+/**
  * @param {null|Object} raw
  * @return {ExpenditureItem}
  * */
-function mapper(raw) {
-  const id = propertyGet(raw, ['id'], '');
-  const transactionId = propertyGet(raw, ['transactionId'], '');
+export function expendituresMapItem(raw) {
+  const tempId = idGet();
   const commodityId = propertyGet(raw, ['commodityId'], '');
   const amount = propertyGet(raw, ['amount'], 0);
   const essential = propertyGetBoolean(raw, ['essential'], false);
 
   return {
-    id,
-    transactionId,
+    tempId,
     commodityId,
     amount,
     essential,
   };
 }
-
-const operations = resourcesOperations('expenditures', mapper);
-
-export const expendituresOperations = operations;
-
-export const expendituresExist = operations.exist;
-
-/**
- * @return {ExpenditureItem}
- * */
-export const expendituresGetEmpty = operations.empty;

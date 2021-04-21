@@ -12,7 +12,6 @@ import { usersFetchList } from '@/hooks/useUsers';
 import { categoriesFetchList } from '@/hooks/useCategories';
 import { commoditiesFetchList } from '@/hooks/useCommodities';
 import { transactionsFetchList } from '@/hooks/useTransactions';
-import { expendituresFetchList } from '@/hooks/useExpenditures';
 import { handleSplashScreen } from '@/components/splash';
 import RoutesSwitcher from '@/components/page/RoutesSwitcher';
 
@@ -37,7 +36,6 @@ function useHook() {
           categoriesFetchList(),
           commoditiesFetchList(),
           transactionsFetchList(),
-          expendituresFetchList(),
         ])
         .catch();
     }

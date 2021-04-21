@@ -7,7 +7,7 @@
 }
 
 .field {
-  width: calc(#{2 * vars.$offset-sm} + 14ch);
+  width: 17ch;
   min-height: vars.$height-field + 2 * vars.$offset-sm;
   font-size: 1.75rem;
 }

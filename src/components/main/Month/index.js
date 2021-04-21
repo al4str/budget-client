@@ -13,7 +13,6 @@ import { useUsers } from '@/hooks/useUsers';
 import { useCategories } from '@/hooks/useCategories';
 import { useCommodities } from '@/hooks/useCommodities';
 import { useTransactions } from '@/hooks/useTransactions';
-import { useExpenditures } from '@/hooks/useExpenditures';
 import Table from '@/components/ui/Table';
 import Anchor from '@/components/ui/Anchor';
 import UsersAvatar from '@/components/users/Avatar';
@@ -42,7 +41,6 @@ function useHook(props) {
   const { items: categoriesItems } = useCategories();
   const { items: commoditiesItems } = useCommodities();
   const { items: transactionsItems } = useTransactions();
-  const { items: expendituresItems } = useExpenditures();
 
   /** @type {function(string): UsersItem} */
   const getUserItem = useCallback((userId) => {
@@ -183,26 +181,24 @@ function useHook(props) {
   ]);
   const incomeByCategoryData = byCategoryData.income;
   const expensesByCategoryData = byCategoryData.expense;
-  /** @type {Array<MonthCategoryItem>} */
-  const expendituresData = useMemo(() => {
+  /** @type {Array<MonthTransactionsByCategoryItem>} */
+  const transactionsData = useMemo(() => {
     /** @type {Map<string, Array<MonthExpenditureItem>>} */
     const byCategoryMap = new Map();
     monthTransactionItems.forEach((item) => {
       const prevItems = byCategoryMap.has(item.categoryId)
         ? byCategoryMap.get(item.categoryId)
         : [];
-      const expenditures = expendituresItems
-        .filter((expenditure) => expenditure.transactionId === item.id)
-        .map((expenditure) => {
-          const commodity = getCommodityItem(expenditure.commodityId);
-          const title = commodity.title;
-          const amount = `x${expenditure.amount}`;
-          const essential = expenditure.essential
-            ? essentialYes
-            : essentialNo;
+      const expenditures = item.expenditures.map((expenditure) => {
+        const commodity = getCommodityItem(expenditure.commodityId);
+        const title = commodity.title;
+        const amount = `x${expenditure.amount}`;
+        const essential = expenditure.essential
+          ? essentialYes
+          : essentialNo;
 
-          return `${title} ${amount} ${essential}`;
-        });
+        return `${title} ${amount} ${essential}`;
+      });
       const label = [item.comment, ...expenditures]
         .filter((labelItem) => labelItem.trim().length > 0)
         .join(', ');
@@ -241,7 +237,6 @@ function useHook(props) {
     essentialYes,
     essentialNo,
     categoriesItems,
-    expendituresItems,
     getUserItem,
     getCommodityItem,
     monthTransactionItems,
@@ -252,7 +247,7 @@ function useHook(props) {
     totalData,
     incomeByCategoryData,
     expensesByCategoryData,
-    expendituresData,
+    transactionsData,
   };
 }
 
@@ -261,7 +256,7 @@ MainMonth.propTypes = {
   totalData: propTypes.array,
   incomeByCategoryData: propTypes.array,
   expensesByCategoryData: propTypes.array,
-  expendituresData: propTypes.array,
+  transactionsData: propTypes.array,
   className: propTypes.string,
   date: propTypes.string,
 };
@@ -271,7 +266,7 @@ MainMonth.defaultProps = {
   totalData: [],
   incomeByCategoryData: [],
   expensesByCategoryData: [],
-  expendituresData: [],
+  transactionsData: [],
   className: '',
   date: '',
 };
@@ -291,7 +286,7 @@ MainMonth.defaultProps = {
  * */
 
 /**
- * @typedef {Object} MonthCategoryItem
+ * @typedef {Object} MonthTransactionsByCategoryItem
  * @property {string} id
  * @property {string} title
  * @property {Array<MonthExpenditureItem>} items
@@ -313,7 +308,7 @@ MainMonth.defaultProps = {
  * @param {Array<MonthTotalItem>} props.totalData
  * @param {Array<MonthByCategoryItem>} props.incomeByCategoryData
  * @param {Array<MonthByCategoryItem>} props.expensesByCategoryData
- * @param {Array<MonthCategoryItem>} props.expendituresData
+ * @param {Array<MonthTransactionsByCategoryItem>} props.transactionsData
  * @param {string} props.className
  * @param {string} props.date
  * */
@@ -322,7 +317,7 @@ function MainMonth(props) {
     totalData,
     incomeByCategoryData,
     expensesByCategoryData,
-    expendituresData,
+    transactionsData,
     className,
   } = props;
   const {
@@ -359,7 +354,7 @@ function MainMonth(props) {
         onRender(row) {
           return (
             <span className={s.sum}>
-              {sumFormat(row.value, 'decimal')}
+              {sumFormat(row.value)}
             </span>
           );
         },
@@ -397,7 +392,7 @@ function MainMonth(props) {
         onRender(row) {
           return (
             <span className={s.sum}>
-              {sumFormat(row.sum, 'decimal')}
+              {sumFormat(row.sum)}
             </span>
           );
         },
@@ -435,7 +430,7 @@ function MainMonth(props) {
         onRender(row) {
           return (
             <span className={s.sum}>
-              {sumFormat(row.sum, 'decimal')}
+              {sumFormat(row.sum)}
             </span>
           );
         },
@@ -460,7 +455,7 @@ function MainMonth(props) {
    *   rows: Array<TableRow>
   }>} */
   const expendituresTables = useMemo(() => {
-    return expendituresData.map((expenditure) => ({
+    return transactionsData.map((expenditure) => ({
       key: expenditure.id,
       className: cn(expenditure.items.length === 0 && s.tableEmpty),
       columns: [
@@ -491,7 +486,7 @@ function MainMonth(props) {
           onRender(row) {
             return (
               <span className={s.sum}>
-                {sumFormat(row.sum, 'decimal')}
+                {sumFormat(row.sum)}
               </span>
             );
           },
@@ -527,7 +522,7 @@ function MainMonth(props) {
       })),
     }));
   }, [
-    expendituresData,
+    transactionsData,
     dateWhen,
     usersBy,
   ]);
