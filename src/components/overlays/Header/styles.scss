@@ -1,6 +1,10 @@
+@use "sass:color";
 @use "src/styles/variables" as vars;
 
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   flex-shrink: 0;
 }
 
@@ -10,7 +14,7 @@
   box-sizing: border-box;
   width: 100%;
   padding: vars.$offset-xs vars.$offset-sm;
-  background-color: dimgray;
+  background-color: color.adjust(dimgray, $alpha: -0.05);
 }
 
 .action {
@@ -27,4 +31,11 @@
   margin: 0 vars.$offset-sm;
   font-weight: 700;
   text-align: center;
+}
+
+@supports (backdrop-filter: blur(5px)) {
+  .wrp {
+    background-color: color.adjust(dimgray, $alpha: -0.35);
+    backdrop-filter: blur(5px);
+  }
 }

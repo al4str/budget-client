@@ -1,8 +1,0 @@
-@use "src/styles/variables" as vars;
-
-.footer {
-  flex-shrink: 0;
-  width: 100%;
-  padding: 0 vars.$offset-sm vars.$offset-xs;
-  margin-top: vars.$offset-md;
-}

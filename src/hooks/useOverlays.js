@@ -56,8 +56,11 @@ export function overlaysRegister(overlayId) {
  * @return {void}
  * */
 export function overlaysOpen(overlayId) {
-  const { shown: prevShown } = overlaysGetState();
+  const { shown: prevShown, current: prevOverlayId } = overlaysGetState();
   const nextShown = new Set(prevShown);
+  if (prevOverlayId) {
+    overlaysSetScroll(prevOverlayId);
+  }
   nextShown.add(overlayId);
   overlaysDispatch(ACTION_TYPES.SET_SHOWN, {
     shown: nextShown,
@@ -93,6 +96,34 @@ export function overlaysUnregister(overlayId) {
   overlaysDispatch(ACTION_TYPES.SET_SHOWN, {
     shown: nextShown,
   });
+  overlaysClearScroll(overlayId);
+}
+
+/** @type {Map<string, number>} */
+const scrollMap = new Map();
+
+/**
+ * @param {string} overlayId
+ * @return {void}
+ * */
+function overlaysSetScroll(overlayId) {
+  scrollMap.set(overlayId, window.scrollY);
+}
+
+/**
+ * @param {string} overlayId
+ * @return {number}
+ * */
+export function overlaysGetScroll(overlayId) {
+  return scrollMap.get(overlayId) || 0;
+}
+
+/**
+ * @param {string} overlayId
+ * @return {void}
+ * */
+function overlaysClearScroll(overlayId) {
+  scrollMap.delete(overlayId);
 }
 
 /**

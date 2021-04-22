@@ -10,6 +10,7 @@ import {
   overlaysOpen,
   overlaysClose,
   overlaysUnregister,
+  overlaysGetScroll,
   useOverlays,
 } from '@/hooks/useOverlays';
 import s from './styles.scss';
@@ -38,6 +39,7 @@ function Overlay(props) {
     children,
   } = props;
   const prevOpened = usePrevious(opened);
+  /** @type {React.RefObject<string>} */
   const idRef = useRef(idGet());
   const { current } = useOverlays();
   const shown = !!current && current === idRef.current;
@@ -72,10 +74,21 @@ function Overlay(props) {
     onClose,
     prevOpened,
   ]);
+  useEffect(() => {
+    if (shown) {
+      const overlayId = idRef.current;
+      const y = overlaysGetScroll(overlayId);
+      window.scrollTo(0, y);
+    }
+  }, [
+    shown,
+  ]);
 
   return createPortal(
-    <div className={cn(s.overlay, !shown && s.hidden)}>
-      {children}
+    <div className={cn(s.overlay, shown && s.shown)}>
+      <div className={s.wrp}>
+        {children}
+      </div>
     </div>,
     window.document.getElementById(OVERLAYS_ELEMENT_ID),
   );

@@ -10,11 +10,13 @@
   transition:
     transform 0.15s ease,
     opacity 0.15s;
+  pointer-events: none;
 }
 
 .shown {
   transform: translateY(0);
   opacity: 1;
+  pointer-events: auto;
 }
 
 .submit {
