@@ -15,17 +15,19 @@ const READY_STATE = {
 
 /**
  * @typedef {'INITIAL'|'FETCHING'|'READY'
- * |'UPDATING'} BudgetStoreReadyState
+ *   |'UPDATING'} BudgetStoreReadyState
  * */
 
 const ACTION_TYPES = {
   READY_STATE: 'READY_STATE',
+  INCOME: 'INCOME',
   AVERAGE: 'AVERAGE',
   FIXED: 'FIXED',
 };
 
 /**
- * @typedef {'READY_STATE'|'AVERAGE'|'FIXED'} BudgetStoreActionType
+ * @typedef {'READY_STATE'|'INCOME'|'AVERAGE'
+ *   |'FIXED'} BudgetStoreActionType
  * */
 
 /** @type {BudgetStoreState} */
@@ -36,6 +38,7 @@ const initialState = {
   pending: true,
   ready: false,
   updating: false,
+  income: 0.00,
   average: new Map(),
   fixed: new Map(),
 };
@@ -48,6 +51,7 @@ const initialState = {
  * @property {boolean} pending
  * @property {boolean} ready
  * @property {boolean} updating
+ * @property {number} income
  * @property {Map<string, number>} average
  * @property {Map<string, number>} fixed
  * */
@@ -68,7 +72,7 @@ export const budgetDispatch = dispatch;
 /**
  * @return {Promise<{
  *   average: BudgetItemsResponse
- *   fixed: BudgetItemsResponse
+ *   fixed: BudgetDataResponse
  * }>}
  * */
 export async function budgetFetchAll() {
@@ -80,7 +84,7 @@ export async function budgetFetchAll() {
   });
   const [average, fixed] = await Promise.all([
     budgetFetchAverage(),
-    budgetFetchFixed(),
+    budgetFetchFixedData(),
   ]);
   budgetDispatch(ACTION_TYPES.READY_STATE, {
     readyState: READY_STATE.READY,
@@ -111,14 +115,15 @@ export async function budgetFetchAverage() {
 }
 
 /**
- * @return {Promise<BudgetItemsResponse>}
+ * @return {Promise<BudgetDataResponse>}
  * */
-export async function budgetFetchFixed() {
+export async function budgetFetchFixedData() {
   const response = await budgetObtainFixedValues();
   const { status, body: { ok, data } } = response;
   if (status === 'success' && ok) {
+    budgetSetIncome(data.income);
     const nextValues = new Map();
-    data.forEach((item) => {
+    data.items.forEach((item) => {
       nextValues.set(item.categoryId, item.value);
     });
     budgetDispatch(ACTION_TYPES.FIXED, {
@@ -129,24 +134,26 @@ export async function budgetFetchFixed() {
 }
 
 /**
- * @return {Promise<BudgetItemsResponse>}
+ * @return {Promise<BudgetDataResponse>}
  * */
-export async function budgetFixValues() {
+export async function budgetSaveFixedData() {
   const { items: categories } = categoriesGetState();
-  const { fixed } = budgetGetState();
-  const values = categories
+  const { income, fixed } = budgetGetState();
+  const items = categories
     .filter((category) => category.type === 'expense')
     .map((category) => ({
       categoryId: category.id,
       value: fixed.get(category.id) || 0.00,
     }));
   const response = await budgetUpdateFixedValues({
-    values,
+    items,
+    income,
   });
   const { status, body: { ok, data } } = response;
   if (status === 'success' && ok) {
+    budgetSetIncome(data.income);
     const nextValues = new Map();
-    data.forEach((item) => {
+    data.items.forEach((item) => {
       nextValues.set(item.categoryId, item.value);
     });
     budgetDispatch(ACTION_TYPES.FIXED, {
@@ -154,6 +161,16 @@ export async function budgetFixValues() {
     });
   }
   return response;
+}
+
+/**
+ * @param {number} nextIncome
+ * @return {void}
+ * */
+export function budgetSetIncome(nextIncome) {
+  budgetDispatch(ACTION_TYPES.INCOME, {
+    income: nextIncome,
+  });
 }
 
 /**
@@ -161,7 +178,7 @@ export async function budgetFixValues() {
  * @param {number} value
  * @return {void}
  * */
-export function budgetSetValue(categoryId, value) {
+export function budgetSetItemValue(categoryId, value) {
   const { fixed: prevFixed } = budgetGetState();
   const nextFixed = new Map(prevFixed);
   nextFixed.set(categoryId, value);
@@ -181,6 +198,7 @@ export function useBudget() {
     pending,
     ready,
     updating,
+    income,
     average,
     fixed,
   } = budgetGetState();
@@ -194,6 +212,7 @@ export function useBudget() {
     pending,
     ready,
     updating,
+    income,
     average,
     fixed,
     READY_STATE,
@@ -208,6 +227,7 @@ export function useBudget() {
  * @property {boolean} pending
  * @property {boolean} ready
  * @property {boolean} updating
+ * @property {number} income
  * @property {Map<string, number>} average
  * @property {Map<string, number>} fixed
  * @property {Record<BudgetStoreReadyState>} READY_STATE
@@ -238,6 +258,11 @@ function reducer(state, action) {
           READY_STATE.UPDATING,
         ].includes(action.payload.readyState),
         updating: action.payload.readyState === READY_STATE.UPDATING,
+      };
+    case ACTION_TYPES.INCOME:
+      return {
+        ...state,
+        income: action.payload.income,
       };
     case ACTION_TYPES.AVERAGE:
       return {

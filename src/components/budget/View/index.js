@@ -6,8 +6,12 @@ import { sumFormat } from '@/libs/sum';
 import { useMounted } from '@/hooks/useMounted';
 import { useI18nTranslations } from '@/hooks/useI18n';
 import { useCategories } from '@/hooks/useCategories';
-import { budgetSetValue, budgetFixValues, useBudget }
-  from '@/hooks/useBudget';
+import {
+  budgetSetItemValue,
+  budgetSetIncome,
+  budgetSaveFixedData,
+  useBudget,
+} from '@/hooks/useBudget';
 import FieldLabel from '@/components/ui/fields/Label';
 import FieldNumber from '@/components/ui/fields/Number';
 import SubmitSticky from '@/components/ui/SubmitSticky';
@@ -17,8 +21,8 @@ import btn from '@/styles/button.scss';
 import s from './styles.scss';
 
 function useHook() {
-  const { ready, items: categories } = useCategories();
-  const { average, fixed } = useBudget();
+  const { items: categories } = useCategories();
+  const { ready, income, average, fixed } = useBudget();
 
   /** @type {Array<BudgetViewItem>} */
   const values = useMemo(() => {
@@ -53,8 +57,19 @@ function useHook() {
     fixed,
   ]);
 
-  return {
+  useEffect(() => {
+    if (ready && income === 0) {
+      budgetSetIncome(sumFixed || sumAverage);
+    }
+  }, [
     ready,
+    sumFixed,
+    sumAverage,
+    income,
+  ]);
+
+  return {
+    income,
     values,
     sumAverage,
     sumFixed,
@@ -71,7 +86,7 @@ function useHook() {
  * */
 
 BudgetView.propTypes = {
-  ready: propTypes.bool,
+  income: propTypes.number,
   values: propTypes.array,
   sumAverage: propTypes.number,
   sumFixed: propTypes.number,
@@ -79,16 +94,16 @@ BudgetView.propTypes = {
 };
 
 BudgetView.defaultProps = {
-  ready: false,
+  income: 0.00,
   values: [],
-  sumAverage: 0,
-  sumFixed: 0,
+  sumAverage: 0.00,
+  sumFixed: 0.00,
   className: '',
 };
 
 /**
  * @param {Object} props
- * @param {boolean} props.ready
+ * @param {number} props.income
  * @param {Array<BudgetViewItem>} props.values
  * @param {number} props.sumAverage
  * @param {number} props.sumFixed
@@ -96,7 +111,7 @@ BudgetView.defaultProps = {
  * */
 function BudgetView(props) {
   const {
-    ready,
+    income,
     values,
     sumAverage,
     sumFixed,
@@ -122,8 +137,7 @@ function BudgetView(props) {
   });
   const [pending, setPending] = useState(false);
   const [reason, setReason] = useState('');
-  const [incomeValue, setIncomeValue] = useState(0);
-  const balance = incomeValue - sumFixed;
+  const balance = income - sumFixed;
 
   /** @type {Array<TableColumn>} */
   const columns = useMemo(() => {
@@ -154,7 +168,7 @@ function BudgetView(props) {
           return (
             <Action
               onClick={() => {
-                budgetSetValue(row.categoryId, row.average);
+                budgetSetItemValue(row.categoryId, row.average);
               }}
             >
               <span className={btn.wrp}>
@@ -192,7 +206,7 @@ function BudgetView(props) {
               step={100}
               value={row.fixed}
               onChange={(value) => {
-                budgetSetValue(row.categoryId, value);
+                budgetSetItemValue(row.categoryId, value);
               }}
             />
           );
@@ -223,7 +237,7 @@ function BudgetView(props) {
   const handleSave = useCallback(async () => {
     setPending(true);
     setReason('');
-    const response = await budgetFixValues();
+    const response = await budgetSaveFixedData();
     const { status, body } = response;
     if (status === 'success' && mountedRef.current) {
       if (!body.ok) {
@@ -233,17 +247,6 @@ function BudgetView(props) {
     }
   }, [
     mountedRef,
-  ]);
-
-  useEffect(() => {
-    if (ready && incomeValue === 0) {
-      setIncomeValue(sumFixed || sumAverage);
-    }
-  }, [
-    ready,
-    sumFixed,
-    sumAverage,
-    incomeValue,
   ]);
 
   return (
@@ -262,8 +265,8 @@ function BudgetView(props) {
           max={999999999.99}
           step={1000}
           maxLength={14}
-          value={incomeValue}
-          onChange={setIncomeValue}
+          value={income}
+          onChange={budgetSetIncome}
         />
       </FieldLabel>
       <Table

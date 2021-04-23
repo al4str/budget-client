@@ -4,6 +4,18 @@ import { API_URL } from '@/helpers/constants';
 import { sessionsWithTokenHeader } from '@/helpers/sessions';
 
 /**
+ * @typedef {Object} BudgetItem
+ * @property {string} categoryId
+ * @property {number} value
+ * */
+
+/**
+ * @typedef {Object} BudgetData
+ * @property {Array<BudgetItem>} items
+ * @property {number} income
+ * */
+
+/**
  * @return {Promise<BudgetItemsResponse>}
  * */
 export function budgetObtainAverageValues() {
@@ -28,20 +40,6 @@ export function budgetObtainAverageValues() {
  * */
 
 /**
- * @return {Promise<BudgetItemsResponse>}
- * */
-export function budgetObtainFixedValues() {
-  return fetchExec({
-    url: `${API_URL}/budget/fixed`,
-    options: {
-      headers: sessionsWithTokenHeader({}),
-    },
-    errorTitle: '[budget] obtaining fixed values failed',
-    bodyMapper: mapBudgetItemsBody,
-  });
-}
-
-/**
  * @param {null|Object} raw
  * @return {BudgetItemsBody}
  * */
@@ -59,12 +57,6 @@ function mapBudgetItemsBody(raw) {
     data,
   };
 }
-
-/**
- * @typedef {Object} BudgetItem
- * @property {string} categoryId
- * @property {number} value
- * */
 
 /**
  * @param {null|Object} raw
@@ -91,12 +83,70 @@ export function budgetGetEmptyItem() {
 }
 
 /**
+ * @return {Promise<BudgetDataResponse>}
+ * */
+export function budgetObtainFixedValues() {
+  return fetchExec({
+    url: `${API_URL}/budget/fixed`,
+    options: {
+      headers: sessionsWithTokenHeader({}),
+    },
+    errorTitle: '[budget] obtaining data failed',
+    bodyMapper: mapBudgetDataBody,
+  });
+}
+
+/**
+ * @typedef {FetchResponse
+ * & { body: BudgetDataBody }} BudgetDataResponse
+ * */
+
+/**
+ * @typedef {FetchGenericData
+ * & { data: BudgetData }} BudgetDataBody
+ * */
+
+/**
+ * @param {null|Object} raw
+ * @return {BudgetDataBody}
+ * */
+function mapBudgetDataBody(raw) {
+  const { ok, reason } = fetchMapGenericBody(raw);
+  const rawItems = propertyGet(raw, ['data', 'items'], []);
+  const income = propertyGet(raw, ['data', 'income'], 0.00);
+  /** @type {Array<BudgetItem>} */
+  const items = Array.isArray(rawItems)
+    ? rawItems.map((rawItem) => mapBudgetItem(rawItem))
+    : [];
+
+  return {
+    ok,
+    reason,
+    data: {
+      items,
+      income,
+    },
+  };
+}
+
+/**
+ * @return {BudgetData}
+ * */
+export function budgetGetEmptyData() {
+  return {
+    items: [],
+    income: 0.00,
+  };
+}
+
+/**
  * @param {Object} params
- * @param {Array<BudgetItem>} params.values
- * @return {Promise<BudgetItemsResponse>}
+ * @param {Array<BudgetItem>} params.items
+ * @param {number} params.income
+ * @return {Promise<BudgetDataResponse>}
  * */
 export function budgetUpdateFixedValues(params) {
-  const { values } = params;
+  const { items, income } = params;
   return fetchExec({
     url: `${API_URL}/budget/fixed`,
     options: {
@@ -105,10 +155,11 @@ export function budgetUpdateFixedValues(params) {
         'content-type': 'application/json',
       }),
       body: JSON.stringify({
-        values,
+        items,
+        income,
       }),
     },
-    errorTitle: '[budget] updating fixed values failed',
-    bodyMapper: mapBudgetItemsBody,
+    errorTitle: '[budget] updating data failed',
+    bodyMapper: mapBudgetDataBody,
   });
 }
