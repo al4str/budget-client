@@ -1,0 +1,59 @@
+@use "src/styles/variables" as vars;
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: vars.$offset-sm vars.$offset-sm vars.$offset-md;
+}
+
+.title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.fieldWrp {
+  margin-top: vars.$offset-sm;
+}
+
+.table {
+  margin-top: vars.$offset-md;
+  font-size: 0.75rem;
+}
+
+.cell {
+  padding: vars.$offset-xxs vars.$offset-xs;
+}
+
+.cellRight {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.field {
+  min-height: 0;
+  padding-left: 0;
+  text-align: right;
+  border: 0;
+}
+
+.reason {
+  margin: vars.$offset-md 0 0 0;
+  padding: vars.$offset-xs vars.$offset-sm;
+  font-size: 0.875rem;
+  background-color: crimson;
+  border-radius: vars.$offset-xxs;
+}
+
+.submit {
+  margin-top: vars.$offset-md;
+}
+
+.red {
+  color: DarkSalmon;
+}
+
+.green {
+  color: MediumSeaGreen;
+}

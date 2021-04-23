@@ -6,8 +6,11 @@
   text-align: center;
 }
 
+.fieldWrapper {
+  font-size: 1.75rem;
+}
+
 .field {
   width: 17ch;
-  min-height: vars.$height-field + 2 * vars.$offset-sm;
-  font-size: 1.75rem;
+  height: vars.$height-field + 2 * vars.$offset-sm;
 }

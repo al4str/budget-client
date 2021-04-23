@@ -4,6 +4,7 @@ export const ROUTES = {
   main: '/',
   profile: '/profile',
   backups: '/backups',
+  budget: '/budget',
   transactionsCreate: '/transactions/create/:type',
   transactionsCreateIncome: '/transactions/create/income',
   transactionsCreateExpense: '/transactions/create/expense',
@@ -19,6 +20,9 @@ const ROUTE_PARAMS = {
   },
   [ROUTES.backups]: {
     chunks: ['pageBackups'],
+  },
+  [ROUTES.budget]: {
+    chunks: ['pageBudget'],
   },
   [ROUTES.transactionsCreate]: {
     chunks: ['pageTransactionsCreate'],

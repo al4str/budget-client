@@ -11,6 +11,7 @@
     "titles.commodity-create": "Новый товар",
     "titles.expenditure-create": "Новая позиция товара",
     "titles.backups": "Бэкапы",
+    "titles.budget": "Бюджет",
     "errors.db.invalid-name": "[БД] Неверное название таблицы",
     "errors.db.invalid-user": "[БД] Неверное имя пользователя",
     "errors.db.invalid-selector": "[БД] Неверный селектор",
@@ -102,6 +103,9 @@
     "month.total.expenses": "Траты",
     "month.total.rest": "Остаток",
     "month.date.when": "Когда",
-    "month.users.by": "Кто"
+    "month.users.by": "Кто",
+    "budget.average": "Среднее",
+    "budget.fixed": "Заданное",
+    "budget.sum": "Сумма"
   }
 }

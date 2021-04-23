@@ -1,0 +1,291 @@
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import propTypes from 'prop-types';
+import cn from 'classnames';
+import { connectUseHook } from '@/libs/connect';
+import { sumFormat } from '@/libs/sum';
+import { useMounted } from '@/hooks/useMounted';
+import { useI18nTranslations } from '@/hooks/useI18n';
+import { useCategories } from '@/hooks/useCategories';
+import { budgetSetValue, budgetFixValues, useBudget }
+  from '@/hooks/useBudget';
+import FieldLabel from '@/components/ui/fields/Label';
+import FieldNumber from '@/components/ui/fields/Number';
+import SubmitSticky from '@/components/ui/SubmitSticky';
+import Action from '@/components/ui/Action';
+import Table from '@/components/ui/Table';
+import btn from '@/styles/button.scss';
+import s from './styles.scss';
+
+function useHook() {
+  const { ready, items: categories } = useCategories();
+  const { average, fixed } = useBudget();
+
+  /** @type {Array<BudgetViewItem>} */
+  const values = useMemo(() => {
+    return categories
+      .filter((category) => category.type === 'expense')
+      .map((category) => ({
+        key: category.id,
+        label: category.title,
+        average: average.get(category.id) || 0,
+        fixed: fixed.get(category.id) || 0,
+        categoryId: category.id,
+      }));
+  }, [
+    categories,
+    average,
+    fixed,
+  ]);
+  /** @type {number} */
+  const sumAverage = useMemo(() => {
+    return Array
+      .from(average.values())
+      .reduce((sum, value) => sum + value, 0);
+  }, [
+    average,
+  ]);
+  /** @type {number} */
+  const sumFixed = useMemo(() => {
+    return Array
+      .from(fixed.values())
+      .reduce((sum, value) => sum + value, 0);
+  }, [
+    fixed,
+  ]);
+
+  return {
+    ready,
+    values,
+    sumAverage,
+    sumFixed,
+  };
+}
+
+/**
+ * @typedef {Object} BudgetViewItem
+ * @property {string} key
+ * @property {string} label
+ * @property {number} average
+ * @property {number} fixed
+ * @property {string} categoryId
+ * */
+
+BudgetView.propTypes = {
+  ready: propTypes.bool,
+  values: propTypes.array,
+  sumAverage: propTypes.number,
+  sumFixed: propTypes.number,
+  className: propTypes.string,
+};
+
+BudgetView.defaultProps = {
+  ready: false,
+  values: [],
+  sumAverage: 0,
+  sumFixed: 0,
+  className: '',
+};
+
+/**
+ * @param {Object} props
+ * @param {boolean} props.ready
+ * @param {Array<BudgetViewItem>} props.values
+ * @param {number} props.sumAverage
+ * @param {number} props.sumFixed
+ * @param {string} props.className
+ * */
+function BudgetView(props) {
+  const {
+    ready,
+    values,
+    sumAverage,
+    sumFixed,
+    className,
+  } = props;
+  const mountedRef = useMounted();
+  const {
+    title,
+    incomeLabel,
+    expensesLabel,
+    averageLabel,
+    fixedLabel,
+    sumLabel,
+    saveLabel,
+  } = useI18nTranslations({
+    title: 'titles.budget',
+    incomeLabel: 'month.total.income',
+    expensesLabel: 'month.total.expenses',
+    averageLabel: 'budget.average',
+    fixedLabel: 'budget.fixed',
+    sumLabel: 'budget.sum',
+    saveLabel: 'forms.actions.save',
+  });
+  const [pending, setPending] = useState(false);
+  const [reason, setReason] = useState('');
+  const [incomeValue, setIncomeValue] = useState(0);
+  const balance = incomeValue - sumFixed;
+
+  /** @type {Array<TableColumn>} */
+  const columns = useMemo(() => {
+    return [
+      {
+        name: 'label',
+        label: expensesLabel,
+        cellClassName: s.cell,
+        /** @param {BudgetViewItem} row */
+        onRender(row) {
+          if (row.key === 'result') {
+            return sumLabel;
+          }
+          return row.label;
+        },
+      },
+      {
+        name: 'average',
+        label: averageLabel,
+        cellClassName: cn(s.cell, s.cellRight),
+        /** @param {BudgetViewItem} row */
+        onRender(row) {
+          const sum = sumFormat(row.average, { sign: 'never' });
+
+          if (row.key === 'result') {
+            return sum;
+          }
+          return (
+            <Action
+              onClick={() => {
+                budgetSetValue(row.categoryId, row.average);
+              }}
+            >
+              <span className={btn.wrp}>
+                <span className={btn.label}>
+                  {sum}
+                </span>
+              </span>
+            </Action>
+          );
+        },
+      },
+      {
+        name: 'fixed',
+        label: fixedLabel,
+        cellClassName: cn(s.cell, s.cellRight),
+        /** @param {BudgetViewItem} row */
+        onRender(row) {
+          if (row.key === 'result') {
+            return (
+              <span className={cn(
+                row.fixed < 0 && s.red,
+                row.fixed > 0 && s.green,
+              )}>
+                {sumFormat(row.fixed)}
+              </span>
+            );
+          }
+          return (
+            <FieldNumber
+              className={s.field}
+              placeholder="0,00"
+              inputMode="decimal"
+              min={0}
+              max={999999999.99}
+              step={100}
+              value={row.fixed}
+              onChange={(value) => {
+                budgetSetValue(row.categoryId, value);
+              }}
+            />
+          );
+        },
+      },
+    ];
+  }, [
+    expensesLabel,
+    averageLabel,
+    sumLabel,
+    fixedLabel,
+  ]);
+  /** @type {Array<TableRow>} */
+  const rows = useMemo(() => {
+    return values.concat([{
+      key: 'result',
+      label: '',
+      average: sumAverage,
+      fixed: balance,
+      categoryId: '',
+    }]);
+  }, [
+    values,
+    sumAverage,
+    balance,
+  ]);
+
+  const handleSave = useCallback(async () => {
+    setPending(true);
+    setReason('');
+    const response = await budgetFixValues();
+    const { status, body } = response;
+    if (status === 'success' && mountedRef.current) {
+      if (!body.ok) {
+        setReason(body.reason);
+      }
+      setPending(false);
+    }
+  }, [
+    mountedRef,
+  ]);
+
+  useEffect(() => {
+    if (ready && incomeValue === 0) {
+      setIncomeValue(sumFixed || sumAverage);
+    }
+  }, [
+    ready,
+    sumFixed,
+    sumAverage,
+    incomeValue,
+  ]);
+
+  return (
+    <div className={cn(s.content, className)}>
+      <h1 className={s.title}>
+        {title}
+      </h1>
+      <FieldLabel
+        className={s.fieldWrp}
+        label={incomeLabel}
+      >
+        <FieldNumber
+          placeholder="0,00"
+          inputMode="decimal"
+          min={0}
+          max={999999999.99}
+          step={1000}
+          maxLength={14}
+          value={incomeValue}
+          onChange={setIncomeValue}
+        />
+      </FieldLabel>
+      <Table
+        className={s.table}
+        columns={columns}
+        rows={rows}
+      />
+      {reason.length > 0
+      && <p className={s.reason}>
+        {reason}
+      </p>}
+      <SubmitSticky
+        className={s.submit}
+        pending={pending}
+        shown={true}
+        disabled={balance < 0}
+        type="button"
+        label={saveLabel}
+        onClick={handleSave}
+      />
+    </div>
+  );
+}
+
+export default connectUseHook(useHook)(BudgetView);

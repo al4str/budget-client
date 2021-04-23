@@ -38,7 +38,7 @@ function ProfileView(props) {
   return (
     <div className={cn(s.content, className)}>
       <h1 className={s.title}>
-        {title} {data.id}
+        {title} - {data.id}
       </h1>
       <ProfileLanguages className={s.lang} />
       <span className={s.separator} />

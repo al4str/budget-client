@@ -1,9 +1,8 @@
-import { useRef, useState, useCallback, useEffect } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
 import { sumFormat } from '@/libs/sum';
 import FieldLabel from '@/components/ui/fields/Label';
-import FieldText from '@/components/ui/fields/Text';
+import FieldNumber from '@/components/ui/fields/Number';
 import s from './styles.scss';
 
 TransactionStepSum.propTypes = {
@@ -35,43 +34,25 @@ function TransactionStepSum(props) {
     onSumChange,
   } = props;
   const isExpense = type === 'expense';
-  /** @type {React.RefObject<HTMLInputElement>} */
-  const fieldRef = useRef(null);
-  const [value, setValue] = useState(sumFormat(sum, { sign: 'never' }));
   const displaySum = isExpense
     ? sumFormat(-1 * sum, { style: 'currency' })
     : sumFormat(sum, { style: 'currency' });
-
-  const handleChange = useCallback((nextValue) => {
-    const sanitized = parseFloat(nextValue
-      .replace(/[^0-9.,]/g, '')
-      .replace(/[.,]/g, '.')) || 0.00;
-    setValue(nextValue);
-    onSumChange(sanitized);
-  }, [
-    onSumChange,
-  ]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      fieldRef.current.select();
-    }, 0);
-  }, []);
 
   return (
     <FieldLabel
       className={cn(s.step, className)}
       description={displaySum}
     >
-      <FieldText
+      <FieldNumber
+        wrapperClassName={s.fieldWrapper}
         className={s.field}
-        ref={fieldRef}
-        inputMode="decimal"
-        autoComplete="off"
         placeholder="0,00"
+        min={0}
+        max={999999999.99}
+        step={1}
         maxLength={14}
-        value={value}
-        onChange={handleChange}
+        value={sum}
+        onChange={onSumChange}
       />
     </FieldLabel>
   );

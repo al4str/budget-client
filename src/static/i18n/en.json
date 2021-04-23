@@ -11,6 +11,7 @@
     "titles.commodity-create": "New commodity",
     "titles.expenditure-create": "New expenditure",
     "titles.backups": "Backups",
+    "titles.budget": "Budget",
     "errors.db.invalid-name": "[DB] Invalid name",
     "errors.db.invalid-user": "[DB] Invalid user",
     "errors.db.invalid-selector": "[DB] Invalid selector",
@@ -102,6 +103,9 @@
     "month.total.expenses": "Expenses",
     "month.total.rest": "Balance",
     "month.date.when": "When",
-    "month.users.by": "By"
+    "month.users.by": "By",
+    "budget.average": "Average",
+    "budget.fixed": "Fixed",
+    "budget.sum": "Sum"
   }
 }

@@ -28,6 +28,14 @@ export const PAGES = [
     )),
   },
   {
+    url: ROUTES.budget,
+    chunkGroupName: 'pageBudget',
+    Component: lazy(() => import(
+      /* webpackChunkName: "pageBudget" */
+      '@/components/budget/Page'
+    )),
+  },
+  {
     url: ROUTES.transactionsCreate,
     chunkGroupName: 'pageTransactionsCreate',
     Component: lazy(() => import(

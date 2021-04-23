@@ -12,7 +12,7 @@ function useHook() {
   const { pending, ready, data } = useProfile();
 
   useTitle({ title: data.name
-    ? `${pageTitle} - ${data.name}`
+    ? `${pageTitle} - ${data.id}`
     : pageTitle,
   });
 

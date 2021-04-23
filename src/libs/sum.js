@@ -12,12 +12,14 @@ export function sumInvalid(value) {
  * @param {Object} [params]
  * @param {'decimal'|'currency'} [params.style='decimal']
  * @param {'exceptZero'|'never'} [params.sign='exceptZero']
+ * @param {number} [params.fraction=2]
  * @return {string}
  * */
 export function sumFormat(raw, params) {
   const {
     style = 'decimal',
     sign = 'exceptZero',
+    fraction = 2,
   } = params || {};
   const value = (typeof raw === 'string'
     ? parseFloat(raw)
@@ -26,8 +28,8 @@ export function sumFormat(raw, params) {
     style,
     signDisplay: sign,
     currency: 'RUB',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: fraction,
+    maximumFractionDigits: fraction,
   });
   return formatter.format(value);
 }

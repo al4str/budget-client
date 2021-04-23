@@ -1,0 +1,38 @@
+@use "src/styles/variables" as vars;
+
+.field {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding-right: 0.5ch + 0.5ch + 2ch + 0.5ch;
+}
+
+.iconWrp {
+  position: absolute;
+  top: 0;
+  right: 0;
+  box-sizing: border-box;
+  width: 0.5ch + 2ch + 0.5ch;
+  height: 100%;
+  padding: 0 0.5ch;
+  color: silver;
+  transition: color 0.15s;
+}
+.iconWrp:active {
+  color: whitesmoke;
+}
+.input:focus .iconWrp {
+  color: whitesmoke;
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2ch;
+  height: auto;
+  fill: currentColor;
+  transform: translate(-50%, -50%);
+}

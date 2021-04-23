@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
 import { useI18nTranslations } from '@/hooks/useI18n';
@@ -6,9 +5,8 @@ import { useExpendituresAdd }
   from '@/components/expenditures/FormAdd/useForm';
 import SubmitSticky from '@/components/ui/SubmitSticky';
 import FieldLabel from '@/components/ui/fields/Label';
-import FieldText from '@/components/ui/fields/Text';
+import FieldNumber from '@/components/ui/fields/Number';
 import FieldCheckbox from '@/components/ui/fields/Checkbox';
-import input from '@/styles/input.scss';
 import s from './styles.scss';
 
 ExpendituresFormAdd.propTypes = {
@@ -61,13 +59,6 @@ function ExpendituresFormAdd(props) {
     onAdd,
   });
 
-  /** @type {function(string): void} */
-  const handleAmountChange = useCallback((nextAmount) => {
-    fields.amount.onChange(parseInt(nextAmount, 10) || 0);
-  }, [
-    fields.amount,
-  ]);
-
   return (
     <form
       className={cn(s.form, className)}
@@ -80,16 +71,16 @@ function ExpendituresFormAdd(props) {
         validations={fields.amount.validations}
         label={amountLabel}
       >
-        <FieldText
-          className={cn(input.default, s.field)}
-          type="number"
+        <FieldNumber
+          className={s.field}
           inputMode="numeric"
-          min="0"
-          step="1"
+          min={0}
+          max={999}
+          step={1}
           placeholder={amountPlaceholder}
           failed={fields.amount.failed}
-          value={fields.amount.value.toString()}
-          onChange={handleAmountChange}
+          value={fields.amount.value}
+          onChange={fields.amount.onChange}
         />
       </FieldLabel>
       <FieldLabel
