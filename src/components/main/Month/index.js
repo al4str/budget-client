@@ -15,6 +15,7 @@ import { useCategories } from '@/hooks/useCategories';
 import { useCommodities } from '@/hooks/useCommodities';
 import { transactionsFetchList, useTransactions }
   from '@/hooks/useTransactions';
+import { useBudget } from '@/hooks/useBudget';
 import Table from '@/components/ui/Table';
 import Anchor from '@/components/ui/Anchor';
 import UsersAvatar from '@/components/users/Avatar';
@@ -44,6 +45,7 @@ function useHook(props) {
   const { items: categoriesItems } = useCategories();
   const { items: commoditiesItems } = useCommodities();
   const { items: transactionsItems } = useTransactions();
+  const { fixed: budgetMap } = useBudget();
 
   /** @type {function(string): UsersItem} */
   const getUserItem = useCallback((userId) => {
@@ -168,18 +170,25 @@ function useHook(props) {
 
     return categoriesItems.reduce((by, category) => {
       const sum = byCategoryMap.get(category.id) || 0;
+      const limit = budgetMap.get(category.id) || 0;
+      const percentage = limit > 0
+        ? (sum * 100) / limit
+        : 0;
       by[category.type].push({
         id: category.id,
         title: category.title,
         sum: category.type === 'income'
           ? sum
           : -1 * sum,
+        limit,
+        percentage,
       });
 
       return by;
     }, byType);
   }, [
     categoriesItems,
+    budgetMap,
     monthTransactionItems,
   ]);
   const incomeByCategoryData = byCategoryData.income;
@@ -297,6 +306,8 @@ MainMonth.defaultProps = {
  * @property {string} id
  * @property {string} title
  * @property {number} sum
+ * @property {number} limit
+ * @property {number} percentage
  * */
 
 /**
@@ -367,9 +378,11 @@ function MainMonth(props) {
         /** @param {MonthTotalItem} row */
         onRender(row) {
           return (
-            <span className={s.sum}>
-              {sumFormat(row.value)}
-            </span>
+            <div className={s.sumWrp}>
+              <span className={s.sum}>
+                {sumFormat(row.value)}
+              </span>
+            </div>
           );
         },
       },
@@ -405,9 +418,11 @@ function MainMonth(props) {
         /** @param {MonthByCategoryItem} row */
         onRender(row) {
           return (
-            <span className={s.sum}>
-              {sumFormat(row.sum)}
-            </span>
+            <div className={s.sumWrp}>
+              <span className={s.sum}>
+                {sumFormat(row.sum)}
+              </span>
+            </div>
           );
         },
       },
@@ -442,10 +457,49 @@ function MainMonth(props) {
         cellClassName: cn(s.cell, s.cellRight),
         /** @param {MonthByCategoryItem} row */
         onRender(row) {
+          const sum = sumFormat(row.sum);
+          const limit = sumFormat(row.limit, {
+            sign: 'never',
+          });
+          const percentage = sumFormat(row.percentage, {
+            sign: 'never',
+            fraction: 1,
+          });
+          const warning = row.percentage > 85;
+          const exceeded = Math.abs(row.sum) > row.limit;
+
           return (
-            <span className={s.sum}>
-              {sumFormat(row.sum)}
-            </span>
+            <div className={s.sumWrp}>
+              <span className={cn(
+                s.sum,
+                exceeded && s.exceeded,
+                warning && s.warning,
+              )}>
+                {sum}
+              </span>
+              <div className={s.track}>
+                <span
+                  className={cn(
+                    s.progress,
+                    exceeded && s.exceeded,
+                    warning && s.warning,
+                  )}
+                  style={{ width: `${row.percentage}%` }}
+                />
+              </div>
+              <div className={s.budget}>
+                <span className={cn(
+                  s.percentage,
+                  exceeded && s.exceeded,
+                  warning && s.warning,
+                )}>
+                  {percentage}%
+                </span>
+                <span className={s.limit}>
+                  {limit}
+                </span>
+              </div>
+            </div>
           );
         },
       },
@@ -499,9 +553,11 @@ function MainMonth(props) {
           /** @param {MonthExpenditureItem} row */
           onRender(row) {
             return (
-              <span className={s.sum}>
-                {sumFormat(row.sum)}
-              </span>
+              <div className={s.sumWrp}>
+                <span className={s.sum}>
+                  {sumFormat(row.sum)}
+                </span>
+              </div>
             );
           },
         },

@@ -29,7 +29,61 @@
   text-align: center;
 }
 
+.sumWrp {
+  width: auto;
+}
+
 .sum {
-  min-width: fit-content;
   white-space: nowrap;
+  transition: color 0.15s;
+}
+
+.track {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: vars.$offset-xxs;
+  margin-top: vars.$offset-xxs;
+  overflow: hidden;
+  background-color: gray;
+  border-radius: vars.$offset-xxs;
+}
+
+.progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  color: lightgray;
+  background-color: currentColor;
+  transition:
+    width 0.15s ease-in-out,
+    color 0.15s;
+}
+
+.budget {
+  display: flex;
+  min-width: 15ch;
+  margin-top: vars.$offset-xxs;
+  color: darkgray;
+  font-size: 0.5rem;
+}
+
+.percentage {
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+
+.limit {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.warning {
+  color: orange;
+}
+
+.exceeded {
+  color: salmon;
 }

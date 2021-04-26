@@ -157,6 +157,7 @@ const FieldNumber = forwardRef((props, ref) => {
   }, []);
   /** @type {UsePointerHandler} */
   const handlePointerMove = useCallback((ctx, data) => {
+    fieldRef.current.blur();
     const startY = ctx.getValue('startY');
     const deltaY = startY - data.clientY;
     const amount = step * Math.ceil(deltaY);
@@ -232,7 +233,6 @@ const FieldNumber = forwardRef((props, ref) => {
         className={s.iconWrp}
         onMouseDown={onPointerDown}
         onTouchStart={onPointerDown}
-        onClick={() => fieldRef.current.focus()}
       >
         <IconUpDown className={s.icon} />
       </span>
