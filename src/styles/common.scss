@@ -1,7 +1,6 @@
 @use "variables" as vars;
 
 .bodyConstrains {
-  overflow: hidden;
   user-select: none;
   touch-action: none;
   -webkit-touch-callout: none;
@@ -18,4 +17,10 @@
   text-overflow: clip;
   word-wrap: break-word;
   hyphens: auto;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .bodyConstrains {
+    overflow: hidden;
+  }
 }
