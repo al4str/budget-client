@@ -1,10 +1,7 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
-import {
-  categoriesFetchList,
-  useCategories,
-} from '@/hooks/useCategories';
+import { useCategories } from '@/hooks/useCategories';
 import IconAdd from '@/components/icons/IconAdd';
 import Action from '@/components/ui/Action';
 import CategoriesOverlayCreate
@@ -75,15 +72,11 @@ function TransactionStepCategory(props) {
   /** @type {function(CategoryItem): void} */
   const handleCreate = useCallback((nextItem) => {
     onCategoryIdChange(nextItem.id);
+    handleClose();
   }, [
     onCategoryIdChange,
+    handleClose,
   ]);
-
-  useEffect(() => {
-    categoriesFetchList()
-      .then()
-      .catch();
-  }, []);
 
   return (
     <div className={cn(s.step, className)}>

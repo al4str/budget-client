@@ -1,3 +1,4 @@
+import queries from 'query-string';
 import { useMemo, useEffect } from 'react';
 import propTypes from 'prop-types';
 import { idGet } from '@/libs/id';
@@ -10,6 +11,9 @@ import { transactionsFetchList, useTransactions }
 import TransactionOverlay from '@/components/transaction/Overlay';
 
 /** @param {{
+ *    location: {
+ *      search: string
+ *    }
  *    match: {
  *      params: {
  *        type: TransactionType
@@ -18,11 +22,13 @@ import TransactionOverlay from '@/components/transaction/Overlay';
  *    }
  * }} props */
 function useHook(props) {
-  const { match: { params } } = props;
+  const { location: { search }, match: { params } } = props;
   const {
     type: transactionType,
     id: transactionId,
   } = params;
+  const { query } = queries.parseUrl(search);
+  const { date = dateGetNow().startOf('month').toISODate() } = query;
   const mode = ['income', 'expense'].includes(params.type)
     ? 'create'
     : 'update';
@@ -79,7 +85,7 @@ function useHook(props) {
         categoryId: '',
         comment: '',
         expenditures: [],
-        date: dateGetNow().toISODate(),
+        date,
         userId: profileId,
       };
     }
@@ -92,6 +98,7 @@ function useHook(props) {
       userId: transactionItem.userId,
     };
   }, [
+    date,
     isCreate,
     profileId,
     transactionItem,

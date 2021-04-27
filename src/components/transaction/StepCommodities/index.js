@@ -1,12 +1,9 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
 import { idGet } from '@/libs/id';
 import { useI18nTranslations } from '@/hooks/useI18n';
-import {
-  commoditiesFetchList,
-  useCommodities,
-} from '@/hooks/useCommodities';
+import { useCommodities } from '@/hooks/useCommodities';
 import IconAdd from '@/components/icons/IconAdd';
 import Action from '@/components/ui/Action';
 import FieldLabel from '@/components/ui/fields/Label';
@@ -161,12 +158,6 @@ function TransactionStepCommodities(props) {
     usedCommoditiesIds,
     handleExpenditureOpen,
   ]);
-
-  useEffect(() => {
-    commoditiesFetchList()
-      .then()
-      .catch();
-  }, []);
 
   return (
     <div className={cn(s.step, className)}>

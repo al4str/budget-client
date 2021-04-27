@@ -8,8 +8,8 @@ import {
 import propTypes from 'prop-types';
 import cn from 'classnames';
 import { sumInvalid } from '@/libs/sum';
+import { historyGoBack } from '@/libs/navigationManager';
 import { ROUTES } from '@/helpers/routes';
-import { historyPush } from '@/libs/navigationManager';
 import { useMounted } from '@/hooks/useMounted';
 import { useI18nTranslations } from '@/hooks/useI18n';
 import {
@@ -248,7 +248,7 @@ function TransactionOverlay(props) {
   ]);
 
   const handleClose = useCallback(() => {
-    historyPush(ROUTES.main);
+    historyGoBack(ROUTES.main);
   }, []);
   const handleBack = useCallback(() => {
     const currentIndex = steps.indexOf(step);

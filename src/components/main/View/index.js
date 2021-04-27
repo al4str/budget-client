@@ -1,7 +1,8 @@
-import { useState, useMemo, useCallback } from 'react';
+import queries from 'query-string';
+import { useMemo } from 'react';
 import propTypes from 'prop-types';
 import cn from 'classnames';
-import { dateGetNow, datesMonths } from '@/libs/date';
+import { dateGetObjFromISO, datesMonths } from '@/libs/date';
 import { connectUseHook } from '@/libs/connect';
 import { useSession } from '@/hooks/useSession';
 import IconArrowLeft from '@/components/icons/IconArrowLeft';
@@ -22,21 +23,22 @@ function useHook() {
 MainView.propTypes = {
   authed: propTypes.bool,
   className: propTypes.string,
+  date: propTypes.string,
 };
 
 MainView.defaultProps = {
   authed: false,
   className: '',
+  date: '',
 };
 
 function MainView(props) {
   const {
     authed,
     className,
+    date,
   } = props;
-  const [dateObj, setDateObj] = useState(() => {
-    return dateGetNow().startOf('month');
-  });
+  const dateObj = dateGetObjFromISO(date);
 
   const months = useMemo(() => {
     const prev = dateObj
@@ -64,16 +66,31 @@ function MainView(props) {
     dateObj,
   ]);
 
-  const handlePrev = useCallback(() => {
-    setDateObj((prevDateObj) => prevDateObj
-      .minus({ months: 1 })
-      .startOf('month'));
-  }, []);
-  const handleNext = useCallback(() => {
-    setDateObj((prevDateObj) => prevDateObj
-      .plus({ months: 1 })
-      .startOf('month'));
-  }, []);
+  /** @type {string} */
+  const toPrevMonth = useMemo(() => {
+    const dateQuery = queries.stringify({
+      date: dateObj
+        .minus({ months: 1 })
+        .startOf('month')
+        .toISODate(),
+    });
+
+    return `/?${dateQuery}`;
+  }, [
+    dateObj,
+  ]);
+  const toNextMonth = useMemo(() => {
+    const dateQuery = queries.stringify({
+      date: dateObj
+        .plus({ months: 1 })
+        .startOf('month')
+        .toISODate(),
+    });
+
+    return `/?${dateQuery}`;
+  }, [
+    dateObj,
+  ]);
 
   if (!authed) {
     return null;
@@ -83,7 +100,8 @@ function MainView(props) {
       <div className={s.nav}>
         <Action
           className={cn(s.navBtn, s.navPrev)}
-          onClick={handlePrev}
+          type="link"
+          to={toPrevMonth}
         >
           <span className={cn(btn.wrp, s.navWrp)}>
             <IconArrowLeft className={cn(btn.icon, s.navIconPrev)} />
@@ -109,7 +127,8 @@ function MainView(props) {
         </span>
         <Action
           className={cn(s.navBtn, s.navNext)}
-          onClick={handleNext}
+          type="link"
+          to={toNextMonth}
         >
           <span className={cn(btn.wrp, s.navWrp)}>
             <span className={cn(btn.label, s.navLabel)}>
@@ -128,7 +147,10 @@ function MainView(props) {
         className={s.month}
         date={dateObj.toISODate()}
       />
-      <TransactionMenu className={s.menu} />
+      <TransactionMenu
+        className={s.menu}
+        date={dateObj.toISODate()}
+      />
     </div>
   );
 }
