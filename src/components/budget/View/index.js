@@ -15,9 +15,7 @@ import {
 import FieldLabel from '@/components/ui/fields/Label';
 import FieldNumber from '@/components/ui/fields/Number';
 import SubmitSticky from '@/components/ui/SubmitSticky';
-import Action from '@/components/ui/Action';
 import Table from '@/components/ui/Table';
-import btn from '@/styles/button.scss';
 import s from './styles.scss';
 
 function useHook() {
@@ -160,24 +158,7 @@ function BudgetView(props) {
         cellClassName: cn(s.cell, s.cellRight),
         /** @param {BudgetViewItem} row */
         onRender(row) {
-          const sum = sumFormat(row.average, { sign: 'never' });
-
-          if (row.key === 'result') {
-            return sum;
-          }
-          return (
-            <Action
-              onClick={() => {
-                budgetSetItemValue(row.categoryId, row.average);
-              }}
-            >
-              <span className={btn.wrp}>
-                <span className={btn.label}>
-                  {sum}
-                </span>
-              </span>
-            </Action>
-          );
+          return sumFormat(row.average, { sign: 'never' });
         },
       },
       {
