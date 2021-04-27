@@ -39,9 +39,16 @@ export function historyGetCurrentLocationPathname() {
 }
 
 /**
+ * @param {string} [fallbackURL='/']
  * @return {void}
  * */
-export function historyGoBack() {
+export function historyGoBack(fallbackURL = '/') {
+  if (locations.length < 2) {
+    if (fallbackURL) {
+      historyPush(fallbackURL);
+    }
+    return;
+  }
   history.goBack();
 }
 
