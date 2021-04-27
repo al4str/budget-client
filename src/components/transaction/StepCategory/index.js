@@ -55,7 +55,8 @@ function TransactionStepCategory(props) {
         selected: item.id === categoryId,
         label: item.title,
         onSelect: onCategoryIdChange.bind(null, item.id),
-      }));
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
   }, [
     type,
     categoryId,

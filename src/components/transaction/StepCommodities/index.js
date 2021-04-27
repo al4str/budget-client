@@ -151,7 +151,8 @@ function TransactionStepCommodities(props) {
             title: commodity.title,
           });
         },
-      }));
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
   }, [
     categoryId,
     items,
