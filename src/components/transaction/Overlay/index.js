@@ -1,3 +1,4 @@
+import queries from 'query-string';
 import {
   useState,
   useMemo,
@@ -248,8 +249,14 @@ function TransactionOverlay(props) {
   ]);
 
   const handleClose = useCallback(() => {
-    historyGoBack(ROUTES.main);
-  }, []);
+    const fallbackQuery = queries.stringify({
+      date: initialDate,
+    });
+    const fallbackURL = `${ROUTES.main}?${fallbackQuery}`;
+    historyGoBack(fallbackURL);
+  }, [
+    initialDate,
+  ]);
   const handleBack = useCallback(() => {
     const currentIndex = steps.indexOf(step);
     const nextIndex = Math.max(0, currentIndex - 1);
