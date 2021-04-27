@@ -51,6 +51,7 @@ function TransactionStepConfirm(props) {
   return (
     <div className={cn(s.step, className)}>
       <TransactionOverview
+        className={s.overview}
         type={type}
         sum={sum}
         categoryId={categoryId}
