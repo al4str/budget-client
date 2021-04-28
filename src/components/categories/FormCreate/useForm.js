@@ -53,8 +53,8 @@ export function useCategoriesCreate(params) {
   });
   const [pending, setPending] = useState(false);
   const [reason, setReason] = useState('');
-  const { anyPending, anyInvalid, anyChanged, fields } = useForm();
-  const disabled = anyPending || anyInvalid;
+  const { anyPending, anyInvalid, anyChanged, anyFailed, fields } = useForm();
+  const disabled = anyPending || anyFailed;
   const changed = anyChanged;
 
   const types = useMemo(() => {
@@ -131,12 +131,11 @@ export function useCategoriesCreate(params) {
   ]);
 
   const onSubmit = useMemo(() => {
-    if (anyPending || anyInvalid) {
+    if (anyInvalid) {
       return handleValidate;
     }
     return handleSubmit;
   }, [
-    anyPending,
     anyInvalid,
     handleValidate,
     handleSubmit,

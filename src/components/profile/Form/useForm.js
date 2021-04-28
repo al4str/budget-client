@@ -26,7 +26,7 @@ const { set, update, getChanged, useForm } = formsCreate({
     avatarFile: {
       /** @param {File} value */
       invalidType(value) {
-        return value.type !== 'image/jpeg';
+        return !value.type.includes('image/');
       },
       /** @param {File} value */
       invalidSize(value) {
@@ -65,7 +65,7 @@ export function useProfileForm(params) {
   });
   const [pending, setPending] = useState(false);
   const [previewURL, setPreviewURL] = useState('');
-  const { anyInvalid, anyPending, anyChanged, fields } = useForm();
+  const { anyFailed, anyPending, anyChanged, fields } = useForm();
 
   const messages = useMemo(() => {
     return {
@@ -141,7 +141,7 @@ export function useProfileForm(params) {
   return {
     pending,
     changed: anyChanged,
-    disabled: anyInvalid || anyPending,
+    disabled: anyFailed || anyPending,
     fields,
     messages,
     previewURL,

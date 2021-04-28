@@ -31,9 +31,9 @@ export function useExpendituresAdd(params) {
   const { errorsInvalidSum } = useI18nTranslations({
     errorsInvalidSum: 'forms.errors.invalid-sum',
   });
-  const { anyPending, anyInvalid, anyChanged, fields } = useForm();
+  const { anyPending, anyInvalid, anyChanged, anyFailed, fields } = useForm();
   const changed = anyChanged;
-  const disabled = anyPending || anyInvalid;
+  const disabled = anyPending || anyFailed;
 
   const messages = useMemo(() => {
     return {
@@ -71,12 +71,11 @@ export function useExpendituresAdd(params) {
   ]);
 
   const onSubmit = useMemo(() => {
-    if (anyPending || anyInvalid) {
+    if (anyInvalid) {
       return handleValidate;
     }
     return handleSubmit;
   }, [
-    anyPending,
     anyInvalid,
     handleValidate,
     handleSubmit,

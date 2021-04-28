@@ -59,9 +59,9 @@ export function useCommoditiesCreate(params) {
   });
   const [pending, setPending] = useState(false);
   const [reason, setReason] = useState('');
-  const { anyPending, anyInvalid, anyChanged, fields } = useForm();
+  const { anyPending, anyInvalid, anyChanged, anyFailed, fields } = useForm();
   const changed = anyChanged;
-  const disabled = anyPending || anyInvalid;
+  const disabled = anyPending || anyFailed;
 
   const categories = useMemo(() => {
     return items.map((item) => ({
@@ -128,12 +128,11 @@ export function useCommoditiesCreate(params) {
   ]);
 
   const onSubmit = useMemo(() => {
-    if (anyPending || anyInvalid) {
+    if (anyInvalid) {
       return handleValidate;
     }
     return handleSubmit;
   }, [
-    anyPending,
     anyInvalid,
     handleValidate,
     handleSubmit,
