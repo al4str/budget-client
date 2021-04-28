@@ -71,7 +71,7 @@
     "forms.category.label": "Select a category",
     "forms.category.placeholder": "Category",
     "forms.amount.label": "Amount",
-    "forms.amount.placeholder": "0.00",
+    "forms.amount.placeholder": "0",
     "forms.essential.label": "Is essential",
     "forms.actions.search": "Search",
     "forms.actions.next": "Next",

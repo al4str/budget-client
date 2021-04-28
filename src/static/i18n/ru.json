@@ -71,7 +71,7 @@
     "forms.category.label": "Выберите категорию",
     "forms.category.placeholder": "Категория",
     "forms.amount.label": "Кол-во",
-    "forms.amount.placeholder": "0,00",
+    "forms.amount.placeholder": "0",
     "forms.essential.label": "Нужное",
     "forms.actions.search": "Поиск",
     "forms.actions.next": "Далее",
