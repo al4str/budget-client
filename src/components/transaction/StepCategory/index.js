@@ -115,6 +115,7 @@ function TransactionStepCategory(props) {
       <CategoriesOverlayCreate
         opened={opened}
         onClose={handleClose}
+        type={type}
         onCreate={handleCreate}
       />
     </div>

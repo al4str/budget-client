@@ -20,6 +20,13 @@ CategoriesOverlayCreate.defaultProps = {
   onCreate: null,
 };
 
+/**
+ * @param {Object} props
+ * @param {boolean} props.opened
+ * @param {Function} props.onClose
+ * @param {TransactionType} props.type
+ * @param {function(CategoryItem): void} props.onCreate
+ * */
 function CategoriesOverlayCreate(props) {
   const {
     opened,

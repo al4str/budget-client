@@ -31,7 +31,7 @@ const { set, validate, getValues, useForm } = formsCreate({
 /**
  * @param {Object} params
  * @param {TransactionType} [params.initialType]
- * @param {Function} params.onCreate
+ * @param {function(CategoryItem): void} params.onCreate
  * */
 export function useCategoriesCreate(params) {
   const { initialType, onCreate } = params;

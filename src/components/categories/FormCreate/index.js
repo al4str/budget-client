@@ -21,6 +21,12 @@ CategoriesFormCreate.defaultProps = {
   onCreate: null,
 };
 
+/**
+ * @param {Object} props
+ * @param {string} props.className
+ * @param {TransactionType} props.type
+ * @param {function(CategoryItem): void} props.onCreate
+ * */
 function CategoriesFormCreate(props) {
   const {
     className,
