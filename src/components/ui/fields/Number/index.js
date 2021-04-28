@@ -68,9 +68,6 @@ const FieldNumber = forwardRef((props, ref) => {
   /** @type {function(function(number): number): void} */
   const setInputValue = useCallback((updater) => {
     const field = fieldRef.current;
-    if (window.document.activeElement.isSameNode(field)) {
-      return;
-    }
     const fieldValue = parseValue(field.value);
     const nextValue = updater(value);
     const limitedValue = Math.max(min, Math.min(nextValue, max));
@@ -276,7 +273,7 @@ FieldNumber.defaultProps = {
   name: '',
   theme: 'default',
   disabled: false,
-  value: 0.00,
+  value: 0,
   onChange: null,
 };
 
